@@ -1,0 +1,34 @@
+let roleUpgrader = {
+    run: function (creep) {
+        let _ = require('lodash');
+
+        creep.memory.closestSpawnerId = creep.pos.findClosestByRange(FIND_MY_SPAWNS).id;
+
+        let storages = creep.room.find(FIND_STRUCTURES, {
+            filter: (s) => {
+                return s.structureType === STRUCTURE_EXTENSION
+                    || s.structureType === STRUCTURE_CONTAINER
+                    || s.structureType === STRUCTURE_SPAWN
+            }
+        });
+
+        let storagesWithEnoughEnergy = creep.pos.findClosestByRange(storages, {filter: (s) => {return s.store[RESOURCE_ENERGY] >= creep.store.getCapacity(RESOURCE_ENERGY)}});
+        creep.memory.closestStorageId = storagesWithEnoughEnergy.id;
+
+        if (creep.store[RESOURCE_ENERGY] === 0) {
+            creep.memory.upgrading = false;
+            if (Game.getObjectById(creep.memory.closestStorageId).store[RESOURCE_ENERGY] >= 250 && Memory.harvesters > 1) {
+                if (creep.withdraw(Game.getObjectById(creep.memory.closestStorageId), RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
+                    creep.moveTo(Game.getObjectById(creep.memory.closestStorageId));
+                }
+            }
+        } else {
+            creep.memory.upgrading = true;
+            if (creep.upgradeController(Game.getObjectById(creep.room.controller.id)) === ERR_NOT_IN_RANGE) {
+                creep.moveTo(Game.getObjectById(creep.room.controller.id));
+            }
+        }
+    }
+};
+
+module.exports = roleUpgrader;

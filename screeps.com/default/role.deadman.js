@@ -1,7 +1,12 @@
 let roleDeadman = {
     assign: function (creep) {
-        if (creep.ticksToLive === 1) {
+        let debug = true;
+
+        if (creep.memory.name === undefined) {
             creep.memory.name = creep.name;
+        }
+
+        if (creep.ticksToLive === 1) {
             creep.memory.carriedEnergy = creep.store[RESOURCE_ENERGY];
             creep.drop(RESOURCE_ENERGY);
             if (debug) {

@@ -46,14 +46,14 @@ let constructionController = {
                     if (creep.room.createConstructionSite(Game.getObjectById(closestSpawnerId).pos.x - 1,
                         Game.getObjectById(closestSpawnerId).pos.y + 3,
                         STRUCTURE_EXTENSION) === ERR_INVALID_TARGET) {
-                        if (creep.room.createConstructionSite(Game.getObjectById(closestSpawnerId).pos.x - 1,
-                            Game.getObjectById(closestSpawnerId).pos.y + 4,
+                        if (creep.room.createConstructionSite(Game.getObjectById(closestSpawnerId).pos.x - 2,
+                            Game.getObjectById(closestSpawnerId).pos.y + 2,
                             STRUCTURE_EXTENSION) === ERR_INVALID_TARGET) {
-                            if (creep.room.createConstructionSite(Game.getObjectById(closestSpawnerId).pos.x - 1,
-                                Game.getObjectById(closestSpawnerId).pos.y + 5,
+                            if (creep.room.createConstructionSite(Game.getObjectById(closestSpawnerId).pos.x - 2,
+                                Game.getObjectById(closestSpawnerId).pos.y + 3,
                                 STRUCTURE_EXTENSION) === ERR_INVALID_TARGET) {
-                                if (creep.room.createConstructionSite(Game.getObjectById(closestSpawnerId).pos.x - 1,
-                                    Game.getObjectById(closestSpawnerId).pos.y + 6,
+                                if (creep.room.createConstructionSite(Game.getObjectById(closestSpawnerId).pos.x - 4,
+                                    Game.getObjectById(closestSpawnerId).pos.y + 2,
                                     STRUCTURE_EXTENSION) === ERR_INVALID_TARGET) {
                                     console.log("ERROR: Cannot create all " + numberOfExtensionsToBuild + " construction sites for Containers!");
                                     break;

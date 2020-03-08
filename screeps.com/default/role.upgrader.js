@@ -12,18 +12,39 @@ let roleUpgrader = {
             }
         });
 
-        let storagesWithEnoughEnergy = creep.pos.findClosestByRange(storages, {filter: (s) => {return s.store[RESOURCE_ENERGY] >= creep.store.getCapacity(RESOURCE_ENERGY)}});
-        creep.memory.closestStorageId = storagesWithEnoughEnergy.id;
+        let storagesWithEnoughEnergy = creep.pos.findClosestByRange(storages, {
+            filter: (s) => {
+                return s.store[RESOURCE_ENERGY] >= creep.store.getCapacity(RESOURCE_ENERGY)
+            }
+        });
 
-        if (creep.store[RESOURCE_ENERGY] === 0) {
+        if (storagesWithEnoughEnergy === null) {
+            creep.memory.closestStorageId = undefined;
+        } else {
+            creep.memory.closestStorageId = storagesWithEnoughEnergy.id;
+        }
+
+        if (creep.memory.upgrading === undefined) {
+            creep.memory.upgrading = true;
+        }
+        if (creep.store[RESOURCE_ENERGY] === 0 && creep.memory.upgrading) {
             creep.memory.upgrading = false;
-            if (Game.getObjectById(creep.memory.closestStorageId).store[RESOURCE_ENERGY] >= 250 && Memory.harvesters > 1) {
-                if (creep.withdraw(Game.getObjectById(creep.memory.closestStorageId), RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
-                    creep.moveTo(Game.getObjectById(creep.memory.closestStorageId));
+        }
+        if (creep.store[RESOURCE_ENERGY] === creep.store.getCapacity(RESOURCE_ENERGY) && !creep.memory.upgrading) {
+            creep.memory.upgrading = true;
+        }
+
+        if (creep.store[RESOURCE_ENERGY] < creep.store.getCapacity(RESOURCE_ENERGY) && !creep.memory.upgrading) {
+            if (creep.memory.closestStorageId) {
+                if (Game.getObjectById(creep.memory.closestStorageId).store[RESOURCE_ENERGY] >= 250 && Memory.harvesters > 1) {
+                    if (creep.withdraw(Game.getObjectById(creep.memory.closestStorageId), RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
+                        creep.moveTo(Game.getObjectById(creep.memory.closestStorageId));
+                    }
                 }
             }
-        } else {
-            creep.memory.upgrading = true;
+        }
+
+        if (creep.store[RESOURCE_ENERGY] !== 0 && creep.memory.upgrading) {
             if (creep.upgradeController(Game.getObjectById(creep.room.controller.id)) === ERR_NOT_IN_RANGE) {
                 creep.moveTo(Game.getObjectById(creep.room.controller.id));
             }

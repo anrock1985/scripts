@@ -12,10 +12,10 @@ let roleCarry = {
             return b.amount - a.amount
         })[0];
 
-        if (droppedEnergy.length > 0) {
-            creep.memory.closestDroppedEnergyId = biggestDroppedEnergy.id;
-        } else {
+        if (droppedEnergy.length === 0) {
             creep.memory.closestDroppedEnergyId = undefined;
+        } else {
+            creep.memory.closestDroppedEnergyId = biggestDroppedEnergy.id;
         }
 
         let storages = creep.room.find(FIND_STRUCTURES, {
@@ -33,7 +33,9 @@ let roleCarry = {
         });
 
         //TODO: Optimize
-        let spawn = storages.filter(function (a) {return a.structureType === STRUCTURE_SPAWN});
+        let spawn = storages.filter(function (a) {
+            return a.structureType === STRUCTURE_SPAWN
+        });
 
         if (spawn[0].store[RESOURCE_ENERGY] !== spawn[0].store.getCapacity()) {
             creep.memory.closestStorageId = spawn[0].id;

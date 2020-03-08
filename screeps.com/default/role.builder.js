@@ -17,21 +17,38 @@ let roleBuilder = {
                 return s.store[RESOURCE_ENERGY] >= creep.store.getCapacity(RESOURCE_ENERGY)
             }
         });
-        creep.memory.closestStorageId = storagesWithEnoughEnergy.id;
 
-        if (creep.store[RESOURCE_ENERGY] === 0) {
+        if (storagesWithEnoughEnergy === null) {
+            creep.memory.closestStorageId = undefined;
+        } else {
+            creep.memory.closestStorageId = storagesWithEnoughEnergy.id;
+        }
+
+        if (creep.memory.building === undefined) {
+            creep.memory.building = true;
+        }
+        if (creep.store[RESOURCE_ENERGY] === 0 && creep.memory.building) {
             creep.memory.building = false;
-            if (storagesWithEnoughEnergy.structureType === STRUCTURE_CONTAINER) {
-                if (creep.withdraw(Game.getObjectById(creep.memory.closestStorageId), RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
-                    creep.moveTo(Game.getObjectById(creep.memory.closestStorageId));
-                }
-            } else if (creep.room.energyAvailable >= 300 && Memory.harvesters > 1) {
-                if (creep.withdraw(Game.getObjectById(creep.memory.closestStorageId), RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
-                    creep.moveTo(Game.getObjectById(creep.memory.closestStorageId));
+        }
+        if (creep.store[RESOURCE_ENERGY] === creep.store.getCapacity(RESOURCE_ENERGY) && !creep.memory.building) {
+            creep.memory.building = true;
+        }
+
+        if (creep.store[RESOURCE_ENERGY] < creep.store.getCapacity(RESOURCE_ENERGY) && !creep.memory.building) {
+            if (creep.memory.closestStorageId) {
+                if (storagesWithEnoughEnergy.structureType === STRUCTURE_CONTAINER) {
+                    if (creep.withdraw(Game.getObjectById(creep.memory.closestStorageId), RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
+                        creep.moveTo(Game.getObjectById(creep.memory.closestStorageId));
+                    }
+                } else if (creep.room.energyAvailable >= 300 && Memory.harvesters > 1) {
+                    if (creep.withdraw(Game.getObjectById(creep.memory.closestStorageId), RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
+                        creep.moveTo(Game.getObjectById(creep.memory.closestStorageId));
+                    }
                 }
             }
-        } else {
-            creep.memory.building = true;
+        }
+        
+        if (creep.store[RESOURCE_ENERGY] !== 0 && creep.memory.building) {
             if (creep.memory.closestConstructionSiteId && creep.build(Game.getObjectById(creep.memory.closestConstructionSiteId)) === ERR_NOT_IN_RANGE) {
                 creep.moveTo(Game.getObjectById(creep.memory.closestConstructionSiteId));
             }

@@ -4,11 +4,22 @@ let roleRepairer = {
 
         let debug = true;
 
-        let closestDamagedStructure = creep.pos.findClosestByRange(FIND_MY_STRUCTURES, {
+        let damagedStructures = creep.room.find(FIND_STRUCTURES, {
             filter: (s) => {
-                return s.hits < (s.hitsMax / 3)
+                return ((s.structureType !== STRUCTURE_CONTROLLER) && (s.hits <= (s.hitsMax - (s.hitsMax / 6))));
             }
         });
+
+        if (damagedStructures === null) {
+            creep.memory.closestDamagedStructureId = undefined;
+        } else {
+            let closestDamagedStructure = creep.pos.findClosestByRange(damagedStructures);
+            if (closestDamagedStructure === null) {
+                creep.memory.closestDamagedStructureId = undefined;
+            } else {
+                creep.memory.closestDamagedStructureId = closestDamagedStructure.id;
+            }
+        }
 
         let storages = creep.room.find(FIND_STRUCTURES, {
             filter: (s) => {
@@ -20,7 +31,7 @@ let roleRepairer = {
 
         let storagesWithEnoughEnergy = creep.pos.findClosestByRange(storages, {
             filter: (s) => {
-                return s.store[RESOURCE_ENERGY] >= creep.store.getCapacity(RESOURCE_ENERGY)
+                return s.store[RESOURCE_ENERGY] >= creep.store.getCapacity(RESOURCE_ENERGY);
             }
         });
 
@@ -28,12 +39,6 @@ let roleRepairer = {
             creep.memory.closestStorageId = undefined;
         } else {
             creep.memory.closestStorageId = storagesWithEnoughEnergy.id;
-        }
-
-        if (closestDamagedStructure === null) {
-            creep.memory.closestDamagedStructureId = undefined;
-        } else {
-            creep.memory.closestDamagedStructureId = closestDamagedStructure.id;
         }
 
         if (creep.memory.repairing === undefined) {

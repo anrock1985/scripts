@@ -27,7 +27,11 @@ let roleCarry = {
             if (!droppedEnergy) {
                 creep.memory.closestDroppedEnergyId = undefined;
             } else {
-                creep.memory.closestDroppedEnergyId = biggestDroppedEnergy.id;
+                if (biggestDroppedEnergy) {
+                    creep.memory.closestDroppedEnergyId = biggestDroppedEnergy.id;
+                } else {
+                    creep.memory.closestDroppedEnergyId = undefined;
+                }
             }
         }
 
@@ -50,9 +54,15 @@ let roleCarry = {
             return a.structureType === STRUCTURE_SPAWN
         });
 
+        let extension = storages.filter(function (a) {
+            return a.structureType === STRUCTURE_EXTENSION
+        });
+
         if (creep.memory.carrying) {
-            if (spawner[0].store[RESOURCE_ENERGY] !== spawner[0].store.getCapacity(RESOURCE_ENERGY)) {
+            if (spawner[0] && spawner[0].store[RESOURCE_ENERGY] !== spawner[0].store.getCapacity(RESOURCE_ENERGY)) {
                 creep.memory.closestStorageId = spawner[0].id;
+            } else if (extension[0] && extension[0].store[RESOURCE_ENERGY] !== extension[0].store.getCapacity(RESOURCE_ENERGY)) {
+                creep.memory.closestStorageId = extension[0].id;
             } else if (storageNotFull !== undefined && storageNotFull !== null) {
                 creep.memory.closestStorageId = storageNotFull.id;
             }

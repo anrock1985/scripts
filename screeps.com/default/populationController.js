@@ -38,7 +38,7 @@ let populationController = {
                         + Memory.lostEnergy + ". Top loss are: " + Memory.topEnergyLoss
                         + ". Latest are: " + ((Memory.creeps[c].carriedEnergy === undefined) ? 0 : Memory.creeps[c].carriedEnergy));
                 }
-                switch (Memory.creeps[c].role) {
+                switch (Memory.creeps[c].lastRole) {
                     case "harvester":
                         Memory.harvesters--;
                         break;

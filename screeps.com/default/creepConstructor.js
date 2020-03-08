@@ -7,7 +7,7 @@ let creepConstructor = {
         // Harvester
         if (spawner.isActive()
             && !spawner.spawning
-            && spawner.room.energyAvailable >= 250 && Memory.harvesters < 4) {
+            && spawner.room.energyAvailable >= 250 && Memory.harvesters < 6) {
             let name = Game.time + "_H";
             if (Memory.carry > 1) {
                 let resultCode = spawner.spawnCreep([WORK, WORK, MOVE], name, {memory: {role: "harvester"}});

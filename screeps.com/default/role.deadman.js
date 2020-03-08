@@ -15,14 +15,10 @@ let roleDeadman = {
         }
 
         if (creep.store[RESOURCE_ENERGY] > 0) {
-            if (debug) {
-                console.log("[TTL:" + creep.ticksToLive + "] Deadman " + creep.name + " carrying " + creep.store[RESOURCE_ENERGY] + " energy. Dropping it.");
-            }
             let resultCode = creep.drop(RESOURCE_ENERGY);
             if (resultCode !== 0) {
                 console.log("ERROR: Dropping fail! Result code: " + resultCode);
             }
-            console.log("WARN: Carrying after drop: " + creep.store[RESOURCE_ENERGY]);
         }
 
         if (creep.ticksToLive === 1) {

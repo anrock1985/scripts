@@ -35,8 +35,8 @@ let populationController = {
                     console.log("INFO: RIP " + Memory.creeps[c].name + ". "
                         + Memory.deadWithCarryPercent + "% of " + Memory.deadTotal
                         + " died creeps has energy carried. Energy losses are "
-                        + Memory.lostEnergy + ". Top loss are: " + Memory.topEnergyLoss
-                        + ". Latest are: " + ((Memory.creeps[c].carriedEnergy === undefined) ? 0 : Memory.creeps[c].carriedEnergy));
+                        + Memory.lostEnergy + ". Top: " + Memory.topEnergyLoss
+                        + ". Latest: " + ((Memory.creeps[c].carriedEnergy === undefined) ? 0 : Memory.creeps[c].carriedEnergy));
                 }
                 switch (Memory.creeps[c].lastRole) {
                     case "harvester":

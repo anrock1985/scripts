@@ -23,7 +23,7 @@ let roleCarry = {
             return b.amount - a.amount
         })[0];
 
-        if (!creep.memory.carrying && !creep.memory.closestDroppedEnergyId) {
+        if (!creep.memory.carrying && !creep.memory.closestDroppedEnergyId || !Game.getObjectById(creep.memory.closestDroppedEnergyId)) {
             if (!droppedEnergy) {
                 creep.memory.closestDroppedEnergyId = undefined;
             } else {
@@ -34,7 +34,7 @@ let roleCarry = {
         let storages = creep.room.find(FIND_STRUCTURES, {
             filter: (s) => {
                 return s.structureType === STRUCTURE_EXTENSION
-                    /*|| s.structureType === STRUCTURE_CONTAINER*/
+                    || s.structureType === STRUCTURE_CONTAINER
                     || s.structureType === STRUCTURE_SPAWN
             }
         });
@@ -46,13 +46,13 @@ let roleCarry = {
         });
 
         //TODO: Optimize
-        let spawn = storages.filter(function (a) {
+        let spawner = storages.filter(function (a) {
             return a.structureType === STRUCTURE_SPAWN
         });
 
         if (creep.memory.carrying) {
-            if (spawn[0].store[RESOURCE_ENERGY] !== spawn[0].store.getCapacity()) {
-                creep.memory.closestStorageId = spawn[0].id;
+            if (spawner[0].store[RESOURCE_ENERGY] !== spawner[0].store.getCapacity(RESOURCE_ENERGY)) {
+                creep.memory.closestStorageId = spawner[0].id;
             } else if (storageNotFull !== undefined && storageNotFull !== null) {
                 creep.memory.closestStorageId = storageNotFull.id;
             }

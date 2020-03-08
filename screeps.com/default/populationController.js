@@ -10,6 +10,7 @@ let populationController = {
         let roleUpgrader = require('role.upgrader');
         let roleBuilder = require('role.builder');
         let roleCarry = require('role.carry');
+        let roleDeadman = require('role.deadman');
         let creepConstructor = require('creepConstructor');
 
         let mainSpawnerId = Game.spawns["Spawn1"].id;
@@ -30,7 +31,7 @@ let populationController = {
                         ? 0 : Math.trunc(((Memory.deadWithCarry / Memory.deadTotal) * 100));
                 }
                 if (debug) {
-                    console.log("INFO: R.I.P " + Memory.creeps[c].name + ". "
+                    console.log("INFO: RIP " + Memory.creeps[c].name + ". "
                         + Memory.deadWithCarryPercent + "% of " + Memory.deadTotal
                         + " died creeps has energy carried. Energy losses are " + Memory.lostEnergy + ". Top loss are: " + Memory.topEnergyLoss + ". Latest are: " + Memory.creeps[c].carriedEnergy);
                 }
@@ -54,9 +55,8 @@ let populationController = {
 
         for (let c in Game.creeps) {
             let creep = Game.creeps[c];
-            if (creep.ticksToLive === 1) {
-                creep.memory.name = creep.name;
-                creep.memory.carriedEnergy = creep.store[RESOURCE_ENERGY];
+            if (creep.ticksToLive === 3) {
+                roleDeadman.assign(creep)
             }
             if (creep.memory.role === "harvester") {
                 roleHarvester.run(creep);

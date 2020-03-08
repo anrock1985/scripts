@@ -5,10 +5,6 @@ let roleHarvester = {
         let allEnergySourcesIdsInRoom = [];
         let allSafeEnergySourcesIdsInRoom = [];
 
-        if (creep.ticksToLive === 1) {
-            creep.drop(RESOURCE_ENERGY)
-        }
-
         for (let source in creep.room.find(FIND_SOURCES)) {
             allEnergySourcesIdsInRoom.push(source.id);
         }

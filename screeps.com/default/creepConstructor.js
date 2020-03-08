@@ -90,6 +90,26 @@ let creepConstructor = {
             if (debug) {
                 console.log("INFO: new BUILDER [total:" + Memory.builders + "] (" + bodyParts + ") TTL:" + Game.creeps[name].ticksToLive);
             }
+
+            //Repairer
+        } else if (spawner.isActive()
+            && !spawner.spawning
+            && spawner.room.energyAvailable >= 300
+            && Memory.harvesters > 1 && Memory.upgraders > 0 && Memory.repairers < 1) {
+            let name = Game.time + "_R";
+            let resultCode = spawner.spawnCreep([WORK, WORK, CARRY, MOVE], name, {memory: {role: "repairer"}});
+            if (resultCode !== 0) {
+                console.log("ERROR: Spawning REPAIRER result code: " + resultCode);
+                return;
+            }
+            Memory.repairers++;
+            let bodyParts = [];
+            _.forEach(Game.creeps[name].body, function (item) {
+                bodyParts.push(item.type.toString().toUpperCase());
+            });
+            if (debug) {
+                console.log("INFO: new REPAIRER [total:" + Memory.repairers + "] (" + bodyParts + ") TTL:" + Game.creeps[name].ticksToLive);
+            }
         }
     }
 };

@@ -35,6 +35,16 @@ module.exports.loop = function () {
         }
         console.log("INFO: Initialization complete. Founded [" + Memory.builders + "] builders.")
 
+    } else if (Memory.repairers === undefined) {
+        console.log("ERROR: Memory.repairers is undefined! Begin initializing...");
+        Memory.repairers = 0;
+        for (let c in Game.creeps) {
+            if (Game.creeps[c].role === "repairer") {
+                Memory.repairers++;
+            }
+        }
+        console.log("INFO: Initialization complete. Founded [" + Memory.repairers + "] repairers.")
+
     } else if (Memory.carry === undefined) {
         console.log("ERROR: Memory.carry is undefined! Begin initializing...");
         Memory.carry = 0;

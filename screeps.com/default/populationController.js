@@ -10,6 +10,7 @@ let populationController = {
         let roleUpgrader = require('role.upgrader');
         let roleBuilder = require('role.builder');
         let roleCarry = require('role.carry');
+        let roleRepairer = require('role.repairer');
         let roleDeadman = require('role.deadman');
         let creepConstructor = require('creepConstructor');
 
@@ -50,6 +51,9 @@ let populationController = {
                     case "carry":
                         Memory.carry--;
                         break;
+                    case "repairer":
+                        Memory.repairers--;
+                        break;
                 }
                 delete Memory.creeps[c];
             }
@@ -57,9 +61,11 @@ let populationController = {
 
         for (let c in Game.creeps) {
             let creep = Game.creeps[c];
+
             if (creep.ticksToLive === 3) {
-                roleDeadman.assign(creep)
+                roleDeadman.assign(creep);
             }
+
             if (creep.memory.role === "harvester") {
                 roleHarvester.run(creep);
             } else if (creep.memory.role === "upgrader") {
@@ -68,6 +74,10 @@ let populationController = {
                 roleCarry.run(creep);
             } else if (creep.memory.role === "builder") {
                 roleBuilder.run(creep);
+            } else if (creep.memory.role === "repairer") {
+                roleRepairer.assign(creep);
+            } else if (creep.memory.role === "deadman") {
+                roleDeadman.assign(creep);
             } else if (!creep.memory.role
                 && _.filter(creep.body, (body) => body.type = WORK)
                 && _.filter(creep.body, (body) => body.type = CARRY)

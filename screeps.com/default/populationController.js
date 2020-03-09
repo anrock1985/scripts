@@ -28,9 +28,8 @@ let populationController = {
                         Memory.topEnergyLoss = Memory.creeps[c].carriedEnergy;
                     }
                     Memory.lostEnergy += parseInt(Memory.creeps[c].carriedEnergy);
-                    Memory.deadWithCarryPercent = Memory.deadTotal === 0
-                        ? 0 : Math.trunc(((Memory.deadWithCarry / Memory.deadTotal) * 100));
                 }
+                Memory.deadWithCarryPercent = Memory.deadTotal === 0 ? 0 : Math.trunc(((Memory.deadWithCarry / Memory.deadTotal) * 100));
                 if (debug) {
                     console.log("INFO: RIP " + Memory.creeps[c].name + ". "
                         + Memory.deadWithCarryPercent + "% of " + Memory.deadTotal

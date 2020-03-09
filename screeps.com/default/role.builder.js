@@ -2,7 +2,11 @@ let roleBuilder = {
     run: function (creep) {
         let constructionController = require('constructionController');
 
-        creep.memory.closestConstructionSiteId = creep.pos.findClosestByRange(FIND_MY_CONSTRUCTION_SITES).id;
+        let constructionSites = creep.pos.findClosestByRange(FIND_MY_CONSTRUCTION_SITES);
+
+        if (constructionSites) {
+            creep.memory.closestConstructionSiteId = constructionSites.id;
+        }
 
         let storages = creep.room.find(FIND_STRUCTURES, {
             filter: (s) => {
@@ -47,7 +51,7 @@ let roleBuilder = {
                 }
             }
         }
-        
+
         if (creep.store[RESOURCE_ENERGY] !== 0 && creep.memory.building) {
             if (creep.memory.closestConstructionSiteId && creep.build(Game.getObjectById(creep.memory.closestConstructionSiteId)) === ERR_NOT_IN_RANGE) {
                 creep.moveTo(Game.getObjectById(creep.memory.closestConstructionSiteId));

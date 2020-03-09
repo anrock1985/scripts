@@ -22,8 +22,10 @@ let roleHarvester = {
 
         creep.memory.closestSpawnerId = creep.pos.findClosestByRange(FIND_MY_SPAWNS).id;
 
-        if (!creep.memory.closestActiveSourceId && creep.memory.harvesting) {
-            creep.memory.closestActiveSourceId = creep.pos.findClosestByRange(FIND_SOURCES_ACTIVE).id;
+        let activeSources = creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
+
+        if (activeSources && !creep.memory.closestActiveSourceId && creep.memory.harvesting) {
+            creep.memory.closestActiveSourceId = activeSources.id;
         }
 
         let storages = creep.room.find(FIND_STRUCTURES, {

@@ -7,7 +7,7 @@ let creepConstructor = {
         // Harvester
         if (spawner.isActive()
             && !spawner.spawning
-            && spawner.room.energyAvailable >= 250 && Memory.harvesters < 6) {
+            && spawner.room.energyAvailable >= 250 && Memory.harvesters < 2) {
             let name = Game.time + "_H";
             if (Memory.carry > 1) {
                 let resultCode = spawner.spawnCreep([WORK, WORK, MOVE], name, {memory: {role: "harvester"}});
@@ -111,6 +111,10 @@ let creepConstructor = {
                 console.log("INFO: new REPAIRER [total:" + Memory.repairers + "] (" + bodyParts + ") TTL:" + Game.creeps[name].ticksToLive);
             }
         }
+    },
+
+    prepareBody: function (spawner) {
+        let totalAvailableEnergy = spawner.room.energyAvailable;
     }
 };
 

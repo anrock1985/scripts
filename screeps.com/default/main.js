@@ -23,6 +23,22 @@ module.exports.loop = function () {
         }
     }
 
+    checkHarvesters();
+
+    function checkHarvesters() {
+        let currentHarvesters = 0;
+        if (!_.isEmpty(Game.creeps)) {
+            for (let c in Game.creeps) {
+                if (Game.creeps[c].memory.role === "harvester") {
+                    currentHarvesters++;
+                }
+            }
+            if (currentHarvesters !== Memory.harvesters) {
+                initRoles(true);
+            }
+        }
+    }
+
     function initRoles(forceInit) {
         //Harvester
         if (Memory.harvesters === undefined || forceInit) {
@@ -89,5 +105,7 @@ module.exports.loop = function () {
         towerController.attack();
     }
 
-    populationController.check();
+    for (let room in Game.rooms) {
+        populationController.check(Game.rooms[room]);
+    }
 };

@@ -32,7 +32,7 @@ let creepConstructor = {
             }
         }
 
-        if (Memory.harvesters > 2) {
+        if (Memory.harvesters > 1) {
             //Upgrader
             if (spawner.isActive()
                 && !spawner.spawning
@@ -55,7 +55,7 @@ let creepConstructor = {
             }
 
             //Carry
-            if (spawner.isActive()
+            else if (spawner.isActive()
                 && !spawner.spawning
                 && spawner.room.energyAvailable >= 150
                 && Memory.harvesters > 2 && Memory.carry < 12) {
@@ -76,8 +76,9 @@ let creepConstructor = {
             }
 
             //Builder
-            if (spawner.isActive()
+            else if (spawner.isActive()
                 && !spawner.spawning
+                && spawner.room.memory.myConstructionSiteIds.length > 0
                 && spawner.room.energyAvailable >= 300
                 && Memory.harvesters > 1 && Memory.upgraders > 0 && Memory.builders < 1) {
                 let name = Game.time + "_B";
@@ -97,7 +98,7 @@ let creepConstructor = {
             }
 
             //Repairer
-            if (spawner.isActive()
+            else if (spawner.isActive()
                 && !spawner.spawning
                 && spawner.room.energyAvailable >= 300
                 && Memory.harvesters > 1 && Memory.upgraders > 0 && Memory.repairers < 1) {

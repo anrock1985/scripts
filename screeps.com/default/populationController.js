@@ -14,6 +14,36 @@ let populationController = {
         let roleDeadman = require('role.deadman');
         let creepConstructor = require('creepConstructor');
 
+        let mySpawners = room.find(FIND_MY_SPAWNS);
+        if (mySpawners) {
+            if (!room.memory.mySpawnerIds) {
+                room.memory.mySpawnerIds = [];
+            }
+            for (let s in mySpawners) {
+                room.memory.mySpawnerIds.push(mySpawners[s].id);
+            }
+        }
+
+        let sources = room.find(FIND_SOURCES);
+        if (sources) {
+            if (!room.memory.sourceIds) {
+                room.memory.sourceIds = [];
+            }
+            for (let s in sources) {
+                room.memory.sourceIds.push(sources[s].id)
+            }
+        }
+
+        let myConstructionSites = room.find(FIND_MY_CONSTRUCTION_SITES);
+        if (myConstructionSites) {
+            if (!room.memory.myConstructionSiteIds) {
+                room.memory.myConstructionSiteIds = [];
+            }
+            for (let s in myConstructionSites) {
+                room.memory.myConstructionSiteIds.push(myConstructionSites[s].id)
+            }
+        }
+
         let mainSpawnerId = Game.spawns["Spawn1"].id;
 
         for (let c in Memory.creeps) {

@@ -67,7 +67,7 @@ module.exports.loop = function () {
                     Memory.harvesters++;
                 }
             }
-            console.log("[T:" + Game.time + "INFO: Initialization complete. Founded [" + Memory.harvesters + "] harvesters.")
+            console.log("[T:" + Game.time + "] INFO: Initialization complete. Founded [" + Memory.harvesters + "] harvesters.")
         }
 
         //Upgrader
@@ -78,7 +78,7 @@ module.exports.loop = function () {
                     Memory.upgraders++;
                 }
             }
-            console.log("[T:" + Game.time + "INFO: Initialization complete. Founded [" + Memory.upgraders + "] upgraders.")
+            console.log("[T:" + Game.time + "] INFO: Initialization complete. Founded [" + Memory.upgraders + "] upgraders.")
         }
 
         //Builder
@@ -89,7 +89,7 @@ module.exports.loop = function () {
                     Memory.builders++;
                 }
             }
-            console.log("[T:" + Game.time + "INFO: Initialization complete. Founded [" + Memory.builders + "] builders.")
+            console.log("[T:" + Game.time + "] INFO: Initialization complete. Founded [" + Memory.builders + "] builders.")
         }
 
         //Repairer
@@ -100,7 +100,7 @@ module.exports.loop = function () {
                     Memory.repairers++;
                 }
             }
-            console.log("[T:" + Game.time + "INFO: Initialization complete. Founded [" + Memory.repairers + "] repairers.")
+            console.log("[T:" + Game.time + "] INFO: Initialization complete. Founded [" + Memory.repairers + "] repairers.")
         }
 
         //Carry
@@ -111,7 +111,7 @@ module.exports.loop = function () {
                     Memory.carry++;
                 }
             }
-            console.log("[T:" + Game.time + "INFO: Initialization complete. Founded [" + Memory.carry + "] carries.")
+            console.log("[T:" + Game.time + "] INFO: Initialization complete. Founded [" + Memory.carry + "] carries.")
         }
     }
 

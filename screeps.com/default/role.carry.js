@@ -57,6 +57,7 @@ let roleCarry = {
 
         let extension = storages.filter(function (a) {
             return a.structureType === STRUCTURE_EXTENSION
+                && a.store[RESOURCE_ENERGY] !== a.store.getCapacity(RESOURCE_ENERGY)
         });
 
         if (creep.memory.carrying) {
@@ -69,7 +70,8 @@ let roleCarry = {
             }
         }
 
-        if (creep.memory.carrying && creep.store[RESOURCE_ENERGY] !== 0) {
+        if (creep.memory.carrying && creep.store[RESOURCE_ENERGY] !== 0
+        ) {
             if (creep.memory.closestStorageId) {
                 if (creep.transfer(Game.getObjectById(creep.memory.closestStorageId), RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
                     creep.moveTo(Game.getObjectById(creep.memory.closestStorageId));

@@ -19,6 +19,7 @@ let populationController = {
             if (!room.memory.mySpawnerIds) {
                 room.memory.mySpawnerIds = [];
             }
+            room.memory.mySpawnerIds = [];
             for (let s in mySpawners) {
                 room.memory.mySpawnerIds.push(mySpawners[s].id);
             }
@@ -29,6 +30,7 @@ let populationController = {
             if (!room.memory.sourceIds) {
                 room.memory.sourceIds = [];
             }
+            room.memory.sourceIds = [];
             for (let s in sources) {
                 room.memory.sourceIds.push(sources[s].id)
             }
@@ -39,6 +41,7 @@ let populationController = {
             if (!room.memory.myConstructionSiteIds) {
                 room.memory.myConstructionSiteIds = [];
             }
+            room.memory.myConstructionSiteIds = [];
             for (let s in myConstructionSites) {
                 room.memory.myConstructionSiteIds.push(myConstructionSites[s].id)
             }

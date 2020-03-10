@@ -64,11 +64,15 @@ let populationController = {
                 }
                 Memory.deadWithCarryPercent = Memory.deadTotal === 0 ? 0 : Math.trunc(((Memory.deadWithCarry / Memory.deadTotal) * 100));
                 if (debug) {
-                    console.log("INFO: RIP " + Memory.creeps[c].name + ". "
-                        + Memory.deadWithCarryPercent + "% of " + Memory.deadTotal
-                        + " died creeps has energy carried. Energy losses are "
-                        + Memory.lostEnergy + ". Top: " + Memory.topEnergyLoss
-                        + ". Latest: " + ((Memory.creeps[c].carriedEnergy === undefined) ? 0 : Memory.creeps[c].carriedEnergy));
+                    if (Memory.creeps[c].name) {
+                        console.log("INFO: RIP " + Memory.creeps[c].name + ". "
+                            + Memory.deadWithCarryPercent + "% of " + Memory.deadTotal
+                            + " died creeps has energy carried. Energy losses are "
+                            + Memory.lostEnergy + ". Top: " + Memory.topEnergyLoss
+                            + ". Latest: " + ((Memory.creeps[c].carriedEnergy === undefined) ? 0 : Memory.creeps[c].carriedEnergy));
+                    } else {
+                        console.log("WARN: Creep disappeared!");
+                    }
                 }
                 switch (Memory.creeps[c].lastRole) {
                     case "harvester":
@@ -121,7 +125,6 @@ let populationController = {
                 }
             }
         }
-
         creepConstructor.construct(Game.getObjectById(mainSpawnerId));
     }
 };

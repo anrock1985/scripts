@@ -20,13 +20,6 @@ let roleDeadman = {
                 console.log("ERROR: Dropping fail! Result code: " + resultCode);
             }
         }
-
-        if (creep.ticksToLive === 1) {
-            creep.memory.carriedEnergy = creep.store[RESOURCE_ENERGY];
-            if (debug) {
-                console.log("WARN: Deadman " + creep.memory.name + " will die next tick. Checking store: " + creep.store[RESOURCE_ENERGY]);
-            }
-        }
     }
 };
 

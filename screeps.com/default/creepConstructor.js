@@ -62,29 +62,25 @@ let creepConstructor = {
                     break;
 
                 case "harvester":
-                    for (count = 0; count < 2; count++) {
+                    for (count = 0; count < 1; count++) {
                         result.push(MOVE);
                     }
                     totalAvailableEnergy -= (BODYPART_COST.move * count);
 
-                    for (count = 0; count < 1; count++) {
-                        result.push(CARRY);
-                    }
-                    totalAvailableEnergy -= (BODYPART_COST.carry * count);
-
                     for (count = 0; count < Math.trunc(totalAvailableEnergy / BODYPART_COST.work); count++) {
+                        if (result.length === 50)
+                            break;
                         result.push(WORK);
                     }
                     break;
 
                 case "carry":
-                    for (count = 0; count < 2; count++) {
+                    while (totalAvailableEnergy >= 50) {
+                        if (result.length === 50)
+                            break;
                         result.push(MOVE);
-                    }
-                    totalAvailableEnergy -= (BODYPART_COST.move * count);
-
-                    for (count = 0; count < Math.trunc(totalAvailableEnergy / BODYPART_COST.carry); count++) {
                         result.push(CARRY);
+                        totalAvailableEnergy -= (BODYPART_COST.move + BODYPART_COST.carry);
                     }
                     break;
 
@@ -96,8 +92,10 @@ let creepConstructor = {
                     }
                     totalAvailableEnergy -= (BODYPART_COST.move * count);
 
-                    for (count = 0; count < Math.trunc(totalAvailableEnergy / 2); count++) {
-                        if (spawner.room.energyCapacityAvailable <= (50 * --count)) {
+                    for (count = 0; count < Math.trunc(Math.trunc(totalAvailableEnergy / 2) / BODYPART_COST.carry); count++) {
+                        if (result.length === 50)
+                            break;
+                        if (spawner.room.energyCapacityAvailable <= ((50 * count) - 50)) {
                             if (debug)
                                 console.log("WARN: Carry capacity limit reached");
                             break;
@@ -227,7 +225,8 @@ let creepConstructor = {
             else if (spawner.isActive()
                 && !spawner.spawning
                 && spawner.room.memory.myConstructionSiteIds.length > 0
-                && spawner.room.energyAvailable === spawner.room.energyCapacityAvailable && Memory.builders < 1) {
+                && spawner.room.energyAvailable === spawner.room.energyCapacityAvailable
+                && Memory.builders < ((spawner.room.memory.myConstructionSiteIds.length > 2) ? 4 : 1)) {
                 let name = Game.time + "_B";
                 let resultCode = spawner.spawnCreep(prepareBody("builder"), name, {memory: {role: "builder"}});
 

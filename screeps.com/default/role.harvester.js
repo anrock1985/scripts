@@ -52,8 +52,11 @@ let roleHarvester = {
         }
 
         if (!creep.memory.harvesting && creep.store[RESOURCE_ENERGY] !== 0) {
-            if (Memory.carriers > 1) {
-                creep.drop(RESOURCE_ENERGY);
+            if (Memory.carry > 1) {
+                let result = creep.drop(RESOURCE_ENERGY);
+                if (result !== 0) {
+                    console.log("ERROR: Dropping result = " + result);
+                }
                 if (debug) {
                     console.log("INFO: Harvester drops energy");
                 }

@@ -57,9 +57,6 @@ let roleHarvester = {
                 if (result !== 0) {
                     console.log("ERROR: Dropping result = " + result);
                 }
-                if (debug) {
-                    console.log("INFO: Harvester drops energy");
-                }
             } else if (creep.memory.closestStorageId !== null && creep.transfer(Game.getObjectById(creep.memory.closestStorageId), RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
                 creep.moveTo(Game.getObjectById(creep.memory.closestStorageId));
             }

@@ -226,7 +226,7 @@ let creepConstructor = {
                 && !spawner.spawning
                 && spawner.room.memory.myConstructionSiteIds.length > 0
                 && spawner.room.energyAvailable === spawner.room.energyCapacityAvailable
-                && Memory.builders < ((spawner.room.memory.myConstructionSiteIds.length > 2) ? 4 : 1)) {
+                && Memory.builders < ((spawner.room.memory.myConstructionSiteIds.length > 2) ? 2 : 1)) {
                 let name = Game.time + "_B";
                 let resultCode = spawner.spawnCreep(prepareBody("builder"), name, {memory: {role: "builder"}});
 

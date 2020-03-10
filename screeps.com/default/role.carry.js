@@ -60,10 +60,10 @@ let roleCarry = {
         });
 
         if (creep.memory.carrying) {
-            if (spawner[0] && spawner[0].store[RESOURCE_ENERGY] !== spawner[0].store.getCapacity(RESOURCE_ENERGY)) {
-                creep.memory.closestStorageId = spawner[0].id;
-            } else if (extension[0] && extension[0].store[RESOURCE_ENERGY] !== extension[0].store.getCapacity(RESOURCE_ENERGY)) {
+            if (extension[0] && extension[0].store[RESOURCE_ENERGY] !== extension[0].store.getCapacity(RESOURCE_ENERGY)) {
                 creep.memory.closestStorageId = extension[0].id;
+            } else if (spawner[0] && spawner[0].store[RESOURCE_ENERGY] !== spawner[0].store.getCapacity(RESOURCE_ENERGY)) {
+                creep.memory.closestStorageId = spawner[0].id;
             } else if (storageNotFull !== undefined && storageNotFull !== null) {
                 creep.memory.closestStorageId = storageNotFull.id;
             }

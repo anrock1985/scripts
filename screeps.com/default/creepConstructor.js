@@ -182,7 +182,8 @@ let creepConstructor = {
             //Upgrader
             else if (spawner.isActive()
                 && !spawner.spawning
-                && spawner.room.energyAvailable === spawner.room.energyCapacityAvailable && Memory.upgraders < 2) {
+                && spawner.room.energyAvailable === spawner.room.energyCapacityAvailable
+                && Memory.upgraders < ((spawner.room.memory.myConstructionSiteIds.length === 0) ? 6 : 2)) {
                 let name = Game.time + "_U";
                 let resultCode = spawner.spawnCreep(prepareBody("upgrader"), name, {memory: {role: "upgrader"}});
 

@@ -71,9 +71,9 @@ let creepConstructor = {
                     for (count = 0; count < Math.trunc(totalAvailableEnergy / BODYPART_COST.work); count++) {
                         if (result.length === 50)
                             break;
-                        result.push(WORK);
                         if (count > 4)
                             break;
+                        result.push(WORK);
                     }
                     totalAvailableEnergy -= (BODYPART_COST.work * count);
                     console.log("totalAvailableEnergy after WORK:" + totalAvailableEnergy + ", count:" + count);

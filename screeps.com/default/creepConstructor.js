@@ -66,16 +66,18 @@ let creepConstructor = {
                         result.push(MOVE);
                     }
                     totalAvailableEnergy -= (BODYPART_COST.move * count);
-
+                    console.log("totalAvailableEnergy after MOVE:" + totalAvailableEnergy + ", count:" + count);
+                    console.log("For (WORK):" + Math.trunc(totalAvailableEnergy / BODYPART_COST.work));
                     for (count = 0; count < Math.trunc(totalAvailableEnergy / BODYPART_COST.work); count++) {
                         if (result.length === 50)
                             break;
                         result.push(WORK);
-                        if (count > 4)
+                        if (count > 3)
                             break;
                     }
                     totalAvailableEnergy -= (BODYPART_COST.work * count);
-                    if (totalAvailableEnergy > 50) {
+                    console.log("totalAvailableEnergy after WORK:" + totalAvailableEnergy + ", count:" + count);
+                    if (totalAvailableEnergy >= 50) {
                         for (count = 0; count < Math.trunc(totalAvailableEnergy / BODYPART_COST.move); count++) {
                             if (result.length === 50)
                                 break;

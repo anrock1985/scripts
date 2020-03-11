@@ -14,9 +14,9 @@ let towerController = {
         if (Game.getObjectById(towerId).room.memory.myWoundedCreepsIds) {
             let target = findClosestMyWoundedCreep(Game.getObjectById(towerId).room.memory.myWoundedCreepsIds);
             if (target !== -1) {
-                let resultCode = Game.getObjectById(towerId).rangedHeal(target);
+                let resultCode = Game.getObjectById(towerId).heal(target);
                 if (resultCode !== 0) {
-                    console.log("ERROR: Tower ranged heal result code: " + resultCode);
+                    console.log("ERROR: Tower heal result code: " + resultCode);
                 }
             }
         }

@@ -18,11 +18,14 @@ let populationController = {
         if (mySpawners) {
             if (!room.memory.mySpawnerIds) {
                 room.memory.mySpawnerIds = [];
+                console.log("WARN: No room.memory.mySpawnerIds found, setting it to []");
             }
             room.memory.mySpawnerIds = [];
             for (let s in mySpawners) {
                 room.memory.mySpawnerIds.push(mySpawners[s].id);
             }
+        } else {
+            console.log("WARN: No spawners found in room " + room + "!");
         }
 
         let sources = room.find(FIND_SOURCES);

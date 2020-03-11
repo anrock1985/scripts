@@ -114,10 +114,11 @@ let creepConstructor = {
         }
 
         if (Memory.harvesters < 1) {
+            console.log("WARN: No harvesters found in room " + spawner.room + ", preparing Default!");
             // Harvester
             if (spawner.isActive()
                 && !spawner.spawning
-                && spawner.room.energyAvailable === 300) {
+                && spawner.room.energyAvailable >= 300) {
                 let name = Game.time + "_H";
                 let resultCode = spawner.spawnCreep(prepareBody("defaultHarvester"), name, {memory: {role: "harvester"}});
                 if (resultCode === 0) {
@@ -176,7 +177,7 @@ let creepConstructor = {
                     }
                 }
             }
-            
+
             //Upgrader
             else if (spawner.isActive()
                 && !spawner.spawning

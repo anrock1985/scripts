@@ -134,7 +134,6 @@ let creepConstructor = {
                 }
             }
         } else {
-
             //Carry
             if (spawner.isActive()
                 && !spawner.spawning
@@ -177,6 +176,7 @@ let creepConstructor = {
                     }
                 }
             }
+            
             //Upgrader
             else if (spawner.isActive()
                 && !spawner.spawning

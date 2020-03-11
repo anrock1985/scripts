@@ -114,11 +114,9 @@ let creepConstructor = {
         }
 
         if (Memory.harvesters < 1) {
-            console.log("WARN: No harvesters found in room " + spawner.room + ", preparing Default!");
+            console.log("WARN: No harvesters found in room " + spawner.room.name + "!");
             if (spawner.room.memory.droppedEnergyIds) {
-                console.log("spawner.room.memory.droppedEnergyIds = " + spawner.room.memory.droppedEnergyIds);
                 for (let e in spawner.room.memory.droppedEnergyIds) {
-                    Memory.debug = Game.getObjectById(spawner.room.memory.droppedEnergyIds[e]);
                     if (Game.getObjectById(spawner.room.memory.droppedEnergyIds[e]).amount >= 500 && Memory.carry < 2) {
                         //Default Carry
                         if (spawner.isActive()

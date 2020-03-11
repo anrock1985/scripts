@@ -62,12 +62,12 @@ let creepConstructor = {
                     break;
 
                 case "harvester":
-                    for (count = 0; count < 1; count++) {
-                        result.push(MOVE);
-                    }
-                    totalAvailableEnergy -= (BODYPART_COST.move * count);
-                    console.log("totalAvailableEnergy after MOVE:" + totalAvailableEnergy + ", count:" + count);
-                    console.log("For (WORK):" + Math.trunc(totalAvailableEnergy / BODYPART_COST.work));
+
+                    result.push(MOVE);
+                    totalAvailableEnergy -= (BODYPART_COST.move);
+                    
+                    // console.log("totalAvailableEnergy after MOVE:" + totalAvailableEnergy + ", count:" + count);
+                    // console.log("For (WORK):" + Math.trunc(totalAvailableEnergy / BODYPART_COST.work));
                     for (count = 0; count < Math.trunc(totalAvailableEnergy / BODYPART_COST.work); count++) {
                         if (result.length === 50)
                             break;
@@ -76,8 +76,8 @@ let creepConstructor = {
                         result.push(WORK);
                     }
                     totalAvailableEnergy -= (BODYPART_COST.work * count);
-                    console.log("totalAvailableEnergy after WORK:" + totalAvailableEnergy + ", count:" + count);
-                    console.log("For (2nd MOVE):" + Math.trunc(totalAvailableEnergy / BODYPART_COST.move));
+                    // console.log("totalAvailableEnergy after WORK:" + totalAvailableEnergy + ", count:" + count);
+                    // console.log("For (2nd MOVE):" + Math.trunc(totalAvailableEnergy / BODYPART_COST.move));
                     if (totalAvailableEnergy >= 50) {
                         for (count = 0; count < Math.trunc(totalAvailableEnergy / BODYPART_COST.move); count++) {
                             if (result.length === 50)
@@ -87,8 +87,8 @@ let creepConstructor = {
                                 break;
                         }
                     }
-                    console.log("totalAvailableEnergy after 2nd MOVE:" + (totalAvailableEnergy -= (BODYPART_COST.move * count)) + ", count:" + count);
-                    console.log(result);
+                    // console.log("totalAvailableEnergy after 2nd MOVE:" + (totalAvailableEnergy -= (BODYPART_COST.move * count)) + ", count:" + count);
+                    // console.log(result);
                     break;
 
                 case "carry":

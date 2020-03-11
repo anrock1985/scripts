@@ -119,7 +119,7 @@ let creepConstructor = {
                 console.log("spawner.room.memory.droppedEnergyIds = " + spawner.room.memory.droppedEnergyIds);
                 for (let e in spawner.room.memory.droppedEnergyIds) {
                     Memory.debug = Game.getObjectById(spawner.room.memory.droppedEnergyIds[e]);
-                    if (Game.getObjectById(spawner.room.memory.droppedEnergyIds[e]).store[RESOURCE_ENERGY] >= 500 && Memory.carry < 2) {
+                    if (Game.getObjectById(spawner.room.memory.droppedEnergyIds[e]).amount >= 500 && Memory.carry < 2) {
                         //Default Carry
                         if (spawner.isActive()
                             && !spawner.spawning

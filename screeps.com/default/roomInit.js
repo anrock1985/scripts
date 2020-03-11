@@ -49,7 +49,11 @@ let roomInit = {
             console.log("WARN: No spawners found in room " + room + "!");
         }
 
-        let myTowers = room.find(FIND_MY_STRUCTURES, {filter: (s) => {return s.structureType === STRUCTURE_TOWER}});
+        let myTowers = room.find(FIND_MY_STRUCTURES, {
+            filter: (s) => {
+                return s.structureType === STRUCTURE_TOWER
+            }
+        });
         if (myTowers) {
             room.memory.myTowerIds = [];
             for (let t in myTowers) {
@@ -65,9 +69,31 @@ let roomInit = {
             }
         }
 
-        //TODO: Добавить сломанные структуры.
+        let myWoundedCreeps = room.find(FIND_MY_CREEPS, {
+            filter: (c) => {
+                return c.hits < c.hitsMax
+            }
+        });
+        if (myWoundedCreeps) {
+            room.memory.myWoundedCreepsIds = [];
+            for (let c in myWoundedCreeps) {
+                room.memory.myWoundedCreepsIds.push(myWoundedCreeps[c].id);
+            }
+        }
 
-        //TODO: Добавить раненых крипов.
+        let myDamagedStructures = room.find(FIND_MY_STRUCTURES, {
+            filter: (s) => {
+                return ((s.structureType !== STRUCTURE_CONTROLLER) && (s.hits <= (s.hitsMax - (s.hitsMax / 6))));
+            }
+        });
+        if (myDamagedStructures) {
+            room.memory.myDamagedStructuresIds = [];
+            for (let s in myDamagedStructures) {
+                room.memory.myDamagedStructuresIds.push(myDamagedStructures[s].id);
+            }
+        }
+
+        //TODO: Добавить отдельно сломанные структуры с большим кол-вом HP.
     }
 };
 module.exports = roomInit;

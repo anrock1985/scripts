@@ -1,16 +1,21 @@
 let towerController = {
-    attack: function (tower) {
-        let targets = tower.room.find(FIND_HOSTILE_CREEPS);
-        let closestTarget;
+    control: function (towerId) {
 
-        if (targets) {
-            closestTarget = tower.pos.findClosestByRange(targets);
+        function findClosestEnemyCreep(enemyCreepIds) {
+            let enemyCreeps = [];
+            if (enemyCreepIds) {
+                for (let i in enemyCreepIds) {
+                    enemyCreeps.push(Game.getObjectById(enemyCreepIds[i]));
+                }
+                return Game.getObjectById(towerId).pos.findClosestByRange(enemyCreeps);
+            } else {
+                return -1;
+            }
         }
 
-        if (closestTarget) {
-            tower.attack(closestTarget);
+        if (Game.getObjectById(towerId).room.memory.enemyCreepsIds) {
+            Game.getObjectById(towerId).attack(findClosestEnemyCreep(Game.getObjectById(towerId).room.memory.enemyCreepsIds));
         }
-
     }
 };
 

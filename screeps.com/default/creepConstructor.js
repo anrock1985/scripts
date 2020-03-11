@@ -119,20 +119,18 @@ let creepConstructor = {
                 && !spawner.spawning
                 && spawner.room.energyAvailable === 300) {
                 let name = Game.time + "_H";
-                if (Memory.carry > 1) {
-                    let resultCode = spawner.spawnCreep(prepareBody("defaultHarvester"), name, {memory: {role: "harvester"}});
-                    if (resultCode === 0) {
-                        Memory.harvesters++;
-                        let bodyParts = [];
-                        _.forEach(Game.creeps[name].body, function (item) {
-                            bodyParts.push(item.type.toString().toUpperCase());
-                        });
-                        if (debug) {
-                            console.log("INFO: new HARVESTER [total:" + Memory.harvesters + "] (" + bodyParts + ")");
-                        }
-                    } else {
-                        console.log("ERROR: Spawning HARVESTER result code: " + resultCode);
+                let resultCode = spawner.spawnCreep(prepareBody("defaultHarvester"), name, {memory: {role: "harvester"}});
+                if (resultCode === 0) {
+                    Memory.harvesters++;
+                    let bodyParts = [];
+                    _.forEach(Game.creeps[name].body, function (item) {
+                        bodyParts.push(item.type.toString().toUpperCase());
+                    });
+                    if (debug) {
+                        console.log("INFO: new HARVESTER [total:" + Memory.harvesters + "] (" + bodyParts + ")");
                     }
+                } else {
+                    console.log("ERROR: Spawning HARVESTER result code: " + resultCode);
                 }
             }
         } else {

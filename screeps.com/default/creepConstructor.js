@@ -46,19 +46,16 @@ let creepConstructor = {
             let count = 0;
             switch (role) {
                 case "defaultHarvester":
-                    for (count = 0; count < 1; count++) {
-                        result.push(MOVE);
-                    }
-                    totalAvailableEnergy -= (BODYPART_COST.move * count);
 
-                    for (count = 0; count < 1; count++) {
-                        result.push(CARRY);
-                    }
-                    totalAvailableEnergy -= (BODYPART_COST.carry * count);
+                    result.push(MOVE);
+                    result.push(MOVE);
+                    totalAvailableEnergy -= (BODYPART_COST.move * 2);
 
-                    for (count = 0; count < Math.trunc(totalAvailableEnergy / BODYPART_COST.work); count++) {
-                        result.push(WORK);
-                    }
+                    result.push(CARRY);
+                    totalAvailableEnergy -= (BODYPART_COST.carry);
+
+                    result.push(WORK);
+
                     break;
 
                 case "harvester":

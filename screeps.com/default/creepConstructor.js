@@ -74,6 +74,7 @@ let creepConstructor = {
                         if (count > 4)
                             break;
                     }
+                    totalAvailableEnergy -= (BODYPART_COST.work * count);
                     if (totalAvailableEnergy > 50) {
                         for (count = 0; count < Math.trunc(totalAvailableEnergy / BODYPART_COST.move); count++) {
                             if (result.length === 50)

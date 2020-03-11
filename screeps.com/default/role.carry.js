@@ -44,7 +44,7 @@ let roleCarry = {
             }
         });
 
-        let storageNotFull = creep.pos.findClosestByRange(storages, {
+        let storageNotFull = creep.pos.findClosestByPath(storages, {
             filter: (s) => {
                 return s.store[RESOURCE_ENERGY] !== s.store.getCapacity(RESOURCE_ENERGY)
             }

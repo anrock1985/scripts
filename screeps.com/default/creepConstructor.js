@@ -88,6 +88,7 @@ let creepConstructor = {
                         }
                     }
                     console.log("totalAvailableEnergy after 2nd MOVE:" + (totalAvailableEnergy -= (BODYPART_COST.move * count)) + ", count:" + count);
+                    console.log(result);
                     break;
 
                 case "carry":

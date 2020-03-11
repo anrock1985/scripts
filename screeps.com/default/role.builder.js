@@ -16,7 +16,11 @@ let roleBuilder = {
                 Memory.myConstructionSiteIds.push(constructionSites[c].id);
             }
             closestConstructionSite = creep.pos.findClosestByRange(constructionSites);
-            creep.memory.closestConstructionSiteId = closestConstructionSite.id;
+            if (closestConstructionSite) {
+                creep.memory.closestConstructionSiteId = closestConstructionSite.id;
+            } else {
+                creep.memory.closestConstructionSiteId = undefined;
+            }
         }
 
         let storages = creep.room.find(FIND_STRUCTURES, {
@@ -63,7 +67,7 @@ let roleBuilder = {
             }
         }
 
-        if (creep.store[RESOURCE_ENERGY] !== 0 && creep.memory.building) {
+        if (creep.memory.closestConstructionSiteId && creep.store[RESOURCE_ENERGY] !== 0 && creep.memory.building) {
             if (creep.memory.closestConstructionSiteId && creep.build(Game.getObjectById(creep.memory.closestConstructionSiteId)) === ERR_NOT_IN_RANGE) {
                 creep.moveTo(Game.getObjectById(creep.memory.closestConstructionSiteId));
             }

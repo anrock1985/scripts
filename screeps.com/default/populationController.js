@@ -50,6 +50,18 @@ let populationController = {
             }
         }
 
+        let droppedEnergy = room.find(FIND_DROPPED_RESOURCES, {
+            filter: (r) => {
+                return r.resourceType === RESOURCE_ENERGY
+            }
+        });
+        if (droppedEnergy) {
+            room.memory.droppedEnergyIds = [];
+            for (let e in droppedEnergy) {
+                room.memory.droppedEnergyIds.push(droppedEnergy[e].id)
+            }
+        }
+
         let mainSpawnerId = Game.spawns["Spawn1"].id;
 
         for (let c in Memory.creeps) {

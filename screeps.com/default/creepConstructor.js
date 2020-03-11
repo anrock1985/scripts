@@ -115,23 +115,50 @@ let creepConstructor = {
 
         if (Memory.harvesters < 1) {
             console.log("WARN: No harvesters found in room " + spawner.room + ", preparing Default!");
-            // Harvester
-            if (spawner.isActive()
-                && !spawner.spawning
-                && spawner.room.energyAvailable >= 300) {
-                let name = Game.time + "_H";
-                let resultCode = spawner.spawnCreep(prepareBody("defaultHarvester"), name, {memory: {role: "harvester"}});
-                if (resultCode === 0) {
-                    Memory.harvesters++;
-                    let bodyParts = [];
-                    _.forEach(Game.creeps[name].body, function (item) {
-                        bodyParts.push(item.type.toString().toUpperCase());
-                    });
-                    if (debug) {
-                        console.log("INFO: new HARVESTER [total:" + Memory.harvesters + "] (" + bodyParts + ")");
+            if (spawner.room.memory.droppedEnergyIds) {
+                for (let e in spawner.room.memory.droppedEnergyIds) {
+                    if (Game.getObjectById(spawner.room.memory.droppedEnergyIds[e]).store[RESOURCE_ENERGY] >= 500 && Memory.carry < 2) {
+                        //Default Carry
+                        if (spawner.isActive()
+                            && !spawner.spawning
+                            && spawner.room.energyAvailable === spawner.room.energyCapacityAvailable && Memory.carry < 2) {
+                            let name = Game.time + "_C";
+                            let resultCode = spawner.spawnCreep(prepareBody("carry"), name, {memory: {role: "carry"}});
+
+                            if (resultCode === 0) {
+                                Memory.carry++;
+                                let bodyParts = [];
+                                _.forEach(Game.creeps[name].body, function (item) {
+                                    bodyParts.push(item.type.toString().toUpperCase());
+                                });
+                                if (debug) {
+                                    console.log("INFO: new CARRY [total:" + Memory.carry + "] (" + bodyParts + ")");
+                                }
+                            } else {
+                                console.log("ERROR: Spawning CARRY result code: " + resultCode);
+                            }
+                        }
                     }
-                } else {
-                    console.log("ERROR: Spawning HARVESTER result code: " + resultCode);
+                }
+            } else {
+                // Default Harvester
+                if (spawner.isActive()
+                    && !spawner.spawning
+                    && spawner.room.energyAvailable >= 300) {
+                    let name = Game.time + "_H";
+                    let resultCode = spawner.spawnCreep(prepareBody("defaultHarvester"), name, {memory: {role: "harvester"}});
+                    if (resultCode === 0) {
+                        Memory.harvesters++;
+                        let bodyParts = [];
+                        _.forEach(Game.creeps[name].body, function (item) {
+                            bodyParts.push(item.type.toString().toUpperCase());
+                        });
+                        if (debug) {
+                            console.log("INFO: new HARVESTER [total:" + Memory.harvesters + "] (" + bodyParts + ")");
+                        }
+                    } else {
+                        console.log("ERROR: Spawning HARVESTER result code: " + resultCode);
+                    }
                 }
             }
         } else {

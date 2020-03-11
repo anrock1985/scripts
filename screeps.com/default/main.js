@@ -121,7 +121,7 @@ module.exports.loop = function () {
 
     for (let room in Game.rooms) {
         if (Game.time % 10 === 0)
-            console.log("Iterating room:" + Game.rooms[room].name + ", Energy available: " + Game.rooms[room].energyAvailable + "\\" + Game.rooms[room].energyCapacityAvailable);
+            console.log(Game.rooms[room].name + " Energy available: " + Game.rooms[room].energyAvailable + "\\" + Game.rooms[room].energyCapacityAvailable);
         populationController.check(Game.rooms[room]);
     }
 };

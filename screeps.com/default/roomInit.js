@@ -99,7 +99,7 @@ let roomInit = {
             }
         }
 
-        if (droppedEnergy) {
+        if (droppedEnergy.length > 0) {
             for (let energy in droppedEnergy) {
                 let droppedEnergyId = droppedEnergy[energy].id;
                 let droppedEnergyAmount = droppedEnergy[energy].store[RESOURCE_ENERGY];

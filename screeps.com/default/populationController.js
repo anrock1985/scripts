@@ -30,15 +30,15 @@ let populationController = {
         for (let c in Memory.creeps) {
             if (!Game.creeps[c]) {
                 Memory.deadTotal++;
-                if (Memory.creeps[c].memory.carriedEnergy > 0) {
+                if (Memory.creeps[c].carriedEnergy > 0) {
                     Memory.deadWithCarry++;
                     if (Memory.topEnergyLoss === undefined) {
                         Memory.topEnergyLoss = 0;
                     }
-                    if (parseInt(Memory.topEnergyLoss) < parseInt(Memory.creeps[c].memory.carriedEnergy)) {
-                        Memory.topEnergyLoss = Memory.creeps[c].memory.carriedEnergy;
+                    if (parseInt(Memory.topEnergyLoss) < parseInt(Memory.creeps[c].carriedEnergy)) {
+                        Memory.topEnergyLoss = Memory.creeps[c].carriedEnergy;
                     }
-                    Memory.lostEnergy += parseInt(Memory.creeps[c].memory.carriedEnergy);
+                    Memory.lostEnergy += parseInt(Memory.creeps[c].carriedEnergy);
                 }
                 Memory.deadWithCarryPercent = Memory.deadTotal === 0 ? 0 : Math.trunc(((Memory.deadWithCarry / Memory.deadTotal) * 100));
                 if (debug) {
@@ -47,7 +47,7 @@ let populationController = {
                             + Memory.deadWithCarryPercent + "% of " + Memory.deadTotal
                             + " died creeps has energy carried. Energy losses are "
                             + Memory.lostEnergy + ". Top: " + Memory.topEnergyLoss
-                            + ". Latest: " + ((Memory.creeps[c].memory.carriedEnergy === undefined) ? 0 : Memory.creeps[c].memory.carriedEnergy));
+                            + ". Latest: " + ((Memory.creeps[c].carriedEnergy === undefined) ? 0 : Memory.creeps[c].carriedEnergy));
                     } else {
                         console.log("WARN: Creep disappeared!");
                     }

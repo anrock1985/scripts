@@ -68,26 +68,29 @@ let roleCarry = {
                     && a.store[RESOURCE_ENERGY] < (a.store.getCapacity(RESOURCE_ENERGY) / 2);
             });
 
-            // Memory.debugSNF = spawnerNotFull;
-            // Memory.debugENF = extensionNotFull;
-            // Memory.debugTNF = towerNotHalfFull;
+            Memory.debugSNF = spawnerNotFull;
+            Memory.debugENF = extensionNotFull;
+            Memory.debugTNF = towerNotHalfFull;
         }
 
         if (creep.memory.carrying) {
             if (towerNotHalfFull.length > 0) {
-                // Memory.debugClosestTower = creep.pos.findClosestByPath(towerNotHalfFull);
+                Memory.debugClosestTower = creep.pos.findClosestByPath(towerNotHalfFull);
                 creep.memory.closestStorageId = creep.pos.findClosestByPath(towerNotHalfFull).id;
                 if (logLevel === "debug")
                     console.log("DEBUG: Storing to tower");
             } else if (extensionNotFull.length > 0) {
+                Memory.debugClosestExtension = creep.pos.findClosestByPath(extensionNotFull);
                 creep.memory.closestStorageId = creep.pos.findClosestByPath(extensionNotFull).id;
                 if (logLevel === "debug")
                     console.log("DEBUG: Storing to extension");
             } else if (spawnerNotFull.length > 0) {
+                Memory.debugClosestSpawner = creep.pos.findClosestByPath(spawnerNotFull);
                 creep.memory.closestStorageId = creep.pos.findClosestByPath(spawnerNotFull).id;
                 if (logLevel === "debug")
                     console.log("DEBUG: Storing to spawner");
             } else if (closestStorageNotFull.length > 0) {
+                Memory.debugClosestRandom = creep.pos.findClosestByPath(closestStorageNotFull);
                 creep.memory.closestStorageId = creep.pos.findClosestByPath(closestStorageNotFull).id;
                 if (logLevel === "debug")
                     console.log("DEBUG: Storing to random");

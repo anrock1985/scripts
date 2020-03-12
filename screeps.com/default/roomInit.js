@@ -5,9 +5,7 @@ let roomInit = {
 
         room.memory.resourcePool = {};
 
-        if (room.memory.creeps === undefined) {
-            room.memory.creeps = [];
-        }
+        room.memory.creeps = [];
         for (let c in Game.creeps) {
             if (room.name === Game.creeps[c].memory.currentRoomName) {
                 room.memory.creeps.push(Game.creeps[c].id)
@@ -125,10 +123,12 @@ let roomInit = {
         Memory.debugResourcePoolActual = room.memory.resourcePool;
 
         function actualizeRoomResourcePool(room) {
-            for (let i = 0; i < room.memory.creeps.length; i++) {
-                let creepReservedResourceId = Game.getObjectById(room.memory.creeps[i]).memory.reservedResource.id;
-                if (room.memory.resourcePool[creepReservedResourceId]) {
-                    room.memory.resourcePool[creepReservedResourceId].amount -= Game.getObjectById(room.memory.creeps[i]).memory.reservedResource.amount;
+            if (room.memory.creeps.length > 0) {
+                for (let i = 0; i < room.memory.creeps.length; i++) {
+                    let creepReservedResourceId = Game.getObjectById(room.memory.creeps[i]).memory.reservedResource.id;
+                    if (room.memory.resourcePool[creepReservedResourceId]) {
+                        room.memory.resourcePool[creepReservedResourceId].amount -= Game.getObjectById(room.memory.creeps[i]).memory.reservedResource.amount;
+                    }
                 }
             }
         }

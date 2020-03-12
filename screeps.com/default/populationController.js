@@ -87,6 +87,8 @@ let populationController = {
                 roleDeadman.assign(creep);
             }
 
+            creep.memory.currentRoomName = creep.room.name;
+
             if (creep.memory.role === "harvester") {
                 roleHarvester.run(creep);
             } else if (creep.memory.role === "upgrader") {

@@ -63,8 +63,6 @@ let creepConstructor = {
                     result.push(MOVE);
                     totalAvailableEnergy -= (BODYPART_COST.move);
 
-                    // console.log("totalAvailableEnergy after MOVE:" + totalAvailableEnergy + ", count:" + count);
-                    // console.log("For (WORK):" + Math.trunc(totalAvailableEnergy / BODYPART_COST.work));
                     for (count = 0; count < Math.trunc(totalAvailableEnergy / BODYPART_COST.work); count++) {
                         if (result.length === 50)
                             break;
@@ -73,8 +71,6 @@ let creepConstructor = {
                         result.push(WORK);
                     }
                     totalAvailableEnergy -= (BODYPART_COST.work * count);
-                    // console.log("totalAvailableEnergy after WORK:" + totalAvailableEnergy + ", count:" + count);
-                    // console.log("For (2nd MOVE):" + Math.trunc(totalAvailableEnergy / BODYPART_COST.move));
                     if (totalAvailableEnergy >= 50) {
                         for (count = 0; count < Math.trunc(totalAvailableEnergy / BODYPART_COST.move); count++) {
                             if (result.length === 50)
@@ -84,8 +80,6 @@ let creepConstructor = {
                             result.push(MOVE);
                         }
                     }
-                    // console.log("totalAvailableEnergy after 2nd MOVE:" + (totalAvailableEnergy -= (BODYPART_COST.move * count)) + ", count:" + count);
-                    // console.log(result);
                     break;
 
                 case "carry":
@@ -101,27 +95,29 @@ let creepConstructor = {
                 case "upgrader":
                 case "builder":
                 case "repairer":
-                    for (count = 0; count < 2; count++) {
-                        result.push(MOVE);
-                    }
-                    totalAvailableEnergy -= (BODYPART_COST.move * count);
-
-                    for (count = 0; count < Math.trunc(Math.trunc(totalAvailableEnergy / 2) / BODYPART_COST.carry); count++) {
+                    for (count = 0; count < Math.trunc(totalAvailableEnergy / (BODYPART_COST.work + BODYPART_COST.carry + BODYPART_COST.move)); count++) {
                         if (result.length === 50)
                             break;
-                        if (spawner.room.energyCapacityAvailable <= ((50 * count) - 50)) {
-                            if (debug)
-                                console.log("WARN: Carry capacity limit reached");
-                            break;
-                        }
-                        result.push(CARRY);
-
-                    }
-                    totalAvailableEnergy -= (BODYPART_COST.carry * count);
-
-                    for (count = 0; count < Math.trunc(totalAvailableEnergy / BODYPART_COST.work); count++) {
                         result.push(WORK);
+                        result.push(CARRY);
+                        result.push(MOVE);
                     }
+                    // for (count = 0; count < Math.trunc(Math.trunc(totalAvailableEnergy / 2) / BODYPART_COST.carry); count++) {
+                    //     if (result.length === 50)
+                    //         break;
+                    //     if (spawner.room.energyCapacityAvailable <= ((50 * count) - 50)) {
+                    //         if (debug)
+                    //             console.log("WARN: Carry capacity limit reached");
+                    //         break;
+                    //     }
+                    //     result.push(CARRY);
+                    //
+                    // }
+                    // totalAvailableEnergy -= (BODYPART_COST.carry * count);
+
+                    // for (count = 0; count < Math.trunc(totalAvailableEnergy / BODYPART_COST.work); count++) {
+                    //     result.push(WORK);
+                    // }
                     break;
             }
             return result;
@@ -223,7 +219,7 @@ let creepConstructor = {
             else if (spawner.isActive()
                 && !spawner.spawning
                 && spawner.room.energyAvailable === spawner.room.energyCapacityAvailable
-                && Memory.upgraders < ((spawner.room.memory.myConstructionSiteIds.length === 0) ? 6 : 2)) {
+                && Memory.upgraders < 1) {
                 let name = Game.time + "_U";
                 let resultCode = spawner.spawnCreep(prepareBody("upgrader"), name, {memory: {role: "upgrader"}});
 
@@ -288,7 +284,7 @@ let creepConstructor = {
             //Repairer
             else if (spawner.isActive()
                 && !spawner.spawning
-                && spawner.room.energyAvailable === spawner.room.energyCapacityAvailable && Memory.repairers < 1) {
+                && spawner.room.energyAvailable === spawner.room.energyCapacityAvailable && Memory.repairers < 2) {
                 let name = Game.time + "_R";
                 let resultCode = spawner.spawnCreep(prepareBody("repairer"), name, {memory: {role: "repairer"}});
 
@@ -305,6 +301,29 @@ let creepConstructor = {
                     console.log("ERROR: Spawning REPAIRER result code: " + resultCode);
                 }
             }
+
+            //Upgrader
+            else if (spawner.isActive()
+                && !spawner.spawning
+                && spawner.room.energyAvailable === spawner.room.energyCapacityAvailable
+                && Memory.upgraders < ((spawner.room.memory.myConstructionSiteIds.length === 0) ? 6 : 2)) {
+                let name = Game.time + "_U";
+                let resultCode = spawner.spawnCreep(prepareBody("upgrader"), name, {memory: {role: "upgrader"}});
+
+                if (resultCode === 0) {
+                    Memory.upgraders++;
+                    let bodyParts = [];
+                    _.forEach(Game.creeps[name].body, function (item) {
+                        bodyParts.push(item.type.toString().toUpperCase());
+                    });
+                    if (debug) {
+                        console.log("INFO: new UPGRADER [total:" + Memory.upgraders + "] (" + bodyParts + ")");
+                    }
+                } else {
+                    console.log("ERROR: Spawning UPGRADER result code: " + resultCode);
+                }
+            }
+
         }
     }
 };

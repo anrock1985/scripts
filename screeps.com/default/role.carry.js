@@ -67,27 +67,27 @@ let roleCarry = {
                 return a.structureType === STRUCTURE_TOWER
                     && a.store[RESOURCE_ENERGY] < (a.store.getCapacity(RESOURCE_ENERGY) / 2);
             });
-            
+
             Memory.debugSNF = spawnerNotFull;
             Memory.debugENF = extensionNotFull;
             Memory.debugTNF = towerNotHalfFull;
         }
 
         if (creep.memory.carrying) {
-            if (towerNotHalfFull !== null) {
+            if (towerNotHalfFull.length > 0) {
                 Memory.debugClosestTower = creep.pos.findClosestByPath(towerNotHalfFull);
                 creep.memory.closestStorageId = creep.pos.findClosestByPath(towerNotHalfFull).id;
                 if (logLevel === "debug")
                     console.log("DEBUG: Storing to tower");
-            } else if (extensionNotFull !== null) {
+            } else if (extensionNotFull.length > 0) {
                 creep.memory.closestStorageId = creep.pos.findClosestByPath(extensionNotFull).id;
                 if (logLevel === "debug")
                     console.log("DEBUG: Storing to extension");
-            } else if (spawnerNotFull !== null) {
+            } else if (spawnerNotFull.length > 0) {
                 creep.memory.closestStorageId = creep.pos.findClosestByPath(spawnerNotFull).id;
                 if (logLevel === "debug")
                     console.log("DEBUG: Storing to spawner");
-            } else if (closestStorageNotFull !== null) {
+            } else if (closestStorageNotFull.length > 0) {
                 creep.memory.closestStorageId = creep.pos.findClosestByPath(closestStorageNotFull).id;
                 if (logLevel === "debug")
                     console.log("DEBUG: Storing to random");

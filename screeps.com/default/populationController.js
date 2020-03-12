@@ -161,7 +161,6 @@ let populationController = {
                         Memory.harvesters++;
                     }
                 }
-                console.log("[T:" + Game.time + "] INFO: Initialization complete. Founded [" + Memory.harvesters + "] harvesters.")
             }
 
             //Upgrader
@@ -172,7 +171,6 @@ let populationController = {
                         Memory.upgraders++;
                     }
                 }
-                console.log("[T:" + Game.time + "] INFO: Initialization complete. Founded [" + Memory.upgraders + "] upgraders.")
             }
 
             //Builder
@@ -183,7 +181,6 @@ let populationController = {
                         Memory.builders++;
                     }
                 }
-                console.log("[T:" + Game.time + "] INFO: Initialization complete. Founded [" + Memory.builders + "] builders.")
             }
 
             //Repairer
@@ -194,7 +191,6 @@ let populationController = {
                         Memory.repairers++;
                     }
                 }
-                console.log("[T:" + Game.time + "] INFO: Initialization complete. Founded [" + Memory.repairers + "] repairers.")
             }
 
             //Carry
@@ -205,8 +201,11 @@ let populationController = {
                         Memory.carry++;
                     }
                 }
-                console.log("[T:" + Game.time + "] INFO: Initialization complete. Founded [" + Memory.carry + "] carries.")
             }
+            console.log("[T:" + Game.time
+                + "] INFO: Initialization complete. Founded [H:"
+                + Memory.builders + " U:" + Memory.upgraders + " C:" + Memory.carry +
+                " B:" + Memory.builders + " R:" + Memory.repairers + "].")
         }
     }
 };

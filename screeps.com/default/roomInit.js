@@ -125,7 +125,9 @@ let roomInit = {
         function actualizeRoomResourcePool(room) {
             if (room.memory.creeps.length > 0) {
                 for (let i = 0; i < room.memory.creeps.length; i++) {
-                    let creepReservedResourceId = Game.getObjectById(room.memory.creeps[i]).memory.reservedResource.id;
+                    let creep = Game.getObjectById(room.memory.creeps[i]);
+                    resourcePoolController.check(creep);
+                    let creepReservedResourceId = creep.memory.reservedResource.id;
                     if (room.memory.resourcePool[creepReservedResourceId]) {
                         room.memory.resourcePool[creepReservedResourceId].amount -= Game.getObjectById(room.memory.creeps[i]).memory.reservedResource.amount;
                     }

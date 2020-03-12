@@ -99,6 +99,7 @@ let roomInit = {
             }
         }
 
+        Memory.debugDroppedEnergy = droppedEnergy;
         if (droppedEnergy.length > 0) {
             for (let energy in droppedEnergy) {
                 let droppedEnergyId = droppedEnergy[energy].id;

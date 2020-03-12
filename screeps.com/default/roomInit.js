@@ -107,7 +107,23 @@ let roomInit = {
                 room.memory.resourcePool[droppedEnergyId] = {type: RESOURCE_ENERGY, amount: droppedEnergyAmount};
             }
         }
-        Memory.debugResourcePool = room.memory.resourcePool;
+        
+        Memory.debugResourcePoolTotal = room.memory.resourcePool;
+
+        Memory.debugRoomCreeps = room.creeps;
+
+        actualizeRoomResourcePool(room);
+
+        Memory.debugResourcePoolActual = room.memory.resourcePool;
+
+        function actualizeRoomResourcePool(room) {
+            for (let c in room.creeps) {
+                let creepReservedResourceId = room.creeps[c].memory.reservedResource.id;
+                if (room.memory.resourcePool[creepReservedResourceId]) {
+                    room.memory.resourcePool[creepReservedResourceId].amount -= room.creeps[c].memory.reservedResource.amount;
+                }
+            }
+        }
 
         //TODO: Добавить отдельно сломанные структуры с большим кол-вом HP.
 

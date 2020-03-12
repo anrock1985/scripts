@@ -121,8 +121,10 @@ let creepConstructor = {
         if (Memory.harvesters < 1) {
             console.log("WARN: No harvesters found in room " + spawner.room.name + "!");
             if (spawner.room.memory.droppedEnergyIds.length > 0 && Memory.carry < 2) {
+                console.log("DEBUG: We have dropped energy");
                 for (let e in spawner.room.memory.droppedEnergyIds) {
                     if (Game.getObjectById(spawner.room.memory.droppedEnergyIds[e]).amount >= 500) {
+                        console.log("DEBUG: We have dropped energy of 500");
                         //Default Carry
                         if (spawner.isActive()
                             && !spawner.spawning
@@ -143,13 +145,16 @@ let creepConstructor = {
                                 console.log("ERROR: Spawning CARRY result code: " + resultCode);
                             }
                         }
+                        break;
                     }
                 }
             } else {
+                console.log("DEBUG: We don't have dropped energy");
                 // Default Harvester
                 if (spawner.isActive()
                     && !spawner.spawning
                     && spawner.room.energyAvailable >= 300) {
+                    console.log("DEBUG: Constructing default harvester");
                     let name = Game.time + "_H";
                     let resultCode = spawner.spawnCreep(prepareBody("defaultHarvester"), name, {memory: {role: "harvester"}});
                     if (resultCode === 0) {

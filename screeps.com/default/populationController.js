@@ -204,7 +204,7 @@ let populationController = {
             }
             console.log("[T:" + Game.time
                 + "] INFO: Initialization complete. Founded [H:"
-                + Memory.builders + " U:" + Memory.upgraders + " C:" + Memory.carry +
+                + Memory.harvesters + " U:" + Memory.upgraders + " C:" + Memory.carry +
                 " B:" + Memory.builders + " R:" + Memory.repairers + "].")
         }
     }

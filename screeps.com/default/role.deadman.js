@@ -15,7 +15,7 @@ let roleDeadman = {
         }
 
         if (creep.store[RESOURCE_ENERGY] > 0) {
-            creep.memory.carriedEnergy = creep.store[RESOURCE_ENERGY];
+            Memory.creep.memory.carriedEnergy = creep.store[RESOURCE_ENERGY];
             let resultCode = creep.drop(RESOURCE_ENERGY);
             if (resultCode !== 0) {
                 console.log("ERROR: Dropping fail! Result code: " + resultCode);

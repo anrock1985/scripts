@@ -103,7 +103,7 @@ let roomInit = {
         if (droppedEnergy.length > 0) {
             for (let e in droppedEnergy) {
                 let droppedEnergyId = droppedEnergy[e].id;
-                let droppedEnergyAmount = droppedEnergy[e].store[RESOURCE_ENERGY];
+                let droppedEnergyAmount = droppedEnergy[e].energy;
                 room.memory.resourcePool[droppedEnergyId] = {type: RESOURCE_ENERGY, amount: droppedEnergyAmount};
             }
         }

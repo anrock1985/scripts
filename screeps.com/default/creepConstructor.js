@@ -185,28 +185,6 @@ let creepConstructor = {
                 }
             }
 
-            //Upgrader
-            else if (spawner.isActive()
-                && !spawner.spawning
-                && spawner.room.energyAvailable === spawner.room.energyCapacityAvailable
-                && Memory.upgraders < 1) {
-                let name = Game.time + "_U";
-                let resultCode = spawner.spawnCreep(prepareBody("upgrader"), name, {memory: {role: "upgrader"}});
-
-                if (resultCode === 0) {
-                    Memory.upgraders++;
-                    let bodyParts = [];
-                    _.forEach(Game.creeps[name].body, function (item) {
-                        bodyParts.push(item.type.toString().toUpperCase());
-                    });
-                    if (debug) {
-                        console.log("INFO: new UPGRADER [total:" + Memory.upgraders + "] (" + bodyParts + ")");
-                    }
-                } else {
-                    console.log("ERROR: Spawning UPGRADER result code: " + resultCode);
-                }
-            }
-
             //Carry
             else if (spawner.isActive()
                 && !spawner.spawning

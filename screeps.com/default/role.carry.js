@@ -68,14 +68,14 @@ let roleCarry = {
                     && a.store[RESOURCE_ENERGY] < (a.store.getCapacity(RESOURCE_ENERGY) / 2);
             });
 
-            Memory.debugSNF = spawnerNotFull;
-            Memory.debugENF = extensionNotFull;
-            Memory.debugTNF = towerNotHalfFull;
+            // Memory.debugSNF = spawnerNotFull;
+            // Memory.debugENF = extensionNotFull;
+            // Memory.debugTNF = towerNotHalfFull;
         }
 
         if (creep.memory.carrying) {
             if (towerNotHalfFull.length > 0) {
-                Memory.debugClosestTower = creep.pos.findClosestByPath(towerNotHalfFull);
+                // Memory.debugClosestTower = creep.pos.findClosestByPath(towerNotHalfFull);
                 creep.memory.closestStorageId = creep.pos.findClosestByPath(towerNotHalfFull).id;
                 if (logLevel === "debug")
                     console.log("DEBUG: Storing to tower");

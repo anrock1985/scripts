@@ -129,7 +129,7 @@ let creepConstructor = {
 
         if (Memory.harvesters < 1) {
             console.log("WARN: No harvesters found in room " + spawner.room.name + "!");
-            if (spawner.room.memory.droppedEnergyIds && Memory.carry < 2) {
+            if (spawner.room.memory.droppedEnergyIds.length > 0 && Memory.carry < 2) {
                 for (let e in spawner.room.memory.droppedEnergyIds) {
                     if (Game.getObjectById(spawner.room.memory.droppedEnergyIds[e]).amount >= 500) {
                         //Default Carry
@@ -310,3 +310,7 @@ let creepConstructor = {
 };
 
 module.exports = creepConstructor;
+
+//TODO: Если достигнут предел по крипам, крипы слабее чем позволяет конструктор, надо их обновить.
+
+//TODO: Ремонтник должен быть быстрым.

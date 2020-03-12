@@ -3,9 +3,7 @@ let roomInit = {
 
         let resourcePoolController = require('resourcePoolController');
 
-        if (room.memory.resourcePool === undefined) {
-            room.memory.resourcePool = {};
-        }
+        room.memory.resourcePool = {};
 
         let sources = room.find(FIND_SOURCES);
         if (sources) {
@@ -100,6 +98,7 @@ let roomInit = {
         }
 
         Memory.debugDroppedEnergy = droppedEnergy;
+
         if (droppedEnergy.length > 0) {
             for (let e in droppedEnergy) {
                 let droppedEnergyId = droppedEnergy[e].id;
@@ -107,7 +106,7 @@ let roomInit = {
                 room.memory.resourcePool[droppedEnergyId] = {type: RESOURCE_ENERGY, amount: droppedEnergyAmount};
             }
         }
-        
+
         Memory.debugResourcePoolTotal = room.memory.resourcePool;
 
         Memory.debugRoomCreeps = room.creeps;

@@ -1,6 +1,12 @@
 let roomInit = {
     init: function (room) {
 
+        let resourcePoolController = require('resourcePoolController');
+
+        if (room.memory.resourcePool === undefined) {
+            room.memory.resourcePool = {};
+        }
+
         let sources = room.find(FIND_SOURCES);
         if (sources) {
             if (!room.memory.sourceIds) {
@@ -93,9 +99,17 @@ let roomInit = {
             }
         }
 
+        if (droppedEnergy) {
+            for (let energy in droppedEnergy) {
+                let droppedEnergyId = droppedEnergy[energy].id;
+                let droppedEnergyAmount = droppedEnergy[energy].store[RESOURCE_ENERGY];
+                room.memory.resourcePool[droppedEnergyId] = {type: RESOURCE_ENERGY, amount: droppedEnergyAmount};
+            }
+        }
+
         //TODO: Добавить отдельно сломанные структуры с большим кол-вом HP.
 
-        //TODO: Хранение для каждой комнаты отдельно
+        //TODO: Хранение для каждой комнаты отдельно.
     }
 };
 module.exports = roomInit;

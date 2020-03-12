@@ -67,6 +67,10 @@ let roleCarry = {
                 return a.structureType === STRUCTURE_TOWER
                     && a.store[RESOURCE_ENERGY] < (a.store.getCapacity(RESOURCE_ENERGY) / 2);
             });
+            
+            Memory.debugSNF = spawnerNotFull;
+            Memory.debugENF = extensionNotFull;
+            Memory.debugTNF = towerNotHalfFull;
         }
 
         if (creep.memory.carrying) {

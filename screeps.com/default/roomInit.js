@@ -122,6 +122,7 @@ let roomInit = {
 
         Memory.debugResourcePoolActual = room.memory.resourcePool;
 
+        //TODO: Optimize
         function actualizeRoomResourcePool(room) {
             if (room.memory.creeps.length > 0) {
                 for (let i = 0; i < room.memory.creeps.length; i++) {

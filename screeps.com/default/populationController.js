@@ -52,7 +52,7 @@ let populationController = {
                         console.log("WARN: Creep disappeared!");
                     }
                 }
-                if (Memory.deadTotal === 100) {
+                if (Memory.deadTotal >= 100) {
                     Memory.deadTotal = 0;
                     Memory.deadWithCarry = 0;
                     Memory.topEnergyLoss = 0;

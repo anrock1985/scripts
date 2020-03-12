@@ -107,6 +107,9 @@ let roleCarry = {
                 }
                 if (logLevel === "debug")
                     console.log("DEBUG: Storing to random");
+            } else {
+                if (logLevel === "debug")
+                    console.log("DEBUG: Carry can't find storage!");
             }
         }
 

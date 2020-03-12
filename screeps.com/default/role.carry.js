@@ -70,12 +70,16 @@ let roleCarry = {
         if (creep.memory.carrying) {
             if (towerNotHalfFull) {
                 creep.memory.closestStorageId = creep.pos.findClosestByPath(towerNotHalfFull).id;
+                console.log("DEBUG: Storing to tower")
             } else if (extensionNotFull) {
                 creep.memory.closestStorageId = creep.pos.findClosestByPath(extensionNotFull).id;
+                console.log("DEBUG: Storing to extension")
             } else if (spawnerNotFull) {
                 creep.memory.closestStorageId = creep.pos.findClosestByPath(spawnerNotFull).id;
+                console.log("DEBUG: Storing to spawner")
             } else if (closestStorageNotFull) {
                 creep.memory.closestStorageId = creep.pos.findClosestByPath(closestStorageNotFull).id;
+                console.log("DEBUG: Storing to random")
             }
         }
 

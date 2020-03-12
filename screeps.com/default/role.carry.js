@@ -48,6 +48,7 @@ let roleCarry = {
         let closestStorageNotFull = {};
         let spawnerNotFull = {};
         let extensionNotFull = {};
+        let towerNotHalfFull = {};
 
         if (storagesNotFull) {
             closestStorageNotFull = creep.pos.findClosestByPath(storagesNotFull);
@@ -59,10 +60,17 @@ let roleCarry = {
             extensionNotFull = storagesNotFull.filter(function (a) {
                 return a.structureType === STRUCTURE_EXTENSION;
             });
+
+            towerNotHalfFull = storagesNotFull.filter(function (a) {
+                return a.structureType === STRUCTURE_TOWER
+                    && a.store[RESOURCE_ENERGY] < (a.store.getCapacity(RESOURCE_ENERGY) / 2);
+            });
         }
 
         if (creep.memory.carrying) {
-            if (extensionNotFull) {
+            if (towerNotHalfFull) {
+                creep.memory.closestStorageId = creep.pos.findClosestByPath(towerNotHalfFull).id;
+            } else if (extensionNotFull) {
                 creep.memory.closestStorageId = creep.pos.findClosestByPath(extensionNotFull).id;
             } else if (spawnerNotFull) {
                 creep.memory.closestStorageId = creep.pos.findClosestByPath(spawnerNotFull).id;

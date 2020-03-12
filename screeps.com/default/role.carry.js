@@ -2,7 +2,7 @@ let roleCarry = {
     run: function (creep) {
         let _ = require('lodash');
 
-        let logLevel = "debug";
+        let logLevel = "info";
 
         if (creep.memory.carrying === undefined) {
             creep.memory.carrying = true;
@@ -70,19 +70,19 @@ let roleCarry = {
         }
 
         if (creep.memory.carrying) {
-            if (towerNotHalfFull) {
+            if (towerNotHalfFull !== null) {
                 creep.memory.closestStorageId = creep.pos.findClosestByPath(towerNotHalfFull).id;
                 if (logLevel === "debug")
                     console.log("DEBUG: Storing to tower");
-            } else if (extensionNotFull) {
+            } else if (extensionNotFull !== null) {
                 creep.memory.closestStorageId = creep.pos.findClosestByPath(extensionNotFull).id;
                 if (logLevel === "debug")
                     console.log("DEBUG: Storing to extension");
-            } else if (spawnerNotFull) {
+            } else if (spawnerNotFull !== null) {
                 creep.memory.closestStorageId = creep.pos.findClosestByPath(spawnerNotFull).id;
                 if (logLevel === "debug")
                     console.log("DEBUG: Storing to spawner");
-            } else if (closestStorageNotFull) {
+            } else if (closestStorageNotFull !== null) {
                 creep.memory.closestStorageId = creep.pos.findClosestByPath(closestStorageNotFull).id;
                 if (logLevel === "debug")
                     console.log("DEBUG: Storing to random");

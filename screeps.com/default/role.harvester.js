@@ -39,7 +39,7 @@ let roleHarvester = {
         });
 
         let closestStorageNotFull = {};
-        if (storagesNotFull) {
+        if (storagesNotFull !== null) {
             closestStorageNotFull = creep.pos.findClosestByPath(storagesNotFull);
         }
         if (closestStorageNotFull) {

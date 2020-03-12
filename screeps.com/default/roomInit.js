@@ -107,6 +107,7 @@ let roomInit = {
                 room.memory.resourcePool[droppedEnergyId] = {type: RESOURCE_ENERGY, amount: droppedEnergyAmount};
             }
         }
+        Memory.debugResourcePool = room.memory.resourcePool;
 
         //TODO: Добавить отдельно сломанные структуры с большим кол-вом HP.
 

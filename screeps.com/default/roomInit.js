@@ -109,13 +109,18 @@ let roomInit = {
 
         Memory.debugResourcePoolTotal = room.memory.resourcePool;
 
-        Memory.debugRoomCreeps = room.creeps;
+        Memory.debugRoomCreeps = room.memory.creeps;
 
         actualizeRoomResourcePool(room);
 
         Memory.debugResourcePoolActual = room.memory.resourcePool;
 
         function actualizeRoomResourcePool(room) {
+            // for (let c in Game.creeps) {
+            //     if (room.name === Game.creeps[c].memory.currentRoomName) {
+            //         room.memory
+            //     }
+            // }
             for (let c in room.creeps) {
                 let creepReservedResourceId = room.creeps[c].memory.reservedResource.id;
                 if (room.memory.resourcePool[creepReservedResourceId]) {

@@ -58,7 +58,7 @@ let populationController = {
                     Memory.topEnergyLoss = 0;
                     Memory.deadWithCarryPercent = 0;
                 }
-                
+
                 switch (Memory.creeps[c].lastRole) {
                     case "harvester":
                         Memory.harvesters--;

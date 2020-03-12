@@ -20,7 +20,10 @@ let roleHarvester = {
             allEnergySourcesIdsInRoom.push(source.id);
         }
 
-        creep.memory.closestSpawnerId = creep.pos.findClosestByRange(FIND_MY_SPAWNS).id;
+        let closestSpawner = creep.pos.findClosestByPath(FIND_MY_SPAWNS);
+        if (closestSpawner) {
+            creep.memory.closestSpawnerId = closestSpawner.id;
+        }
 
         let activeSources = creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
 

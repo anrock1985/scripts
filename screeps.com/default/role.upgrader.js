@@ -2,7 +2,10 @@ let roleUpgrader = {
     run: function (creep) {
         let _ = require('lodash');
 
-        creep.memory.closestSpawnerId = creep.pos.findClosestByRange(FIND_MY_SPAWNS).id;
+        let closestSpawner = creep.pos.findClosestByPath(FIND_MY_SPAWNS);
+        if (closestSpawner) {
+            creep.memory.closestSpawnerId = closestSpawner.id;
+        }
 
         let storages = creep.room.find(FIND_STRUCTURES, {
             filter: (s) => {

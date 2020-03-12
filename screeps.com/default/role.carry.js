@@ -35,38 +35,39 @@ let roleCarry = {
             }
         }
 
-        let storages = creep.room.find(FIND_STRUCTURES, {
+        let storagesNotFull = creep.room.find(FIND_STRUCTURES, {
             filter: (s) => {
-                return s.structureType === STRUCTURE_EXTENSION
+                return (s.structureType === STRUCTURE_EXTENSION
                     || s.structureType === STRUCTURE_CONTAINER
                     || s.structureType === STRUCTURE_SPAWN
-                    || s.structureType === STRUCTURE_TOWER
+                    || s.structureType === STRUCTURE_TOWER)
+                    && s.store[RESOURCE_ENERGY] < s.store.getCapacity(RESOURCE_ENERGY)
             }
         });
 
-        let storageNotFull = creep.pos.findClosestByPath(storages, {
-            filter: (s) => {
-                return s.store[RESOURCE_ENERGY] !== s.store.getCapacity(RESOURCE_ENERGY)
-            }
-        });
+        let closestStorageNotFull = {};
+        let spawnerNotFull = {};
+        let extensionNotFull = {};
 
-        //TODO: Optimize
-        let spawner = storages.filter(function (a) {
-            return a.structureType === STRUCTURE_SPAWN
-        });
+        if (storagesNotFull) {
+            closestStorageNotFull = creep.pos.findClosestByPath(storagesNotFull);
 
-        let extension = storages.filter(function (a) {
-            return a.structureType === STRUCTURE_EXTENSION
-                && a.store[RESOURCE_ENERGY] !== a.store.getCapacity(RESOURCE_ENERGY)
-        });
+            spawnerNotFull = storagesNotFull.filter(function (a) {
+                return a.structureType === STRUCTURE_SPAWN;
+            });
+
+            extensionNotFull = storagesNotFull.filter(function (a) {
+                return a.structureType === STRUCTURE_EXTENSION;
+            });
+        }
 
         if (creep.memory.carrying) {
-            if (extension[0] && extension[0].store[RESOURCE_ENERGY] !== extension[0].store.getCapacity(RESOURCE_ENERGY)) {
-                creep.memory.closestStorageId = extension[0].id;
-            } else if (spawner[0] && spawner[0].store[RESOURCE_ENERGY] !== spawner[0].store.getCapacity(RESOURCE_ENERGY)) {
-                creep.memory.closestStorageId = spawner[0].id;
-            } else if (storageNotFull !== undefined && storageNotFull !== null) {
-                creep.memory.closestStorageId = storageNotFull.id;
+            if (extensionNotFull) {
+                creep.memory.closestStorageId = creep.pos.findClosestByPath(extensionNotFull).id;
+            } else if (spawnerNotFull) {
+                creep.memory.closestStorageId = creep.pos.findClosestByPath(spawnerNotFull).id;
+            } else if (closestStorageNotFull) {
+                creep.memory.closestStorageId = creep.pos.findClosestByPath(closestStorageNotFull).id;
             }
         }
 

@@ -13,12 +13,12 @@ let roleHarvester = {
             creep.memory.harvesting = true;
         }
 
-        let allEnergySourcesIdsInRoom = [];
-        let allSafeEnergySourcesIdsInRoom = [];
-
-        for (let source in creep.room.find(FIND_SOURCES)) {
-            allEnergySourcesIdsInRoom.push(source.id);
-        }
+        //TODO: Определить безопасные источники.
+        // let allEnergySourcesIdsInRoom = [];
+        // let allSafeEnergySourcesIdsInRoom = [];
+        // for (let source in creep.room.find(FIND_SOURCES)) {
+        //     allEnergySourcesIdsInRoom.push(source.id);
+        // }
 
         let closestSpawner = creep.pos.findClosestByPath(FIND_MY_SPAWNS);
         if (closestSpawner) {
@@ -31,20 +31,21 @@ let roleHarvester = {
             creep.memory.closestActiveSourceId = activeSources.id;
         }
 
-        let storages = creep.room.find(FIND_STRUCTURES, {
+        let storagesNotFull = creep.room.find(FIND_STRUCTURES, {
             filter: (s) => {
-                return s.structureType === STRUCTURE_EXTENSION
-                    || s.structureType === STRUCTURE_SPAWN
+                return (s.structureType === STRUCTURE_EXTENSION
+                    || s.structureType === STRUCTURE_SPAWN) && s.store[RESOURCE_ENERGY] < s.store.getCapacity(RESOURCE_ENERGY)
             }
         });
 
-        let storageNotFull = creep.pos.findClosestByRange(storages, {
-            filter: (s) => {
-                return s.store[RESOURCE_ENERGY] !== s.store.getCapacity(RESOURCE_ENERGY)
-            }
-        });
-        if (storageNotFull !== undefined && storageNotFull !== null) {
-            creep.memory.closestStorageId = storageNotFull.id;
+        let closestStorageNotFull = {};
+        if (storagesNotFull) {
+            closestStorageNotFull = creep.pos.findClosestByPath(storagesNotFull);
+        }
+        if (closestStorageNotFull) {
+            creep.memory.closestStorageNotFullId = closestStorageNotFull.id;
+        } else {
+            creep.memory.closestStorageNotFullId = undefined;
         }
 
         if (creep.memory.harvesting && creep.store[RESOURCE_ENERGY] !== creep.store.getCapacity(RESOURCE_ENERGY)) {
@@ -59,16 +60,16 @@ let roleHarvester = {
                 if (result !== 0) {
                     console.log("ERROR: Harvester dropping result = " + result);
                 }
-            } else if (creep.memory.closestStorageId !== null && creep.transfer(Game.getObjectById(creep.memory.closestStorageId), RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
-                creep.moveTo(Game.getObjectById(creep.memory.closestStorageId));
+            } else {
+                if (creep.memory.closestStorageNotFullId !== undefined && creep.transfer(Game.getObjectById(creep.memory.closestStorageNotFullId), RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
+                    creep.moveTo(Game.getObjectById(creep.memory.closestStorageNotFullId));
+                }
             }
         }
-    },
 
-
-    getSafeEnergySource: function () {
-
-    },
+        function getSafeEnergySource() {
+        }
+    }
 };
 
 module.exports = roleHarvester;

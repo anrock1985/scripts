@@ -6,7 +6,7 @@ let roleDeadman = {
             creep.memory.lastRole = creep.memory.role;
             creep.memory.role = "deadman";
             if (debug) {
-                console.log("Creep " + creep.name + " marked as deadman now.");
+                console.log("INFO: Creep " + creep.name + " marked as deadman now.");
             }
         }
 
@@ -15,10 +15,10 @@ let roleDeadman = {
         }
 
         if (creep.store[RESOURCE_ENERGY] > 0) {
-            Memory.creep.carriedEnergy = creep.store[RESOURCE_ENERGY];
+            creep.memory.carriedEnergy = creep.store[RESOURCE_ENERGY];
             let resultCode = creep.drop(RESOURCE_ENERGY);
             if (resultCode !== 0) {
-                console.log("ERROR: Dropping fail! Result code: " + resultCode);
+                console.log("ERROR: Deadman dropping result code = " + resultCode);
             }
         }
     }

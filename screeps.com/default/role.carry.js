@@ -71,6 +71,7 @@ let roleCarry = {
 
         if (creep.memory.carrying) {
             if (towerNotHalfFull !== null) {
+                Memory.debugClosestTower = creep.pos.findClosestByPath(towerNotHalfFull);
                 creep.memory.closestStorageId = creep.pos.findClosestByPath(towerNotHalfFull).id;
                 if (logLevel === "debug")
                     console.log("DEBUG: Storing to tower");

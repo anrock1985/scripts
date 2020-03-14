@@ -124,9 +124,11 @@ let roleCarry = {
         if (!creep.memory.carrying && creep.store[RESOURCE_ENERGY] !== creep.store.getCapacity(RESOURCE_ENERGY)) {
             if (creep.memory.closestDroppedEnergyId
                 && creep.room.memory.resourcePool[creep.memory.closestDroppedEnergyId].amount >= creep.store.getCapacity(RESOURCE_ENERGY)) {
-                resourcePoolController.reserve(creep, creep.memory.closestDroppedEnergyId,
-                    Game.getObjectById(creep.memory.closestDroppedEnergyId).resourceType,
-                    creep.store.getCapacity(RESOURCE_ENERGY));
+                if (!creep.memory.reservedResource) {
+                    resourcePoolController.reserve(creep, creep.memory.closestDroppedEnergyId,
+                        Game.getObjectById(creep.memory.closestDroppedEnergyId).resourceType,
+                        creep.store.getCapacity(RESOURCE_ENERGY));
+                }
                 if (creep.pickup(Game.getObjectById(creep.memory.closestDroppedEnergyId)) === ERR_NOT_IN_RANGE) {
                     creep.moveTo(Game.getObjectById(creep.memory.closestDroppedEnergyId))
                 }

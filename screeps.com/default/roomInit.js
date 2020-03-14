@@ -114,7 +114,7 @@ let roomInit = {
             }
         }
 
-        Memory.debugResourcePoolTotal = room.memory.resourcePool;
+        Memory.debugResourcePoolRaw = room.memory.resourcePool;
 
         Memory.debugRoomCreeps = room.memory.creeps;
 

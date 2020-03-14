@@ -1,6 +1,5 @@
 let resourcePoolController = {
     check: function (creep) {
-
         if (creep.memory.reservedResource === undefined) {
             creep.memory.reservedResource = {};
         }

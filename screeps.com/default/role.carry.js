@@ -126,7 +126,6 @@ let roleCarry = {
                 }
             }
 
-            // if (creep.room.memory.resourcePool[creep.memory.closestDroppedEnergyId].amount >= creep.store.getCapacity(RESOURCE_ENERGY)) {
             if (!creep.memory.reservedResource || !creep.memory.reservedResource.id) {
                 for (let r in droppedEnergy) {
                     if (droppedEnergy[r].amount >= (creep.store.getCapacity(RESOURCE_ENERGY) - creep.store[RESOURCE_ENERGY])) {
@@ -136,13 +135,12 @@ let roleCarry = {
                     }
                 }
             }
-            
+
             if (creep.memory.reservedResource) {
                 if (creep.pickup(Game.getObjectById(creep.memory.reservedResource.id)) === ERR_NOT_IN_RANGE) {
                     creep.moveTo(Game.getObjectById(creep.memory.reservedResource.id))
                 }
             }
-            // }
         }
     }
 };

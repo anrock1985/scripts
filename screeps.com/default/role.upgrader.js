@@ -19,19 +19,19 @@ let roleUpgrader = {
 
         let storages = creep.room.find(FIND_MY_STRUCTURES, {
             filter: (s) => {
-                return s.structureType === STRUCTURE_EXTENSION
+                return (s.structureType === STRUCTURE_EXTENSION
                     || s.structureType === STRUCTURE_CONTAINER
-                    || s.structureType === STRUCTURE_SPAWN
+                    || s.structureType === STRUCTURE_SPAWN)
+                    && s.store[RESOURCE_ENERGY] >= creep.store.getCapacity(RESOURCE_ENERGY)
             }
         });
 
-        let storagesWithEnoughEnergy = creep.pos.findClosestByPath(storages, {
-            filter: (s) => {
-                return s.store[RESOURCE_ENERGY] >= creep.store.getCapacity(RESOURCE_ENERGY)
-            }
-        });
+        let storagesWithEnoughEnergy = {};
+        if (storages) {
+            storagesWithEnoughEnergy = creep.pos.findClosestByPath(storages);
+        }
 
-        if (storagesWithEnoughEnergy === null) {
+        if (!storagesWithEnoughEnergy) {
             creep.memory.closestStorageId = undefined;
         } else {
             creep.memory.closestStorageId = storagesWithEnoughEnergy.id;

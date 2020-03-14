@@ -53,8 +53,6 @@ let roleCarry = {
         let towerNotHalfFull = {};
 
         if (storagesNotFull) {
-            closestStorageNotFull = creep.pos.findClosestByPath(storagesNotFull);
-
             spawnerNotFull = storagesNotFull.filter(function (a) {
                 return a.structureType === STRUCTURE_SPAWN;
             });

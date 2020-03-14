@@ -12,7 +12,9 @@ let roleCarry = {
         if (creep.store[RESOURCE_ENERGY] === creep.store.getCapacity(RESOURCE_ENERGY) && !creep.memory.carrying) {
             creep.memory.carrying = true;
             creep.memory.closestDroppedEnergyId = undefined;
-            resourcePoolController.release(creep);
+            if (creep.memory.reservedResource) {
+                resourcePoolController.release(creep);
+            }
         }
         if (creep.store[RESOURCE_ENERGY] === 0 && creep.memory.carrying) {
             creep.memory.carrying = false
@@ -124,6 +126,9 @@ let roleCarry = {
         if (!creep.memory.carrying && creep.store[RESOURCE_ENERGY] !== creep.store.getCapacity(RESOURCE_ENERGY)) {
             if (creep.memory.closestDroppedEnergyId
                 && creep.room.memory.resourcePool[creep.memory.closestDroppedEnergyId].amount >= creep.store.getCapacity(RESOURCE_ENERGY)) {
+                if (logLevel === "debug") {
+                    console.log("Creep");
+                }
                 if (!creep.memory.reservedResource) {
                     resourcePoolController.reserve(creep, creep.memory.closestDroppedEnergyId,
                         Game.getObjectById(creep.memory.closestDroppedEnergyId).resourceType,

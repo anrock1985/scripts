@@ -124,10 +124,11 @@ let roleCarry = {
         }
 
         if (!creep.memory.carrying && creep.store[RESOURCE_ENERGY] !== creep.store.getCapacity(RESOURCE_ENERGY)) {
-            
+
             if (!(droppedEnergy.filter(function (a) {
                 return a.id === creep.memory.reservedResource.id;
             }))) {
+                console.log("WARN: Reserved resource disappear");
                 creep.memory.reservedResource = {};
             }
 

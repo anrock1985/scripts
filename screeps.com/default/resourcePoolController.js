@@ -8,6 +8,9 @@ let resourcePoolController = {
 
     reserve: function (creep, id, resourceType, amount) {
         let logLevel = "debug";
+        if (creep.memory.reservedResource === undefined) {
+            creep.memory.reservedResource = {};
+        }
         if (Game.getObjectById(id).amount >= amount) {
             creep.memory.reservedResource.id = id;
             creep.memory.reservedResource.resourceType = resourceType;
@@ -29,7 +32,7 @@ let resourcePoolController = {
         let logLevel = "debug";
         creep.memory.reservedResource = {};
         if (logLevel === "debug") {
-            console.log("Creep " + creep.name + " released resource.")
+            console.log("Creep " + creep.name + " released resource")
         }
     }
 

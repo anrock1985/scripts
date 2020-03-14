@@ -126,10 +126,7 @@ let roleCarry = {
         if (!creep.memory.carrying && creep.store[RESOURCE_ENERGY] !== creep.store.getCapacity(RESOURCE_ENERGY)) {
             if (creep.memory.closestDroppedEnergyId
                 && creep.room.memory.resourcePool[creep.memory.closestDroppedEnergyId].amount >= creep.store.getCapacity(RESOURCE_ENERGY)) {
-                if (logLevel === "debug") {
-                    console.log("Creep");
-                }
-                if (!creep.memory.reservedResource) {
+                if (!creep.memory.reservedResource.id) {
                     resourcePoolController.reserve(creep, creep.memory.closestDroppedEnergyId,
                         Game.getObjectById(creep.memory.closestDroppedEnergyId).resourceType,
                         creep.store.getCapacity(RESOURCE_ENERGY));

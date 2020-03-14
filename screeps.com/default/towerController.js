@@ -22,7 +22,7 @@ let towerController = {
                 }
             }
 
-            if (Game.getObjectById(towerId).store[RESOURCE_ENERGY] > (Game.getObjectById(towerId).store.getCapacity(RESOURCE_ENERGY) / 2)) {
+            if (Game.getObjectById(towerId).store[RESOURCE_ENERGY] > (Game.getObjectById(towerId).store.getCapacity(RESOURCE_ENERGY) / 1.5)) {
                 if (Game.getObjectById(towerId).room.memory.myDamagedStructuresIds.length > 0) {
                     let target = findClosestMyDamagedStructure(Game.getObjectById(towerId).room.memory.myDamagedStructuresIds);
                     if (target !== -1) {

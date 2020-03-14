@@ -2,6 +2,8 @@ let roleCarry = {
     run: function (creep) {
         let _ = require('lodash');
 
+        let resourcePoolController = require('resourcePoolController');
+
         let logLevel = "info";
 
         if (creep.memory.carrying === undefined) {
@@ -10,6 +12,7 @@ let roleCarry = {
         if (creep.store[RESOURCE_ENERGY] === creep.store.getCapacity(RESOURCE_ENERGY) && !creep.memory.carrying) {
             creep.memory.carrying = true;
             creep.memory.closestDroppedEnergyId = undefined;
+            resourcePoolController.release(creep);
         }
         if (creep.store[RESOURCE_ENERGY] === 0 && creep.memory.carrying) {
             creep.memory.carrying = false
@@ -47,7 +50,6 @@ let roleCarry = {
             }
         });
 
-        let closestStorageNotFull = {};
         let spawnerNotFull = {};
         let extensionNotFull = {};
         let towerNotHalfFull = {};
@@ -111,8 +113,7 @@ let roleCarry = {
             }
         }
 
-        if (creep.memory.carrying && creep.store[RESOURCE_ENERGY] !== 0
-        ) {
+        if (creep.memory.carrying && creep.store[RESOURCE_ENERGY] !== 0) {
             if (creep.memory.closestStorageId) {
                 if (creep.transfer(Game.getObjectById(creep.memory.closestStorageId), RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
                     creep.moveTo(Game.getObjectById(creep.memory.closestStorageId));
@@ -122,6 +123,9 @@ let roleCarry = {
 
         if (!creep.memory.carrying && creep.store[RESOURCE_ENERGY] !== creep.store.getCapacity(RESOURCE_ENERGY)) {
             if (creep.memory.closestDroppedEnergyId) {
+                resourcePoolController.reserve(creep, creep.memory.closestDroppedEnergyId,
+                    Game.getObjectById(creep.memory.closestDroppedEnergyId).resourceType,
+                    Game.getObjectById(creep.memory.closestDroppedEnergyId).amount);
                 if (creep.pickup(Game.getObjectById(creep.memory.closestDroppedEnergyId)) === ERR_NOT_IN_RANGE) {
                     creep.moveTo(Game.getObjectById(creep.memory.closestDroppedEnergyId))
                 }

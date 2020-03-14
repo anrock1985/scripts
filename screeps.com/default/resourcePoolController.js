@@ -4,14 +4,21 @@ let resourcePoolController = {
         if (creep.memory.reservedResource === undefined) {
             creep.memory.reservedResource = {};
         }
+    },
 
-        function reserve(id, resourceType, amount) {
-
+    reserve: function (creep, id, resourceType, amount) {
+        if (Game.getObjectById(id).store[resourceType] >= amount) {
+            creep.memory.reservedResource.id = id;
+            creep.memory.reservedResource.resourceType = resourceType;
+            creep.memory.reservedResource.amount = amount;
+        } else {
+            return -1;
         }
+    },
 
-        function release(id, resourceType, amount) {
-
-        }
+    release: function (creep) {
+        creep.memory.reservedResource = {};
     }
+
 };
 module.exports = resourcePoolController;

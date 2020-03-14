@@ -125,13 +125,14 @@ let roleCarry = {
 
         if (!creep.memory.carrying && creep.store[RESOURCE_ENERGY] !== creep.store.getCapacity(RESOURCE_ENERGY)) {
 
-            let filt = droppedEnergy.filter(function (a) {
-                return a.id === creep.memory.reservedResource.id;
-            });
-
-            if (creep.memory.reservedResource && (filt.length === 0)) {
-                console.log("WARN: Reserved resource disappear");
-                creep.memory.reservedResource = {};
+            if (creep.memory.reservedResource) {
+                let filteredDrops = droppedEnergy.filter(function (a) {
+                    return a.id === creep.memory.reservedResource.id;
+                });
+                if (filteredDrops.length === 0) {
+                    console.log("WARN: Reserved resource disappear");
+                    creep.memory.reservedResource = {};
+                }
             }
 
             if (creep.memory.closestDroppedEnergyId
@@ -160,3 +161,5 @@ module.exports = roleCarry;
 //TODO: Подбор соринок энергии оставшихся от трупов, если они не далеко от основного пути.
 
 //TODO: Если загружены хоть чем-то, не ходить на дальний спот для полной загрузки.
+
+//TODO: Аудит зависимостей.

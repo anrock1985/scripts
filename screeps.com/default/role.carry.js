@@ -128,9 +128,8 @@ let roleCarry = {
             let filt = droppedEnergy.filter(function (a) {
                 return a.id === creep.memory.reservedResource.id;
             });
-            Memory.debugFilt = filt;
 
-            if (creep.memory.reservedResource && (filt) === null) {
+            if (creep.memory.reservedResource && (filt.length === 0)) {
                 console.log("WARN: Reserved resource disappear");
                 creep.memory.reservedResource = {};
             }

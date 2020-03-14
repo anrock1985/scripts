@@ -7,7 +7,7 @@ let resourcePoolController = {
     },
 
     reserve: function (creep, id, resourceType, amount) {
-        if (Game.getObjectById(id).store[resourceType] >= amount) {
+        if (Game.getObjectById(id).amount >= amount) {
             creep.memory.reservedResource.id = id;
             creep.memory.reservedResource.resourceType = resourceType;
             creep.memory.reservedResource.amount = amount;

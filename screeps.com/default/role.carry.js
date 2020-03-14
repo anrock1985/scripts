@@ -69,16 +69,11 @@ let roleCarry = {
                 return a.structureType === STRUCTURE_TOWER
                     && a.store[RESOURCE_ENERGY] < (a.store.getCapacity(RESOURCE_ENERGY) / 2);
             });
-
-            // Memory.debugSNF = spawnerNotFull;
-            // Memory.debugENF = extensionNotFull;
-            // Memory.debugTNF = towerNotHalfFull;
         }
 
         creep.memory.closestStorageId = {};
         if (creep.memory.carrying) {
             if (towerNotHalfFull.length > 0) {
-                // Memory.debugClosestTower = creep.pos.findClosestByPath(towerNotHalfFull);
                 let closestTowerNotHalfFull = creep.pos.findClosestByPath(towerNotHalfFull);
                 if (closestTowerNotHalfFull !== null) {
                     creep.memory.closestStorageId = closestTowerNotHalfFull.id;
@@ -86,7 +81,6 @@ let roleCarry = {
                 if (logLevel === "debug")
                     console.log("DEBUG: Storing to tower");
             } else if (extensionNotFull.length > 0) {
-                // Memory.debugClosestExtension = creep.pos.findClosestByPath(extensionNotFull);
                 let closestExtensionNotFull = creep.pos.findClosestByPath(extensionNotFull);
                 if (closestExtensionNotFull !== null) {
                     creep.memory.closestStorageId = closestExtensionNotFull.id;
@@ -94,7 +88,6 @@ let roleCarry = {
                 if (logLevel === "debug")
                     console.log("DEBUG: Storing to extension");
             } else if (spawnerNotFull.length > 0) {
-                // Memory.debugClosestSpawner = creep.pos.findClosestByPath(spawnerNotFull);
                 let closestSpawnerNotFull = creep.pos.findClosestByPath(spawnerNotFull);
                 if (closestSpawnerNotFull !== null) {
                     creep.memory.closestStorageId = closestSpawnerNotFull.id;
@@ -102,7 +95,6 @@ let roleCarry = {
                 if (logLevel === "debug")
                     console.log("DEBUG: Storing to spawner");
             } else if (storagesNotFull.length > 0) {
-                // Memory.debugClosestRandom = creep.pos.findClosestByPath(closestStorageNotFull);
                 let closestStoragesNotFull = creep.pos.findClosestByPath(storagesNotFull);
                 if (closestStoragesNotFull !== null) {
                     creep.memory.closestStorageId = closestStoragesNotFull.id;
@@ -124,7 +116,6 @@ let roleCarry = {
         }
 
         if (!creep.memory.carrying && creep.store[RESOURCE_ENERGY] !== creep.store.getCapacity(RESOURCE_ENERGY)) {
-
             if (creep.memory.reservedResource) {
                 let filteredDrops = droppedEnergy.filter(function (a) {
                     return a.id === creep.memory.reservedResource.id;
@@ -135,21 +126,23 @@ let roleCarry = {
                 }
             }
 
-            if (creep.memory.closestDroppedEnergyId
-                && creep.room.memory.resourcePool[creep.memory.closestDroppedEnergyId].amount >= creep.store.getCapacity(RESOURCE_ENERGY)) {
-                if (!creep.memory.reservedResource || !creep.memory.reservedResource.id) {
-                    for (let r in droppedEnergy) {
-                        if (droppedEnergy[r].amount >= (creep.store.getCapacity(RESOURCE_ENERGY) - creep.store[RESOURCE_ENERGY])) {
-                            resourcePoolController.reserve(creep, droppedEnergy[r].id,
-                                droppedEnergy[r].resourceType,
-                                (creep.store.getCapacity(RESOURCE_ENERGY) - creep.store[RESOURCE_ENERGY]));
-                        }
+            // if (creep.room.memory.resourcePool[creep.memory.closestDroppedEnergyId].amount >= creep.store.getCapacity(RESOURCE_ENERGY)) {
+            if (!creep.memory.reservedResource || !creep.memory.reservedResource.id) {
+                for (let r in droppedEnergy) {
+                    if (droppedEnergy[r].amount >= (creep.store.getCapacity(RESOURCE_ENERGY) - creep.store[RESOURCE_ENERGY])) {
+                        resourcePoolController.reserve(creep, droppedEnergy[r].id,
+                            droppedEnergy[r].resourceType,
+                            (creep.store.getCapacity(RESOURCE_ENERGY) - creep.store[RESOURCE_ENERGY]));
                     }
                 }
+            }
+            
+            if (creep.memory.reservedResource) {
                 if (creep.pickup(Game.getObjectById(creep.memory.reservedResource.id)) === ERR_NOT_IN_RANGE) {
                     creep.moveTo(Game.getObjectById(creep.memory.reservedResource.id))
                 }
             }
+            // }
         }
     }
 };

@@ -131,7 +131,7 @@ let roleCarry = {
                         if (droppedEnergy[r].amount >= creep.store.getCapacity(RESOURCE_ENERGY)) {
                             resourcePoolController.reserve(creep, droppedEnergy[r].id,
                                 droppedEnergy[r].resourceType,
-                                creep.store.getCapacity(RESOURCE_ENERGY));
+                                (creep.store.getCapacity(RESOURCE_ENERGY) - creep.store[RESOURCE_ENERGY]));
                         }
                     }
                 }

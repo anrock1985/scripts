@@ -47,7 +47,7 @@ let roleUpgrader = {
                 storage = creep.room.memory.storageResourcePool[s];
                 reservedAmount = creep.store.getCapacity(RESOURCE_ENERGY) - creep.store[RESOURCE_ENERGY];
                 if (storage.amount >= reservedAmount) {
-                    storagePoolController.reserveWithdraw(creep, storage[storage],
+                    storagePoolController.reserveWithdraw(creep, storage.id,
                         storage.resourceType,
                         reservedAmount);
                 }

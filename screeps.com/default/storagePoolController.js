@@ -32,7 +32,7 @@ let storagePoolController = {
                 console.log("Creep " + creep.name
                     + " reserved " + creep.memory.reservedStorageResource.amount
                     + " energy from " + creep.memory.reservedStorageResource.id
-                    + ". Remaining amount: " + creep.room.memory.reservedStorageResource[id].amount);
+                    + ". Remaining amount: " + creep.room.memory.storageResourcePool[id].amount);
             }
         } else {
             console.log("ERROR: Reserving storage resource fail!");
@@ -50,12 +50,12 @@ let storagePoolController = {
             creep.memory.reservedStorageResource.id = id;
             creep.memory.reservedStorageResource.resourceType = resourceType;
             creep.memory.reservedStorageResource.amount = amount;
-            creep.room.memory.reservedStorageResource[id].amount -= amount;
+            creep.room.memory.storageSpacePool[id].amount -= amount;
             if (logLevel === "debug") {
                 console.log("Creep " + creep.name
                     + " reserved " + creep.memory.reservedStorageResource.amount
                     + " energy from " + creep.memory.reservedStorageResource.id
-                    + ". Remaining amount: " + creep.room.memory.reservedStorageResource[id].amount);
+                    + ". Remaining amount: " + creep.room.memory.storageSpacePool[id].amount);
             }
         } else {
             console.log("ERROR: Reserving storage resource fail!");

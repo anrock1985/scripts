@@ -96,9 +96,16 @@ let roleCarry = {
         }
 
         if (!creep.memory.carrying && creep.memory.reservedResource && creep.memory.reservedResource.id) {
+
+            Memory.debugRoomPoolRAW = creep.room.memory.resourcePool;
+            Memory.debugCreepPoolRAW = creep.memory.reservedResource;
+
             let some = _.some(creep.room.memory.resourcePool, ['id', creep.memory.reservedResource.id]);
 
             Memory.debugSome = some;
+
+            Memory.debugRoomPoolACTUAL = creep.room.memory.resourcePool;
+            Memory.debugCreepPoolACTUAL = creep.memory.reservedResource;
 
             if (!some) {
                 console.log("WARN: Reserved resource disappears");

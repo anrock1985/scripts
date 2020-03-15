@@ -18,7 +18,7 @@ let roleCarry = {
             }
         }
         if (creep.store[RESOURCE_ENERGY] === 0 && creep.memory.carrying) {
-            creep.memory.carrying = false
+            creep.memory.carrying = false;
             storagePoolController.releaseTransfer(creep);
         }
 
@@ -28,108 +28,11 @@ let roleCarry = {
             }
         });
 
-        let biggestDroppedEnergy = droppedEnergy.sort(function (a, b) {
-            return b.amount - a.amount
-        })[0];
-
-        if (!creep.memory.carrying && !creep.memory.closestDroppedEnergyId || !Game.getObjectById(creep.memory.closestDroppedEnergyId)) {
-            if (!droppedEnergy) {
-                creep.memory.closestDroppedEnergyId = undefined;
-            } else {
-                if (biggestDroppedEnergy) {
-                    creep.memory.closestDroppedEnergyId = biggestDroppedEnergy.id;
-                } else {
-                    creep.memory.closestDroppedEnergyId = undefined;
-                }
-            }
-        }
-
-        // let storagesNotFull = creep.room.find(FIND_STRUCTURES, {
-        //     filter: (s) => {
-        //         return (s.structureType === STRUCTURE_EXTENSION
-        //             || s.structureType === STRUCTURE_CONTAINER
-        //             || s.structureType === STRUCTURE_SPAWN
-        //             || s.structureType === STRUCTURE_TOWER
-        //             || s.structureType === STRUCTURE_STORAGE)
-        //             && s.store[RESOURCE_ENERGY] < s.store.getCapacity(RESOURCE_ENERGY)
-        //     }
-        // });
-
-        // let spawnerNotFull = {};
-        // let extensionNotFull = {};
-        // let towerNotHalfFull = {};
-
-        // if (storagesNotFull) {
-        //     spawnerNotFull = storagesNotFull.filter(function (a) {
-        //         return a.structureType === STRUCTURE_SPAWN;
-        //     });
-        //
-        //     extensionNotFull = storagesNotFull.filter(function (a) {
-        //         return a.structureType === STRUCTURE_EXTENSION;
-        //     });
-        //
-        //     towerNotHalfFull = storagesNotFull.filter(function (a) {
-        //         return a.structureType === STRUCTURE_TOWER
-        //             && a.store[RESOURCE_ENERGY] < (a.store.getCapacity(RESOURCE_ENERGY) / 2);
-        //     });
-        // }
-
-        // creep.memory.closestStorageId = {};
-        // if (creep.memory.carrying) {
-        //     if (towerNotHalfFull.length > 0) {
-        //         let closestTowerNotHalfFull = creep.pos.findClosestByPath(towerNotHalfFull);
-        //         if (closestTowerNotHalfFull !== null) {
-        //             creep.memory.closestStorageId = closestTowerNotHalfFull.id;
-        //         }
-        //         if (logLevel === "debug")
-        //             console.log("DEBUG: Storing to tower");
-        //     } else if (extensionNotFull.length > 0) {
-        //         let closestExtensionNotFull = creep.pos.findClosestByPath(extensionNotFull);
-        //         if (closestExtensionNotFull !== null) {
-        //             creep.memory.closestStorageId = closestExtensionNotFull.id;
-        //         }
-        //         if (logLevel === "debug")
-        //             console.log("DEBUG: Storing to extension");
-        //     } else if (spawnerNotFull.length > 0) {
-        //         let closestSpawnerNotFull = creep.pos.findClosestByPath(spawnerNotFull);
-        //         if (closestSpawnerNotFull !== null) {
-        //             creep.memory.closestStorageId = closestSpawnerNotFull.id;
-        //         }
-        //         if (logLevel === "debug")
-        //             console.log("DEBUG: Storing to spawner");
-        //     } else if (storagesNotFull.length > 0) {
-        //         let closestStoragesNotFull = creep.pos.findClosestByPath(storagesNotFull);
-        //         if (closestStoragesNotFull !== null) {
-        //             creep.memory.closestStorageId = closestStoragesNotFull.id;
-        //         }
-        //         if (logLevel === "debug")
-        //             console.log("DEBUG: Storing to random");
-        //     } else {
-        //         if (logLevel === "info")
-        //             console.log("WARN: Carry can't find storage!");
-        //     }
-        // }
-
         //TODO: Заполнять не только крупные, но и те хранилища у которых объем меньше переносимого объема.
 
         if (!creep.memory.reservedStorageSpace || !creep.memory.reservedStorageSpace.id && creep.memory.carrying) {
             let storage;
             let reservedAmount = creep.store[RESOURCE_ENERGY];
-
-            // let spawnerNotFull = (creep.room.memory.storageSpacePool).filter(function (a) {
-            //     return a.structureType === STRUCTURE_SPAWN
-            // });
-            // let extensionNotFull = (creep.room.memory.storageSpacePool).filter(function (a) {
-            //     return a.structureType === STRUCTURE_EXTENSION
-            // });
-            // let towerNotHalfFull = (creep.room.memory.storageSpacePool).filter(function (a) {
-            //     return a.structureType === STRUCTURE_TOWER
-            // });
-            // let storageNotFull = (creep.room.memory.storageSpacePool).filter(function (a) {
-            //     return a.structureType !== STRUCTURE_SPAWN
-            //         && a.structureType !== STRUCTURE_EXTENSION
-            //         && a.structureType !== STRUCTURE_TOWER
-            // });
 
             let spawnerNotFull = _.filter(creep.room.memory.storageSpacePool, function (a) {
                 return a.storageType === STRUCTURE_SPAWN
@@ -150,46 +53,37 @@ let roleCarry = {
                     && a.amount >= 50
             });
 
-            Memory.debugSpawnerNotFull = spawnerNotFull;
-            Memory.debugExtensionNotFull = extensionNotFull;
-            Memory.debugTowerNotHalfFull = towerNotHalfFull;
-            Memory.debugStorageNotFull = storageNotFull;
-
             if (towerNotHalfFull.length > 0) {
                 storage = towerNotHalfFull[0];
                 if (storage.amount >= reservedAmount) {
-                    storagePoolController.reserveTransfer(creep, storage.id,
-                        reservedAmount);
+                    storagePoolController.reserveTransfer(creep, storage.id, reservedAmount);
                 } else {
-                    storagePoolController.reserveTransfer(creep, storage.id,
-                        storage.amount);
+                    storagePoolController.reserveTransfer(creep, storage.id, storage.amount);
+                    creep.memory.reservedStorageSpace = {};
                 }
             } else if (extensionNotFull.length > 0) {
                 storage = extensionNotFull[0];
                 if (storage.amount >= reservedAmount) {
-                    storagePoolController.reserveTransfer(creep, storage.id,
-                        reservedAmount);
+                    storagePoolController.reserveTransfer(creep, storage.id, reservedAmount);
                 } else {
-                    storagePoolController.reserveTransfer(creep, storage.id,
-                        storage.amount);
+                    storagePoolController.reserveTransfer(creep, storage.id, storage.amount);
+                    creep.memory.reservedStorageSpace = {};
                 }
             } else if (spawnerNotFull.length > 0) {
                 storage = spawnerNotFull[0];
                 if (storage.amount >= reservedAmount) {
-                    storagePoolController.reserveTransfer(creep, storage.id,
-                        reservedAmount);
+                    storagePoolController.reserveTransfer(creep, storage.id, reservedAmount);
                 } else {
-                    storagePoolController.reserveTransfer(creep, storage.id,
-                        storage.amount);
+                    storagePoolController.reserveTransfer(creep, storage.id, storage.amount);
+                    creep.memory.reservedStorageSpace = {};
                 }
             } else {
                 storage = storageNotFull[0];
                 if (storage.amount >= reservedAmount) {
-                    storagePoolController.reserveTransfer(creep, storage.id,
-                        reservedAmount);
+                    storagePoolController.reserveTransfer(creep, storage.id, reservedAmount);
                 } else {
-                    storagePoolController.reserveTransfer(creep, storage.id,
-                        storage.amount);
+                    storagePoolController.reserveTransfer(creep, storage.id, storage.amount);
+                    creep.memory.reservedStorageSpace = {};
                 }
             }
         }
@@ -237,5 +131,3 @@ module.exports = roleCarry;
 //TODO: Подбор соринок энергии оставшихся от трупов, если они не далеко от основного пути.
 
 //TODO: Если загружены хоть чем-то, не ходить на дальний спот для полной загрузки.
-
-//TODO: Аудит зависимостей.

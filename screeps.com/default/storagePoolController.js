@@ -68,7 +68,7 @@ let storagePoolController = {
         let logLevel = "debug";
         creep.memory.reservedStorageResource = {};
         if (logLevel === "debug") {
-            console.log("Creep " + creep.name + " released reserve")
+            console.log("Creep " + creep.name + " released storage resource reserve")
         }
     },
 
@@ -77,7 +77,7 @@ let storagePoolController = {
         let logLevel = "debug";
         creep.memory.reservedStorageResource = {};
         if (logLevel === "debug") {
-            console.log("Creep " + creep.name + " released reserve")
+            console.log("Creep " + creep.name + " released storage space reserve")
         }
     }
 };

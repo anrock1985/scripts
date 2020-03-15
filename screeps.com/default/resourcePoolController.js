@@ -8,7 +8,7 @@ let resourcePoolController = {
     },
 
     reserve: function (creep, id, resourceType, amount) {
-        let logLevel = "info";
+        let logLevel = "debug";
         if (creep.memory.reservedResource === undefined) {
             creep.memory.reservedResource = {};
         }

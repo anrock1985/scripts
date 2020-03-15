@@ -27,7 +27,7 @@ let storagePoolController = {
             creep.memory.reservedStorageResource.id = id;
             creep.memory.reservedStorageResource.resourceType = resourceType;
             creep.memory.reservedStorageResource.amount = amount;
-            creep.room.memory.reservedStorageResource[id].amount -= amount;
+            creep.room.memory.storageResourcePool[id].amount -= amount;
             if (logLevel === "debug") {
                 console.log("Creep " + creep.name
                     + " reserved " + creep.memory.reservedStorageResource.amount

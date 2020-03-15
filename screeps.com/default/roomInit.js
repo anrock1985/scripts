@@ -23,7 +23,7 @@ let roomInit = {
             }
         }
 
-        let storages = creep.room.find(FIND_STRUCTURES, {
+        let storages = room.find(FIND_STRUCTURES, {
             filter: (s) => {
                 return (s.structureType === STRUCTURE_EXTENSION
                     || s.structureType === STRUCTURE_CONTAINER

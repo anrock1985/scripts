@@ -156,14 +156,8 @@ let roomInit = {
             }
         }
 
-        Memory.debugStorageResourcePoolRAW = room.memory.storageResourcePool;
-        Memory.debugStorageSpacePoolRAW = room.memory.storageSpacePool;
-
         actualizeRoomResourcePool(room);
         actualizeRoomStoragePool(room);
-
-        Memory.debugStorageResourcePoolACTUAL = room.memory.storageResourcePool;
-        Memory.debugStorageSpacePoolACTUAL = room.memory.storageSpacePool;
 
         //TODO: Optimize
         function actualizeRoomResourcePool(room) {

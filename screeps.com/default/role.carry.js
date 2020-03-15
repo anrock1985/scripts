@@ -130,7 +130,7 @@ let roleCarry = {
             //         && a.structureType !== STRUCTURE_EXTENSION
             //         && a.structureType !== STRUCTURE_TOWER
             // });
-            
+
             let spawnerNotFull = _.filter(creep.room.memory.storageSpacePool, function (a) {
                 return a.structureType === STRUCTURE_SPAWN
             });

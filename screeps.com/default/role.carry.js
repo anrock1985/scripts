@@ -60,7 +60,6 @@ let roleCarry = {
                     storagePoolController.reserveTransfer(creep, storage.id, reservedAmount);
                 } else {
                     storagePoolController.reserveTransfer(creep, storage.id, storage.amount);
-                    creep.memory.reservedStorageSpace = {};
                 }
             } else if (extensionNotFull.length > 0) {
                 storage = extensionNotFull[0];
@@ -68,7 +67,6 @@ let roleCarry = {
                     storagePoolController.reserveTransfer(creep, storage.id, reservedAmount);
                 } else {
                     storagePoolController.reserveTransfer(creep, storage.id, storage.amount);
-                    creep.memory.reservedStorageSpace = {};
                 }
             } else if (spawnerNotFull.length > 0) {
                 storage = spawnerNotFull[0];
@@ -76,7 +74,6 @@ let roleCarry = {
                     storagePoolController.reserveTransfer(creep, storage.id, reservedAmount);
                 } else {
                     storagePoolController.reserveTransfer(creep, storage.id, storage.amount);
-                    creep.memory.reservedStorageSpace = {};
                 }
             } else {
                 storage = storageNotFull[0];
@@ -84,7 +81,6 @@ let roleCarry = {
                     storagePoolController.reserveTransfer(creep, storage.id, reservedAmount);
                 } else {
                     storagePoolController.reserveTransfer(creep, storage.id, storage.amount);
-                    creep.memory.reservedStorageSpace = {};
                 }
             }
         }

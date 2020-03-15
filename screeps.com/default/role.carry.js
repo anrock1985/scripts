@@ -54,28 +54,32 @@ let roleCarry = {
             });
 
             if (towerNotHalfFull.length > 0) {
-                storage = towerNotHalfFull[0];
+                // storage = towerNotHalfFull[0];
+                storage = creep.pos.findClosestByPath(towerNotHalfFull);
                 if (storage.amount >= reservedAmount) {
                     storagePoolController.reserveTransfer(creep, storage.id, reservedAmount);
                 } else {
                     storagePoolController.reserveTransfer(creep, storage.id, storage.amount);
                 }
             } else if (extensionNotFull.length > 0) {
-                storage = extensionNotFull[0];
+                // storage = extensionNotFull[0];
+                storage = creep.pos.findClosestByPath(extensionNotFull);
                 if (storage.amount >= reservedAmount) {
                     storagePoolController.reserveTransfer(creep, storage.id, reservedAmount);
                 } else {
                     storagePoolController.reserveTransfer(creep, storage.id, storage.amount);
                 }
             } else if (spawnerNotFull.length > 0) {
-                storage = spawnerNotFull[0];
+                // storage = spawnerNotFull[0];
+                storage = creep.pos.findClosestByPath(spawnerNotFull);
                 if (storage.amount >= reservedAmount) {
                     storagePoolController.reserveTransfer(creep, storage.id, reservedAmount);
                 } else {
                     storagePoolController.reserveTransfer(creep, storage.id, storage.amount);
                 }
             } else {
-                storage = storageNotFull[0];
+                // storage = storageNotFull[0];
+                storage = creep.pos.findClosestByPath(storageNotFull);
                 if (storage.amount >= reservedAmount) {
                     storagePoolController.reserveTransfer(creep, storage.id, reservedAmount);
                 } else {

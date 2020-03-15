@@ -40,7 +40,7 @@ let roleUpgrader = {
             creep.memory.closestStorageId = storagesWithEnoughEnergy.id;
         }
 
-        if (creep.memory.reservedStorageResource.id) {
+        if (creep.memory.reservedStorageResource && creep.memory.reservedStorageResource.id) {
             if (creep.memory.reservedStorageResource.amount > creep.room.memory.storageResourcePool[creep.memory.reservedStorageResource.id].amount) {
                 console.log("WARN: Reserved storage resource disappears!");
                 creep.memory.reservedStorageResource = {};
@@ -57,6 +57,7 @@ let roleUpgrader = {
                     storagePoolController.reserveWithdraw(creep, storage.id,
                         storage.resourceType,
                         reservedAmount);
+                    break;
                 }
             }
         }

@@ -53,45 +53,42 @@ let roleCarry = {
                     && a.amount >= 50
             });
 
+            //TODO: Optimize!
             if (towerNotHalfFull.length > 0) {
                 towerNotHalfFull = _.map(towerNotHalfFull, a => Game.getObjectById(a.id));
                 Memory.debug1 = towerNotHalfFull;
                 storage = creep.pos.findClosestByPath(towerNotHalfFull);
-                if (storage.amount >= reservedAmount) {
+                if (storage.store.getFreeCapacity(RESOURCE_ENERGY) >= reservedAmount) {
                     storagePoolController.reserveTransfer(creep, storage.id, reservedAmount);
                 } else {
-                    storagePoolController.reserveTransfer(creep, storage.id, storage.amount);
+                    storagePoolController.reserveTransfer(creep, storage.id, storage.store.getFreeCapacity(RESOURCE_ENERGY));
                 }
             } else if (extensionNotFull.length > 0) {
                 extensionNotFull = _.map(extensionNotFull, a => Game.getObjectById(a.id));
                 Memory.debug2 = extensionNotFull;
                 storage = creep.pos.findClosestByPath(extensionNotFull);
-                if (storage.amount >= reservedAmount) {
+                if (storage.store.getFreeCapacity(RESOURCE_ENERGY) >= reservedAmount) {
                     storagePoolController.reserveTransfer(creep, storage.id, reservedAmount);
                 } else {
-                    storagePoolController.reserveTransfer(creep, storage.id, storage.amount);
+                    storagePoolController.reserveTransfer(creep, storage.id, storage.store.getFreeCapacity(RESOURCE_ENERGY));
                 }
             } else if (spawnerNotFull.length > 0) {
-                _.forEach(spawnerNotFull, function (a) {
-                    Game.getObjectById(a.id)
-                });
+                spawnerNotFull = _.map(spawnerNotFull, a => Game.getObjectById(a.id));
                 Memory.debug3 = spawnerNotFull;
                 storage = creep.pos.findClosestByPath(spawnerNotFull);
-                if (storage.amount >= reservedAmount) {
+                if (storage.store.getFreeCapacity(RESOURCE_ENERGY) >= reservedAmount) {
                     storagePoolController.reserveTransfer(creep, storage.id, reservedAmount);
                 } else {
-                    storagePoolController.reserveTransfer(creep, storage.id, storage.amount);
+                    storagePoolController.reserveTransfer(creep, storage.id, storage.store.getFreeCapacity(RESOURCE_ENERGY));
                 }
             } else {
-                _.forEach(storageNotFull, function (a) {
-                    Game.getObjectById(a.id)
-                });
+                storageNotFull = _.map(storageNotFull, a => Game.getObjectById(a.id));
                 Memory.debug4 = storageNotFull;
                 storage = creep.pos.findClosestByPath(storageNotFull);
-                if (storage.amount >= reservedAmount) {
+                if (storage.store.getFreeCapacity(RESOURCE_ENERGY) >= reservedAmount) {
                     storagePoolController.reserveTransfer(creep, storage.id, reservedAmount);
                 } else {
-                    storagePoolController.reserveTransfer(creep, storage.id, storage.amount);
+                    storagePoolController.reserveTransfer(creep, storage.id, storage.store.getFreeCapacity(RESOURCE_ENERGY));
                 }
             }
         }

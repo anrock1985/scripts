@@ -114,7 +114,7 @@ let roleCarry = {
 
         if (!creep.memory.reservedStorageSpace || !creep.memory.reservedStorageSpace.id && creep.memory.carrying) {
             let storage;
-            let reservedAmount;
+            let reservedAmount = creep.store[RESOURCE_ENERGY];
 
             // let spawnerNotFull = (creep.room.memory.storageSpacePool).filter(function (a) {
             //     return a.structureType === STRUCTURE_SPAWN
@@ -156,29 +156,40 @@ let roleCarry = {
             Memory.debugStorageNotFull = storageNotFull;
 
             if (towerNotHalfFull.length > 0) {
-                // for (let s in towerNotHalfFull) {
-                //     storage = towerNotHalfFull[s];
-                //     reservedAmount = creep.store[RESOURCE_ENERGY];
-                //     if (storage.amount >= reservedAmount) {
-                //         storagePoolController.reserveTransfer(creep, storage.id,
-                //             reservedAmount);
-                //         break;
-                //     }
-                // }
-            } else if (extensionNotFull.length > 0) {
-
-            } else if (spawnerNotFull.length > 0) {
-
-            } else {
-
-            }
-            for (let s in creep.room.memory.storageSpacePool) {
-                storage = creep.room.memory.storageSpacePool[s];
-                reservedAmount = creep.store[RESOURCE_ENERGY];
+                storage = towerNotHalfFull[0];
                 if (storage.amount >= reservedAmount) {
                     storagePoolController.reserveTransfer(creep, storage.id,
                         reservedAmount);
-                    break;
+                } else {
+                    storagePoolController.reserveTransfer(creep, storage.id,
+                        storage.amount);
+                }
+            } else if (extensionNotFull.length > 0) {
+                storage = extensionNotFull[0];
+                if (storage.amount >= reservedAmount) {
+                    storagePoolController.reserveTransfer(creep, storage.id,
+                        reservedAmount);
+                } else {
+                    storagePoolController.reserveTransfer(creep, storage.id,
+                        storage.amount);
+                }
+            } else if (spawnerNotFull.length > 0) {
+                storage = spawnerNotFull[0];
+                if (storage.amount >= reservedAmount) {
+                    storagePoolController.reserveTransfer(creep, storage.id,
+                        reservedAmount);
+                } else {
+                    storagePoolController.reserveTransfer(creep, storage.id,
+                        storage.amount);
+                }
+            } else {
+                storage = storageNotFull[0];
+                if (storage.amount >= reservedAmount) {
+                    storagePoolController.reserveTransfer(creep, storage.id,
+                        reservedAmount);
+                } else {
+                    storagePoolController.reserveTransfer(creep, storage.id,
+                        storage.amount);
                 }
             }
         }

@@ -47,7 +47,7 @@ let roleUpgrader = {
         //     }
         // }
 
-        if (!creep.memory.reservedStorageResource || !creep.memory.reservedStorageResource.id && !creep.memory.upgrading) {
+        if (!creep.memory.reservedStorageResource || !creep.memory.reservedStorageResource.id && !creep.memory.upgrading && creep.room.energyAvailable >= 300) {
             let storage;
             let reservedAmount;
             for (let s in creep.room.memory.storageResourcePool) {

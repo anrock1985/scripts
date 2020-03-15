@@ -53,54 +53,44 @@ let roleCarry = {
                     && a.amount >= 50
             });
 
-            //TODO: Optimize!
             if (towerNotHalfFull.length > 0) {
-                towerNotHalfFull = _.map(towerNotHalfFull, a => Game.getObjectById(a.id));
-                Memory.debug1 = towerNotHalfFull;
-                storage = creep.pos.findClosestByPath(towerNotHalfFull);
-                if (storage.store.getFreeCapacity(RESOURCE_ENERGY) >= reservedAmount) {
+                storage = towerNotHalfFull[0];
+                if (storage.amount >= reservedAmount) {
                     storagePoolController.reserveTransfer(creep, storage.id, reservedAmount);
                 } else {
-                    storagePoolController.reserveTransfer(creep, storage.id, storage.store.getFreeCapacity(RESOURCE_ENERGY));
+                    storagePoolController.reserveTransfer(creep, storage.id, storage.amount);
+                    creep.memory.reservedStorageSpace = {};
                 }
             } else if (extensionNotFull.length > 0) {
-                extensionNotFull = _.map(extensionNotFull, a => Game.getObjectById(a.id));
-                Memory.debug2 = extensionNotFull;
-                storage = creep.pos.findClosestByPath(extensionNotFull);
-                Memory.debug22 = storage;
-                if (storage.store.getFreeCapacity(RESOURCE_ENERGY) >= reservedAmount) {
+                storage = extensionNotFull[0];
+                if (storage.amount >= reservedAmount) {
                     storagePoolController.reserveTransfer(creep, storage.id, reservedAmount);
                 } else {
-                    storagePoolController.reserveTransfer(creep, storage.id, storage.store.getFreeCapacity(RESOURCE_ENERGY));
+                    storagePoolController.reserveTransfer(creep, storage.id, storage.amount);
+                    creep.memory.reservedStorageSpace = {};
                 }
             } else if (spawnerNotFull.length > 0) {
-                spawnerNotFull = _.map(spawnerNotFull, a => Game.getObjectById(a.id));
-                Memory.debug3 = spawnerNotFull;
-                storage = creep.pos.findClosestByPath(spawnerNotFull);
-                if (storage.store.getFreeCapacity(RESOURCE_ENERGY) >= reservedAmount) {
+                storage = spawnerNotFull[0];
+                if (storage.amount >= reservedAmount) {
                     storagePoolController.reserveTransfer(creep, storage.id, reservedAmount);
                 } else {
-                    storagePoolController.reserveTransfer(creep, storage.id, storage.store.getFreeCapacity(RESOURCE_ENERGY));
+                    storagePoolController.reserveTransfer(creep, storage.id, storage.amount);
+                    creep.memory.reservedStorageSpace = {};
                 }
             } else {
-                storageNotFull = _.map(storageNotFull, a => Game.getObjectById(a.id));
-                Memory.debug4 = storageNotFull;
-                storage = creep.pos.findClosestByPath(storageNotFull);
-                if (storage.store.getFreeCapacity(RESOURCE_ENERGY) >= reservedAmount) {
+                storage = storageNotFull[0];
+                if (storage.amount >= reservedAmount) {
                     storagePoolController.reserveTransfer(creep, storage.id, reservedAmount);
                 } else {
-                    storagePoolController.reserveTransfer(creep, storage.id, storage.store.getFreeCapacity(RESOURCE_ENERGY));
+                    storagePoolController.reserveTransfer(creep, storage.id, storage.amount);
+                    creep.memory.reservedStorageSpace = {};
                 }
             }
         }
 
         if (creep.memory.reservedStorageSpace && creep.memory.reservedStorageSpace.id) {
-            let resultCode = creep.transfer(Game.getObjectById(creep.memory.reservedStorageSpace.id), RESOURCE_ENERGY);
-            if (resultCode === ERR_NOT_IN_RANGE) {
+            if (creep.transfer(Game.getObjectById(creep.memory.reservedStorageSpace.id), RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
                 creep.moveTo(Game.getObjectById(creep.memory.reservedStorageSpace.id));
-            }
-            if (resultCode === 0) {
-                creep.memory.reservedStorageSpace = {};
             }
         }
 

@@ -67,6 +67,7 @@ let roleCarry = {
                 extensionNotFull = _.map(extensionNotFull, a => Game.getObjectById(a.id));
                 Memory.debug2 = extensionNotFull;
                 storage = creep.pos.findClosestByPath(extensionNotFull);
+                Memory.debug22 = storage;
                 if (storage.store.getFreeCapacity(RESOURCE_ENERGY) >= reservedAmount) {
                     storagePoolController.reserveTransfer(creep, storage.id, reservedAmount);
                 } else {

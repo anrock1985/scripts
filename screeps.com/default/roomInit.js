@@ -130,7 +130,11 @@ let roomInit = {
             for (let e in droppedEnergy) {
                 let droppedEnergyId = droppedEnergy[e].id;
                 let droppedEnergyAmount = droppedEnergy[e].energy;
-                room.memory.resourcePool[droppedEnergyId] = {type: RESOURCE_ENERGY, amount: droppedEnergyAmount};
+                room.memory.resourcePool[droppedEnergyId] = {
+                    id: droppedEnergyId,
+                    type: RESOURCE_ENERGY,
+                    amount: droppedEnergyAmount
+                };
             }
         }
 
@@ -140,19 +144,27 @@ let roomInit = {
                 let storageId = storages[s].id;
                 let storageSpaceUsed = storages[s].store[RESOURCE_ENERGY];
                 let storageSpaceAvailable = storages[s].store.getCapacity(RESOURCE_ENERGY) - storageSpaceUsed;
-                room.memory.storageResourcePool[storageId] = {type: RESOURCE_ENERGY, amount: storageSpaceUsed};
-                room.memory.storageSpacePool[storageId] = {type: RESOURCE_ENERGY, amount: storageSpaceAvailable};
+                room.memory.storageResourcePool[storageId] = {
+                    id: storageId,
+                    type: RESOURCE_ENERGY,
+                    amount: storageSpaceUsed
+                };
+                room.memory.storageSpacePool[storageId] = {
+                    id: storageId,
+                    type: RESOURCE_ENERGY,
+                    amount: storageSpaceAvailable
+                };
             }
         }
 
         Memory.debugStorageResourcePoolRAW = room.memory.storageResourcePool;
-        Memory.debugStorageSpacePoolRAW = room.memory.storageResourcePool;
+        Memory.debugStorageSpacePoolRAW = room.memory.storageSpacePool;
 
         actualizeRoomResourcePool(room);
         actualizeRoomStoragePool(room);
 
         Memory.debugStorageResourcePoolACTUAL = room.memory.storageResourcePool;
-        Memory.debugStorageSpacePoolACTUAL = room.memory.storageResourcePool;
+        Memory.debugStorageSpacePoolACTUAL = room.memory.storageSpacePool;
 
         //TODO: Optimize
         function actualizeRoomResourcePool(room) {

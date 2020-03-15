@@ -86,7 +86,7 @@ let roleCarry = {
             }
         }
 
-        if (!creep.memory.carrying && creep.memory.reservedResource && creep.memory.reservedResource.id) {
+        if ((Game.time % 10 === 0) && !creep.memory.carrying && creep.memory.reservedResource && creep.memory.reservedResource.id) {
             let some = _.find(creep.room.memory.resourcePool, function (a) {
                 return a.id === creep.memory.reservedResource.id
             });

@@ -95,31 +95,29 @@ let roleCarry = {
             }
         }
 
-        if (!creep.memory.carrying && creep.store[RESOURCE_ENERGY] !== creep.store.getCapacity(RESOURCE_ENERGY)) {
-            if (creep.memory.reservedResource) {
-                if (!_.some(creep.room.memory.resourcePool, creep.memory.reservedResource.id)) {
-                    console.log("WARN: Reserved resource disappears");
-                    creep.memory.reservedResource = {};
-                }
-                // let filteredDrops = droppedEnergy.filter(function (a) {
-                //     return a.id === creep.memory.reservedResource.id;
-                // });
-                // if (filteredDrops.length === 0) {
-                //     console.log("WARN: Reserved resource disappears");
-                //     creep.memory.reservedResource = {};
-                // }
+        if (!creep.memory.carrying && creep.memory.reservedResource && creep.memory.reservedResource.id) {
+            if (!_.some(creep.room.memory.resourcePool, creep.memory.reservedResource.id)) {
+                console.log("WARN: Reserved resource disappears");
+                creep.memory.reservedResource = {};
             }
+            // let filteredDrops = droppedEnergy.filter(function (a) {
+            //     return a.id === creep.memory.reservedResource.id;
+            // });
+            // if (filteredDrops.length === 0) {
+            //     console.log("WARN: Reserved resource disappears");
+            //     creep.memory.reservedResource = {};
+            // }
 
-            if (!creep.memory.reservedResource || !creep.memory.reservedResource.id && !creep.memory.carrying) {
-                for (let r in creep.room.memory.resourcePool) {
-                    let droppedEnergy = creep.room.memory.resourcePool[r];
-                    if (droppedEnergy.amount >= creep.store.getFreeCapacity(RESOURCE_ENERGY)) {
-                        resourcePoolController.reserve(creep, droppedEnergy.id,
-                            droppedEnergy.resourceType,
-                            creep.store.getFreeCapacity(RESOURCE_ENERGY));
-                    }
+            // if (!creep.memory.reservedResource || !creep.memory.reservedResource.id && !creep.memory.carrying) {
+            for (let r in creep.room.memory.resourcePool) {
+                let droppedEnergy = creep.room.memory.resourcePool[r];
+                if (droppedEnergy.amount >= creep.store.getFreeCapacity(RESOURCE_ENERGY)) {
+                    resourcePoolController.reserve(creep, droppedEnergy.id,
+                        droppedEnergy.resourceType,
+                        creep.store.getFreeCapacity(RESOURCE_ENERGY));
                 }
             }
+            // }
 
             if (creep.memory.reservedResource) {
                 if (creep.pickup(Game.getObjectById(creep.memory.reservedResource.id)) === ERR_NOT_IN_RANGE) {

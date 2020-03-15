@@ -54,28 +54,40 @@ let roleCarry = {
             });
 
             if (towerNotHalfFull.length > 0) {
-                storage = creep.pos.findClosestByPath(Game.getObjectById(towerNotHalfFull.id));
+                _.forEach(towerNotHalfFull, function (a) {
+                    Game.getObjectById(a.id)
+                });
+                storage = creep.pos.findClosestByPath(towerNotHalfFull);
                 if (storage.amount >= reservedAmount) {
                     storagePoolController.reserveTransfer(creep, storage.id, reservedAmount);
                 } else {
                     storagePoolController.reserveTransfer(creep, storage.id, storage.amount);
                 }
             } else if (extensionNotFull.length > 0) {
-                storage = creep.pos.findClosestByPath(Game.getObjectById(extensionNotFull.id));
+                _.forEach(extensionNotFull, function (a) {
+                    Game.getObjectById(a.id)
+                });
+                storage = creep.pos.findClosestByPath(extensionNotFull);
                 if (storage.amount >= reservedAmount) {
                     storagePoolController.reserveTransfer(creep, storage.id, reservedAmount);
                 } else {
                     storagePoolController.reserveTransfer(creep, storage.id, storage.amount);
                 }
             } else if (spawnerNotFull.length > 0) {
-                storage = creep.pos.findClosestByPath(Game.getObjectById(spawnerNotFull.id));
+                _.forEach(spawnerNotFull, function (a) {
+                    Game.getObjectById(a.id)
+                });
+                storage = creep.pos.findClosestByPath(spawnerNotFull);
                 if (storage.amount >= reservedAmount) {
                     storagePoolController.reserveTransfer(creep, storage.id, reservedAmount);
                 } else {
                     storagePoolController.reserveTransfer(creep, storage.id, storage.amount);
                 }
             } else {
-                storage = creep.pos.findClosestByPath(Game.getObjectById(storageNotFull.id));
+                _.forEach(storageNotFull, function (a) {
+                    Game.getObjectById(a.id)
+                });
+                storage = creep.pos.findClosestByPath(storageNotFull);
                 if (storage.amount >= reservedAmount) {
                     storagePoolController.reserveTransfer(creep, storage.id, reservedAmount);
                 } else {

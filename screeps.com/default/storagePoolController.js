@@ -1,12 +1,13 @@
 let storagePoolController = {
     check: function (creep) {
         //Получение ресурса из хранилища
-        if ((creep.memory.role === "builder"
+        if (creep.memory.role === "builder"
             || creep.memory.role === "upgrader"
             || creep.memory.role === "repairer"
-            || creep.memory.role === "claimer")
-            && creep.memory.reservedStorageResource === undefined) {
-            creep.memory.reservedStorageResource = {};
+            || creep.memory.role === "claimer") {
+            if (creep.memory.reservedStorageResource === undefined) {
+                creep.memory.reservedStorageResource = {};
+            }
         }
 
         //Доставка ресурса в хранилище

@@ -26,24 +26,38 @@ let roleCarry = {
             let storage;
             let reservedAmount = creep.store[RESOURCE_ENERGY];
 
-            let spawnerNotFull = _.filter(creep.room.memory.storageSpacePool, function (a) {
+            let spawnerNotFull;
+            let extensionNotFull = [];
+            let towerNotHalfFull = [];
+            let storageNotFull = [];
+
+            spawnerNotFull = _.filter(creep.room.memory.storageSpacePool, function (a) {
                 return a.storageType === STRUCTURE_SPAWN
                     && a.amount >= 50
             });
-            let extensionNotFull = _.filter(creep.room.memory.storageSpacePool, function (a) {
-                return a.storageType === STRUCTURE_EXTENSION
-                    && a.amount >= 50
-            });
-            let towerNotHalfFull = _.filter(creep.room.memory.storageSpacePool, function (a) {
-                return a.storageType === STRUCTURE_TOWER
-                    && a.amount >= 50
-            });
-            let storageNotFull = _.filter(creep.room.memory.storageSpacePool, function (a) {
-                return (a.storageType !== STRUCTURE_SPAWN
-                    && a.storageType !== STRUCTURE_EXTENSION
-                    && a.storageType !== STRUCTURE_TOWER)
-                    && a.amount >= 50
-            });
+
+            if (spawnerNotFull.length === 0) {
+                extensionNotFull = _.filter(creep.room.memory.storageSpacePool, function (a) {
+                    return a.storageType === STRUCTURE_EXTENSION
+                        && a.amount >= 50
+                });
+            }
+
+            if (extensionNotFull.length === 0) {
+                towerNotHalfFull = _.filter(creep.room.memory.storageSpacePool, function (a) {
+                    return a.storageType === STRUCTURE_TOWER
+                        && a.amount >= 50
+                });
+            }
+
+            if (towerNotHalfFull.length === 0) {
+                storageNotFull = _.filter(creep.room.memory.storageSpacePool, function (a) {
+                    return (a.storageType !== STRUCTURE_SPAWN
+                        && a.storageType !== STRUCTURE_EXTENSION
+                        && a.storageType !== STRUCTURE_TOWER)
+                        && a.amount >= 50
+                });
+            }
 
             if (towerNotHalfFull.length > 0) {
                 storage = towerNotHalfFull[0];

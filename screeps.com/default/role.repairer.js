@@ -4,6 +4,8 @@ let roleRepairer = {
 
         let debug = true;
 
+        let storagePoolController = require('storagePoolController');
+
         let damagedStructures = creep.room.find(FIND_STRUCTURES, {
             filter: (s) => {
                 return ((s.structureType !== STRUCTURE_CONTROLLER) && (s.hits <= (s.hitsMax - (s.hitsMax / 6))));

@@ -1,6 +1,10 @@
 let roleBuilder = {
     run: function (creep) {
+
+        let _ = require('lodash');
+
         let constructionController = require('constructionController');
+        let storagePoolController = require('storagePoolController');
 
         let constructionSites;
         let closestConstructionSite;

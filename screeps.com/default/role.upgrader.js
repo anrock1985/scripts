@@ -2,6 +2,8 @@ let roleUpgrader = {
     run: function (creep) {
         let _ = require('lodash');
 
+        let storagePoolController = require('storagePoolController');
+
         if (creep.memory.upgrading === undefined) {
             creep.memory.upgrading = true;
         }
@@ -10,6 +12,7 @@ let roleUpgrader = {
         }
         if (creep.store[RESOURCE_ENERGY] === creep.store.getCapacity(RESOURCE_ENERGY) && !creep.memory.upgrading) {
             creep.memory.upgrading = true;
+            storagePoolController.releaseWithdraw(creep);
         }
 
         let closestSpawner = creep.pos.findClosestByPath(FIND_MY_SPAWNS);
@@ -37,14 +40,23 @@ let roleUpgrader = {
             creep.memory.closestStorageId = storagesWithEnoughEnergy.id;
         }
 
-        if (creep.store[RESOURCE_ENERGY] < creep.store.getCapacity(RESOURCE_ENERGY) && !creep.memory.upgrading) {
-            if (creep.memory.closestStorageId) {
-                if (Game.getObjectById(creep.memory.closestStorageId).store[RESOURCE_ENERGY]
-                    >= (creep.store.getCapacity(RESOURCE_ENERGY) - creep.store[RESOURCE_ENERGY]) && Memory.harvesters > 1) {
-                    if (creep.withdraw(Game.getObjectById(creep.memory.closestStorageId), RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
-                        creep.moveTo(Game.getObjectById(creep.memory.closestStorageId));
-                    }
+        if (!creep.memory.reservedStorageResource || !creep.memory.reservedStorageResource.id && !creep.memory.upgrading) {
+            let storage;
+            let reservedAmount;
+            for (let s in creep.room.memory.storageResourcePool) {
+                storage = creep.room.memory.storageResourcePool[s];
+                reservedAmount = creep.store.getCapacity(RESOURCE_ENERGY) - creep.store[RESOURCE_ENERGY];
+                if (storage.amount >= reservedAmount) {
+                    storagePoolController.reserveWithdraw(creep, storage.id,
+                        storage.resourceType,
+                        reservedAmount);
                 }
+            }
+        }
+
+        if (creep.memory.reservedStorageResource) {
+            if (creep.withdraw(Game.getObjectById(creep.memory.reservedStorageResource.id), RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
+                creep.moveTo(Game.getObjectById(creep.memory.reservedStorageResource.id));
             }
         }
 

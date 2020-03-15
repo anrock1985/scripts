@@ -1,6 +1,7 @@
 let resourcePoolController = {
     check: function (creep) {
-        if (creep.memory.reservedResource === undefined) {
+        if (creep.memory.role === "carry"
+            && creep.memory.reservedResource === undefined) {
             creep.memory.reservedResource = {};
         }
     },

@@ -2,8 +2,11 @@ let roomInit = {
     init: function (room) {
 
         let resourcePoolController = require('resourcePoolController');
+        let storagePoolController = require('storagePoolController');
 
         room.memory.resourcePool = {};
+        room.memory.storageResourcePool = {};
+        room.memory.storageSpacePool = {};
 
         room.memory.creeps = [];
         for (let c in Game.creeps) {
@@ -14,20 +17,30 @@ let roomInit = {
 
         let sources = room.find(FIND_SOURCES);
         if (sources) {
-            if (!room.memory.sourceIds) {
-                room.memory.sourceIds = [];
-            }
             room.memory.sourceIds = [];
             for (let s in sources) {
                 room.memory.sourceIds.push(sources[s].id)
             }
         }
 
+        let storages = creep.room.find(FIND_STRUCTURES, {
+            filter: (s) => {
+                return (s.structureType === STRUCTURE_EXTENSION
+                    || s.structureType === STRUCTURE_CONTAINER
+                    || s.structureType === STRUCTURE_SPAWN
+                    || s.structureType === STRUCTURE_TOWER
+                    || s.structureType === STRUCTURE_STORAGE)
+            }
+        });
+        if (storages) {
+            room.memory.storagesIds = [];
+            for (let s in storages) {
+                room.memory.storagesIds.push(storages[s].id)
+            }
+        }
+
         let myConstructionSites = room.find(FIND_MY_CONSTRUCTION_SITES);
         if (myConstructionSites) {
-            if (!room.memory.myConstructionSiteIds) {
-                room.memory.myConstructionSiteIds = [];
-            }
             room.memory.myConstructionSiteIds = [];
             for (let s in myConstructionSites) {
                 room.memory.myConstructionSiteIds.push(myConstructionSites[s].id)
@@ -48,10 +61,6 @@ let roomInit = {
 
         let mySpawners = room.find(FIND_MY_SPAWNS);
         if (mySpawners) {
-            if (!room.memory.mySpawnerIds) {
-                room.memory.mySpawnerIds = [];
-                console.log("WARN: No room.memory.mySpawnerIds found, setting it to []");
-            }
             room.memory.mySpawnerIds = [];
             for (let s in mySpawners) {
                 room.memory.mySpawnerIds.push(mySpawners[s].id);
@@ -116,8 +125,7 @@ let roomInit = {
             }
         }
 
-        Memory.debugDroppedEnergy = droppedEnergy;
-
+        //Вычисляем количество каждого брошенного ресурса в комнате
         if (droppedEnergy.length > 0) {
             for (let e in droppedEnergy) {
                 let droppedEnergyId = droppedEnergy[e].id;
@@ -126,23 +134,58 @@ let roomInit = {
             }
         }
 
-        Memory.debugResourcePoolRaw = room.memory.resourcePool;
+        //Вычисляем параметры каждого хранилища в комнате
+        if (storages.length > 0) {
+            for (let s in storages) {
+                let storageId = storages[s].id;
+                let storageSpaceUsed = storages[s].store[RESOURCE_ENERGY];
+                let storageSpaceAvailable = storages[s].store.getCapacity(RESOURCE_ENERGY) - storageSpaceUsed;
+                room.memory.storageResourcePool[storageId] = {type: RESOURCE_ENERGY, amount: storageSpaceUsed};
+                room.memory.storageSpacePool[storageId] = {type: RESOURCE_ENERGY, amount: storageSpaceAvailable};
+            }
+        }
 
-        Memory.debugRoomCreeps = room.memory.creeps;
+        Memory.debugStorageResourcePoolRAW = room.memory.storageResourcePool;
+        Memory.debugStorageSpacePoolRAW = room.memory.storageResourcePool;
 
         actualizeRoomResourcePool(room);
+        actualizeRoomStoragePool(room);
 
-        Memory.debugResourcePoolActual = room.memory.resourcePool;
+        Memory.debugStorageResourcePoolACTUAL = room.memory.storageResourcePool;
+        Memory.debugStorageSpacePoolACTUAL = room.memory.storageResourcePool;
 
         //TODO: Optimize
         function actualizeRoomResourcePool(room) {
             if (room.memory.creeps.length > 0) {
                 for (let i = 0; i < room.memory.creeps.length; i++) {
                     let creep = Game.getObjectById(room.memory.creeps[i]);
-                    resourcePoolController.check(creep);
-                    let creepReservedResourceId = creep.memory.reservedResource.id;
-                    if (room.memory.resourcePool[creepReservedResourceId]) {
-                        room.memory.resourcePool[creepReservedResourceId].amount -= Game.getObjectById(room.memory.creeps[i]).memory.reservedResource.amount;
+                    if (creep.memory.role === "carry") {
+                        resourcePoolController.check(creep);
+                        let creepReservedResourceId = creep.memory.reservedResource.id;
+                        if (room.memory.resourcePool[creepReservedResourceId]) {
+                            room.memory.resourcePool[creepReservedResourceId].amount -= Game.getObjectById(room.memory.creeps[i]).memory.reservedResource.amount;
+                        }
+                    }
+                }
+            }
+        }
+
+        //TODO: Optimize
+        function actualizeRoomStoragePool(room) {
+            if (room.memory.creeps.length > 0) {
+                for (let i = 0; i < room.memory.creeps.length; i++) {
+                    let creep = Game.getObjectById(room.memory.creeps[i]);
+                    storagePoolController.check(creep);
+                    if (creep.memory.reservedStorageResource) {
+                        let creepReservedStorageResource = creep.memory.reservedResource.id;
+                        if (room.memory.storageResourcePool[creepReservedStorageResource]) {
+                            room.memory.storageResourcePool[creepReservedStorageResource].amount -= Game.getObjectById(room.memory.creeps[i]).memory.reservedStorageResource.amount;
+                        }
+                    } else if (creep.memory.reservedStorageSpace) {
+                        let creepReservedStorageSpace = creep.memory.reservedStorageSpace.id;
+                        if (room.memory.storageSpacePool[creepReservedStorageSpace]) {
+                            room.memory.storageSpacePool[creepReservedStorageSpace].amount -= Game.getObjectById(room.memory.creeps[i]).memory.reservedStorageSpace.amount;
+                        }
                     }
                 }
             }

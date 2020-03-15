@@ -97,13 +97,17 @@ let roleCarry = {
 
         if (!creep.memory.carrying && creep.store[RESOURCE_ENERGY] !== creep.store.getCapacity(RESOURCE_ENERGY)) {
             if (creep.memory.reservedResource) {
-                let filteredDrops = droppedEnergy.filter(function (a) {
-                    return a.id === creep.memory.reservedResource.id;
-                });
-                if (filteredDrops.length === 0) {
+                if (!_.some(creep.room.memory.resourcePool, creep.memory.reservedResource.id)) {
                     console.log("WARN: Reserved resource disappears");
                     creep.memory.reservedResource = {};
                 }
+                // let filteredDrops = droppedEnergy.filter(function (a) {
+                //     return a.id === creep.memory.reservedResource.id;
+                // });
+                // if (filteredDrops.length === 0) {
+                //     console.log("WARN: Reserved resource disappears");
+                //     creep.memory.reservedResource = {};
+                // }
             }
 
             if (!creep.memory.reservedResource || !creep.memory.reservedResource.id && !creep.memory.carrying) {

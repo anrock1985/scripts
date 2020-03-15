@@ -96,31 +96,13 @@ let roleCarry = {
         }
 
         if (!creep.memory.carrying && creep.memory.reservedResource && creep.memory.reservedResource.id) {
-
-            Memory.debugRoomPoolRAW = creep.room.memory.resourcePool;
-            Memory.debugCreepPoolRAW = creep.memory.reservedResource;
-
-            // let some = _.some(creep.room.memory.resourcePool, [[creep.memory.reservedResource.id].id, creep.memory.reservedResource.id]);
-            console.log(creep.memory.reservedResource.id);
-            let some = _.find(creep.room.memory.resourcePool, function (a) {return a.id === creep.memory.reservedResource.id});
-
-            Memory.debugSome = some;
-
-            Memory.debugRoomPoolACTUAL = creep.room.memory.resourcePool;
-            Memory.debugCreepPoolACTUAL = creep.memory.reservedResource;
-
-            // if (!some) {
+            let some = _.find(creep.room.memory.resourcePool, function (a) {
+                return a.id === creep.memory.reservedResource.id
+            });
             if (!some) {
-                console.log("WARN: Reserved resource disappears");
+                console.log("WARN: Reserved resource " + creep.memory.reservedResource.id + " disappears");
                 creep.memory.reservedResource = {};
             }
-            // let filteredDrops = droppedEnergy.filter(function (a) {
-            //     return a.id === creep.memory.reservedResource.id;
-            // });
-            // if (filteredDrops.length === 0) {
-            //     console.log("WARN: Reserved resource disappears");
-            //     creep.memory.reservedResource = {};
-            // }
         }
 
         if (!creep.memory.reservedResource || !creep.memory.reservedResource.id && !creep.memory.carrying) {

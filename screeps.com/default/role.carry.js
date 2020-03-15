@@ -22,15 +22,6 @@ let roleCarry = {
             storagePoolController.releaseTransfer(creep);
         }
 
-        let droppedEnergy = creep.room.find(FIND_DROPPED_RESOURCES, {
-            filter: (r) => {
-                return r.resourceType === RESOURCE_ENERGY
-            }
-        });
-
-        //TODO: Заполнять не только крупные, но и те хранилища у которых объем меньше переносимого объема.
-
-        //
         if (!creep.memory.reservedStorageSpace || !creep.memory.reservedStorageSpace.id && creep.memory.carrying) {
             let storage;
             let reservedAmount = creep.store[RESOURCE_ENERGY];
@@ -131,3 +122,5 @@ module.exports = roleCarry;
 //TODO: Подбор соринок энергии оставшихся от трупов, если они не далеко от основного пути.
 
 //TODO: Если загружены хоть чем-то, не ходить на дальний спот для полной загрузки.
+
+//TODO: Учитывать ближайшие места выгрузки.

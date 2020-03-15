@@ -150,7 +150,7 @@ let roomInit = {
                 };
                 room.memory.storageSpacePool[storageId] = {
                     id: storageId,
-                    type: RESOURCE_ENERGY,
+                    storageType: storages[s].structureType,
                     amount: storageSpaceAvailable
                 };
             }

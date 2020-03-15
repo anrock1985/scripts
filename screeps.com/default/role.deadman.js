@@ -5,6 +5,7 @@ let roleDeadman = {
         if (creep.memory.role !== "deadman") {
             creep.memory.lastRole = creep.memory.role;
             creep.memory.role = "deadman";
+            creep.memory.reservedResource = {};
             if (debug) {
                 console.log("INFO: Creep " + creep.name + " marked as deadman now.");
             }

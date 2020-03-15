@@ -100,7 +100,7 @@ let roleCarry = {
             Memory.debugRoomPoolRAW = creep.room.memory.resourcePool;
             Memory.debugCreepPoolRAW = creep.memory.reservedResource;
 
-            let some = _.some(creep.room.memory.resourcePool, ['id', creep.memory.reservedResource.id]);
+            let some = _.some(creep.room.memory.resourcePool, [[creep.memory.reservedResource.id].id, creep.memory.reservedResource.id]);
 
             Memory.debugSome = some;
 

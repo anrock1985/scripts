@@ -3,6 +3,7 @@ let roleCarry = {
         let _ = require('lodash');
 
         let resourcePoolController = require('resourcePoolController');
+        let storagePoolController = require('storagePoolController');
 
         let logLevel = "info";
 
@@ -18,6 +19,7 @@ let roleCarry = {
         }
         if (creep.store[RESOURCE_ENERGY] === 0 && creep.memory.carrying) {
             creep.memory.carrying = false
+            storagePoolController.releaseTransfer(creep);
         }
 
         let droppedEnergy = creep.room.find(FIND_DROPPED_RESOURCES, {
@@ -108,11 +110,24 @@ let roleCarry = {
             }
         }
 
-        if (creep.memory.carrying && creep.store[RESOURCE_ENERGY] !== 0) {
-            if (creep.memory.closestStorageId) {
-                if (creep.transfer(Game.getObjectById(creep.memory.closestStorageId), RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
-                    creep.moveTo(Game.getObjectById(creep.memory.closestStorageId));
+        if (!creep.memory.reservedStorageSpace || !creep.memory.reservedStorageSpace.id && creep.memory.carrying) {
+            let storage;
+            let reservedAmount;
+            for (let s in creep.room.memory.storageSpacePool) {
+                storage = creep.room.memory.storageSpacePool[s];
+                reservedAmount = creep.store[RESOURCE_ENERGY];
+                if (storage.amount >= reservedAmount) {
+                    storagePoolController.reserveTransfer(creep, storage.id,
+                        storage.resourceType,
+                        reservedAmount);
+                    break;
                 }
+            }
+        }
+
+        if (creep.memory.reservedStorageSpace) {
+            if (creep.transfer(Game.getObjectById(creep.memory.reservedStorageSpace), RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
+                creep.moveTo(Game.getObjectById(creep.memory.reservedStorageSpace));
             }
         }
 

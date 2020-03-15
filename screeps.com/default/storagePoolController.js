@@ -11,10 +11,11 @@ let storagePoolController = {
         }
 
         //Доставка ресурса в хранилище
-        if ((creep.memory.role === "carry"
-            || creep.memory.role === "harvester")
-            && creep.memory.reservedStorageSpace === undefined) {
-            creep.memory.reservedStorageSpace = {};
+        if (creep.memory.role === "carry"
+            || creep.memory.role === "harvester") {
+            if (creep.memory.reservedStorageSpace === undefined) {
+                creep.memory.reservedStorageSpace = {};
+            }
         }
     },
 
@@ -44,22 +45,22 @@ let storagePoolController = {
     //Доставка ресурса в хранилище
     reserveTransfer: function (creep, id, resourceType, amount) {
         let logLevel = "debug";
-        if (creep.memory.reservedStorageResource === undefined) {
-            creep.memory.reservedStorageResource = {};
+        if (creep.memory.reservedStorageSpace === undefined) {
+            creep.memory.reservedStorageSpace = {};
         }
         if (Game.getObjectById(id).amount >= amount) {
-            creep.memory.reservedStorageResource.id = id;
-            creep.memory.reservedStorageResource.resourceType = resourceType;
-            creep.memory.reservedStorageResource.amount = amount;
+            creep.memory.reservedStorageSpace.id = id;
+            creep.memory.reservedStorageSpace.resourceType = resourceType;
+            creep.memory.reservedStorageSpace.amount = amount;
             creep.room.memory.storageSpacePool[id].amount -= amount;
             if (logLevel === "debug") {
                 console.log("Creep " + creep.name
-                    + " reserved " + creep.memory.reservedStorageResource.amount
-                    + " energy from " + creep.memory.reservedStorageResource.id
-                    + ". Remaining amount: " + creep.room.memory.storageSpacePool[id].amount);
+                    + " reserved " + creep.memory.reservedStorageSpace.amount
+                    + " space in " + creep.memory.reservedStorageSpace.id
+                    + ". Remaining space: " + creep.room.memory.storageSpacePool[id].amount);
             }
         } else {
-            console.log("ERROR: Reserving storage resource fail!");
+            console.log("ERROR: Reserving storage space fail!");
             return -1;
         }
     },
@@ -76,7 +77,7 @@ let storagePoolController = {
     //Доставка ресурса в хранилище
     releaseTransfer: function (creep) {
         let logLevel = "debug";
-        creep.memory.reservedStorageResource = {};
+        creep.memory.reservedStorageSpace = {};
         if (logLevel === "debug") {
             console.log("Creep " + creep.name + " released storage space reserve")
         }

@@ -21,7 +21,7 @@ let storagePoolController = {
 
     //Получение ресурса из хранилища
     reserveWithdraw: function (creep, id, resourceType, amount) {
-        let logLevel = "debug";
+        let logLevel = "info";
         if (creep.memory.reservedStorageResource === undefined) {
             creep.memory.reservedStorageResource = {};
         }
@@ -44,7 +44,7 @@ let storagePoolController = {
 
     //Доставка ресурса в хранилище
     reserveTransfer: function (creep, id, amount) {
-        let logLevel = "debug";
+        let logLevel = "info";
         if (creep.memory.reservedStorageSpace === undefined) {
             creep.memory.reservedStorageSpace = {};
         }
@@ -66,7 +66,7 @@ let storagePoolController = {
 
     //Получение ресурса из хранилища
     releaseWithdraw: function (creep) {
-        let logLevel = "debug";
+        let logLevel = "info";
         creep.memory.reservedStorageResource = {};
         if (logLevel === "debug") {
             console.log("Creep " + creep.name + " released storage resource reserve")
@@ -75,7 +75,7 @@ let storagePoolController = {
 
     //Доставка ресурса в хранилище
     releaseTransfer: function (creep) {
-        let logLevel = "debug";
+        let logLevel = "info";
         creep.memory.reservedStorageSpace = {};
         if (logLevel === "debug") {
             console.log("Creep " + creep.name + " released storage space reserve")

@@ -107,8 +107,9 @@ let roleCarry = {
             //     console.log("WARN: Reserved resource disappears");
             //     creep.memory.reservedResource = {};
             // }
+        }
 
-            // if (!creep.memory.reservedResource || !creep.memory.reservedResource.id && !creep.memory.carrying) {
+        if (!creep.memory.reservedResource || !creep.memory.reservedResource.id && !creep.memory.carrying) {
             for (let r in creep.room.memory.resourcePool) {
                 let droppedEnergy = creep.room.memory.resourcePool[r];
                 if (droppedEnergy.amount >= creep.store.getFreeCapacity(RESOURCE_ENERGY)) {
@@ -117,12 +118,11 @@ let roleCarry = {
                         creep.store.getFreeCapacity(RESOURCE_ENERGY));
                 }
             }
-            // }
+        }
 
-            if (creep.memory.reservedResource) {
-                if (creep.pickup(Game.getObjectById(creep.memory.reservedResource.id)) === ERR_NOT_IN_RANGE) {
-                    creep.moveTo(Game.getObjectById(creep.memory.reservedResource.id))
-                }
+        if (creep.memory.reservedResource) {
+            if (creep.pickup(Game.getObjectById(creep.memory.reservedResource.id)) === ERR_NOT_IN_RANGE) {
+                creep.moveTo(Game.getObjectById(creep.memory.reservedResource.id))
             }
         }
     }

@@ -118,16 +118,15 @@ let roleCarry = {
                 reservedAmount = creep.store[RESOURCE_ENERGY];
                 if (storage.amount >= reservedAmount) {
                     storagePoolController.reserveTransfer(creep, storage.id,
-                        storage.resourceType,
                         reservedAmount);
                     break;
                 }
             }
         }
 
-        if (creep.memory.reservedStorageSpace) {
-            if (creep.transfer(Game.getObjectById(creep.memory.reservedStorageSpace), RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
-                creep.moveTo(Game.getObjectById(creep.memory.reservedStorageSpace));
+        if (creep.memory.reservedStorageSpace && creep.memory.reservedStorageSpace.id) {
+            if (creep.transfer(Game.getObjectById(creep.memory.reservedStorageSpace.id), RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
+                creep.moveTo(Game.getObjectById(creep.memory.reservedStorageSpace.id));
             }
         }
 

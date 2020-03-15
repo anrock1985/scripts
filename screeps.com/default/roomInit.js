@@ -189,7 +189,7 @@ let roomInit = {
                     let creep = Game.getObjectById(room.memory.creeps[i]);
                     storagePoolController.check(creep);
                     if (creep.memory.reservedStorageResource) {
-                        let creepReservedStorageResource = creep.memory.reservedResource.id;
+                        let creepReservedStorageResource = creep.memory.reservedStorageResource.id;
                         if (room.memory.storageResourcePool[creepReservedStorageResource]) {
                             room.memory.storageResourcePool[creepReservedStorageResource].amount -= Game.getObjectById(room.memory.creeps[i]).memory.reservedStorageResource.amount;
                         }

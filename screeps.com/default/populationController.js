@@ -57,6 +57,7 @@ let populationController = {
                     Memory.deadWithCarry = 0;
                     Memory.topEnergyLoss = 0;
                     Memory.deadWithCarryPercent = 0;
+                    Memory.lostEnergy = 0;
                 }
 
                 switch (Memory.creeps[c].lastRole) {
@@ -85,6 +86,10 @@ let populationController = {
 
             if (creep.ticksToLive === 3) {
                 roleDeadman.assign(creep);
+            }
+
+            if ((creep.ticksToLive === 1) && (creep.store[RESOURCE_ENERGY] > 0)) {
+                creep.memory.carriedEnergy = creep.store[RESOURCE_ENERGY];
             }
 
             creep.memory.currentRoomName = creep.room.name;

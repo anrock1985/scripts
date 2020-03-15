@@ -22,7 +22,7 @@ let roleUpgrader = {
                 return (s.structureType === STRUCTURE_EXTENSION
                     || s.structureType === STRUCTURE_CONTAINER
                     || s.structureType === STRUCTURE_SPAWN)
-                    && s.store[RESOURCE_ENERGY] >= creep.store.getCapacity(RESOURCE_ENERGY)
+                    && s.store[RESOURCE_ENERGY] >= (creep.store.getCapacity(RESOURCE_ENERGY) - creep.store[RESOURCE_ENERGY])
             }
         });
 
@@ -39,7 +39,8 @@ let roleUpgrader = {
 
         if (creep.store[RESOURCE_ENERGY] < creep.store.getCapacity(RESOURCE_ENERGY) && !creep.memory.upgrading) {
             if (creep.memory.closestStorageId) {
-                if (Game.getObjectById(creep.memory.closestStorageId).store[RESOURCE_ENERGY] >= (creep.store.getCapacity(RESOURCE_ENERGY) - creep.store[RESOURCE_ENERGY]) && Memory.harvesters > 1) {
+                if (Game.getObjectById(creep.memory.closestStorageId).store[RESOURCE_ENERGY]
+                    >= (creep.store.getCapacity(RESOURCE_ENERGY) - creep.store[RESOURCE_ENERGY]) && Memory.harvesters > 1) {
                     if (creep.withdraw(Game.getObjectById(creep.memory.closestStorageId), RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
                         creep.moveTo(Game.getObjectById(creep.memory.closestStorageId));
                     }

@@ -25,19 +25,19 @@ let roleBuilder = {
 
         let storages = creep.room.find(FIND_STRUCTURES, {
             filter: (s) => {
-                return s.structureType === STRUCTURE_EXTENSION
+                return (s.structureType === STRUCTURE_EXTENSION
                     || s.structureType === STRUCTURE_CONTAINER
-                    || s.structureType === STRUCTURE_SPAWN
+                    || s.structureType === STRUCTURE_SPAWN)
+                    && s.store[RESOURCE_ENERGY] >= (creep.store.getCapacity(RESOURCE_ENERGY) - creep.store[RESOURCE_ENERGY])
             }
         });
 
-        let storagesWithEnoughEnergy = creep.pos.findClosestByRange(storages, {
-            filter: (s) => {
-                return s.store[RESOURCE_ENERGY] >= creep.store.getCapacity(RESOURCE_ENERGY)
-            }
-        });
+        let storagesWithEnoughEnergy = {};
+        if (storages) {
+            storagesWithEnoughEnergy = creep.pos.findClosestByRange(storages);
+        }
 
-        if (storagesWithEnoughEnergy === null) {
+        if (!storagesWithEnoughEnergy) {
             creep.memory.closestStorageId = undefined;
         } else {
             creep.memory.closestStorageId = storagesWithEnoughEnergy.id;

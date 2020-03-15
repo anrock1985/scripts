@@ -57,6 +57,7 @@ let roleCarry = {
                 _.forEach(towerNotHalfFull, function (a) {
                     Game.getObjectById(a.id)
                 });
+                Memory.debug1 = towerNotHalfFull;
                 storage = creep.pos.findClosestByPath(towerNotHalfFull);
                 if (storage.amount >= reservedAmount) {
                     storagePoolController.reserveTransfer(creep, storage.id, reservedAmount);
@@ -67,6 +68,7 @@ let roleCarry = {
                 _.forEach(extensionNotFull, function (a) {
                     Game.getObjectById(a.id)
                 });
+                Memory.debug2 = extensionNotFull;
                 storage = creep.pos.findClosestByPath(extensionNotFull);
                 if (storage.amount >= reservedAmount) {
                     storagePoolController.reserveTransfer(creep, storage.id, reservedAmount);
@@ -77,6 +79,7 @@ let roleCarry = {
                 _.forEach(spawnerNotFull, function (a) {
                     Game.getObjectById(a.id)
                 });
+                Memory.debug3 = spawnerNotFull;
                 storage = creep.pos.findClosestByPath(spawnerNotFull);
                 if (storage.amount >= reservedAmount) {
                     storagePoolController.reserveTransfer(creep, storage.id, reservedAmount);
@@ -87,6 +90,7 @@ let roleCarry = {
                 _.forEach(storageNotFull, function (a) {
                     Game.getObjectById(a.id)
                 });
+                Memory.debug4 = storageNotFull;
                 storage = creep.pos.findClosestByPath(storageNotFull);
                 if (storage.amount >= reservedAmount) {
                     storagePoolController.reserveTransfer(creep, storage.id, reservedAmount);

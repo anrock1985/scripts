@@ -30,6 +30,7 @@ let roleCarry = {
 
         //TODO: Заполнять не только крупные, но и те хранилища у которых объем меньше переносимого объема.
 
+        //
         if (!creep.memory.reservedStorageSpace || !creep.memory.reservedStorageSpace.id && creep.memory.carrying) {
             let storage;
             let reservedAmount = creep.store[RESOURCE_ENERGY];

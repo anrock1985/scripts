@@ -17,7 +17,7 @@ let resourcePoolController = {
             creep.memory.reservedResource.resourceType = resourceType;
             creep.memory.reservedResource.amount = amount;
             creep.room.memory.resourcePool[id].amount -= amount;
-            if (logLevel === "info") {
+            if (logLevel === "debug") {
                 console.log("Creep " + creep.name
                     + " reserved " + creep.memory.reservedResource.amount
                     + " energy from " + creep.memory.reservedResource.id

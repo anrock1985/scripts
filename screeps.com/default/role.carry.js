@@ -49,7 +49,7 @@ let roleCarry = {
                         && a.amount >= 50
                 });
             }
-            
+
             if (spawnerNotFull.length === 0) {
                 storageNotFull = _.filter(creep.room.memory.storageSpacePool, function (a) {
                     return (a.storageType !== STRUCTURE_SPAWN

@@ -28,7 +28,7 @@ let resourcePoolController = {
     },
 
     release: function (creep) {
-        let logLevel = "debug";
+        let logLevel = "info";
         creep.memory.reservedResource = {};
         if (logLevel === "debug") {
             console.log("Creep " + creep.name + " released reserve")

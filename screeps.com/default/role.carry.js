@@ -110,7 +110,7 @@ let roleCarry = {
             Memory.debugCreepPoolACTUAL = creep.memory.reservedResource;
 
             // if (!some) {
-            if (some) {
+            if (!some) {
                 console.log("WARN: Reserved resource disappears");
                 creep.memory.reservedResource = {};
             }

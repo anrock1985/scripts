@@ -53,7 +53,6 @@ let roleCarry = {
                     && a.amount >= 50
             });
 
-            //
             if (towerNotHalfFull.length > 0) {
                 storage = towerNotHalfFull[0];
                 if (storage.amount >= reservedAmount) {

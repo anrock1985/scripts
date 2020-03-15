@@ -83,7 +83,6 @@ let creepConstructor = {
                             && spawner.room.energyAvailable >= 300 && Memory.carry < 2) {
                             let name = Game.time + "_C";
                             let resultCode = spawner.spawnCreep(prepareBody("carry"), name, {memory: {role: "carry"}});
-
                             if (resultCode === 0) {
                                 Memory.carry++;
                                 let bodyParts = [];
@@ -134,7 +133,6 @@ let creepConstructor = {
                 && Memory.carry < 1) {
                 let name = Game.time + "_C";
                 let resultCode = spawner.spawnCreep(prepareBody("carry"), name, {memory: {role: "carry"}});
-
                 if (resultCode === 0) {
                     Memory.carry++;
                     let bodyParts = [];
@@ -156,20 +154,18 @@ let creepConstructor = {
                 && spawner.room.energyAvailable >= 300
                 && Memory.harvesters < 2) {
                 let name = Game.time + "_H";
-                if (Memory.carry > 1) {
-                    let resultCode = spawner.spawnCreep(prepareBody("harvester"), name, {memory: {role: "harvester"}});
-                    if (resultCode === 0) {
-                        Memory.harvesters++;
-                        let bodyParts = [];
-                        _.forEach(Game.creeps[name].body, function (item) {
-                            bodyParts.push(item.type.toString().toUpperCase());
-                        });
-                        if (debug) {
-                            console.log("INFO: new HARVESTER [total:" + Memory.harvesters + "] (" + bodyParts + ")");
-                        }
-                    } else {
-                        console.log("ERROR: Spawning HARVESTER result code: " + resultCode);
+                let resultCode = spawner.spawnCreep(prepareBody("harvester"), name, {memory: {role: "harvester"}});
+                if (resultCode === 0) {
+                    Memory.harvesters++;
+                    let bodyParts = [];
+                    _.forEach(Game.creeps[name].body, function (item) {
+                        bodyParts.push(item.type.toString().toUpperCase());
+                    });
+                    if (debug) {
+                        console.log("INFO: new HARVESTER [total:" + Memory.harvesters + "] (" + bodyParts + ")");
                     }
+                } else {
+                    console.log("ERROR: Spawning HARVESTER result code: " + resultCode);
                 }
             }
 
@@ -181,7 +177,6 @@ let creepConstructor = {
                 && Memory.carry < 8) {
                 let name = Game.time + "_C";
                 let resultCode = spawner.spawnCreep(prepareBody("carry"), name, {memory: {role: "carry"}});
-
                 if (resultCode === 0) {
                     Memory.carry++;
                     let bodyParts = [];
@@ -205,7 +200,6 @@ let creepConstructor = {
                 && Memory.builders < ((spawner.room.memory.myConstructionSiteIds.length > 2) ? 2 : 1)) {
                 let name = Game.time + "_B";
                 let resultCode = spawner.spawnCreep(prepareBody("builder"), name, {memory: {role: "builder"}});
-
                 if (resultCode === 0) {
                     Memory.builders++;
                     let bodyParts = [];
@@ -228,7 +222,6 @@ let creepConstructor = {
                 && Memory.repairers < 2) {
                 let name = Game.time + "_R";
                 let resultCode = spawner.spawnCreep(prepareBody("repairer"), name, {memory: {role: "repairer"}});
-
                 if (resultCode === 0) {
                     Memory.repairers++;
                     let bodyParts = [];
@@ -251,7 +244,6 @@ let creepConstructor = {
                 && Memory.upgraders < ((spawner.room.memory.myConstructionSiteIds.length === 0) ? 6 : 2)) {
                 let name = Game.time + "_U";
                 let resultCode = spawner.spawnCreep(prepareBody("upgrader"), name, {memory: {role: "upgrader"}});
-
                 if (resultCode === 0) {
                     Memory.upgraders++;
                     let bodyParts = [];

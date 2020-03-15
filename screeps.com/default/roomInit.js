@@ -72,6 +72,18 @@ let roomInit = {
             }
         }
 
+        let enemyTowers = room.find(FIND_HOSTILE_STRUCTURES, {
+            filter: (s) => {
+                return s.structureType === STRUCTURE_TOWER
+            }
+        });
+        if (enemyTowers) {
+            room.memory.enemyTowerIds = [];
+            for (let t in enemyTowers) {
+                room.memory.enemyTowerIds.push(enemyTowers[t].id);
+            }
+        }
+
         let enemyCreeps = room.find(FIND_HOSTILE_CREEPS);
         if (enemyCreeps) {
             room.memory.enemyCreepsIds = [];

@@ -20,7 +20,9 @@ module.exports.loop = function () {
 
         populationController.check(Game.rooms[room]);
 
-        if (Game.time % 10 === 0)
-            console.log(Game.rooms[room].name + " Energy available: " + Game.rooms[room].energyAvailable + "\\" + Game.rooms[room].energyCapacityAvailable);
+        if (Game.rooms[room].memory.mySpawnerIds.length > 0 && Game.time % 10 === 0)
+            console.log(Game.rooms[room].name
+                + " Energy available: " + Game.rooms[room].energyAvailable
+                + "\\" + Game.rooms[room].energyCapacityAvailable);
     }
 };

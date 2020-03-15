@@ -65,6 +65,12 @@ let creepConstructor = {
                         result.push(MOVE);
                     }
                     break;
+                case "scout":
+                    result.push(MOVE);
+                    break;
+                case "claimer":
+                    //TODO: Claimer body.
+                    break;
             }
             return result;
         }
@@ -255,6 +261,27 @@ let creepConstructor = {
                     }
                 } else {
                     console.log("ERROR: Spawning UPGRADER result code: " + resultCode);
+                }
+            }
+
+            //Scout
+            else if (spawner.isActive()
+                && !spawner.spawning
+                && spawner.room.energyAvailable >= 300
+                && Memory.scouts < 1) {
+                let name = Game.time + "_S";
+                let resultCode = spawner.spawnCreep(prepareBody("scout"), name, {memory: {role: "scout"}});
+                if (resultCode === 0) {
+                    Memory.scouts++;
+                    let bodyParts = [];
+                    _.forEach(Game.creeps[name].body, function (item) {
+                        bodyParts.push(item.type.toString().toUpperCase());
+                    });
+                    if (debug) {
+                        console.log("INFO: new SCOUT [total:" + Memory.scouts + "] (" + bodyParts + ")");
+                    }
+                } else {
+                    console.log("ERROR: Spawning SCOUT result code: " + resultCode);
                 }
             }
 

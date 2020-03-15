@@ -54,32 +54,28 @@ let roleCarry = {
             });
 
             if (towerNotHalfFull.length > 0) {
-                // storage = towerNotHalfFull[0];
-                storage = creep.pos.findClosestByPath(towerNotHalfFull);
+                storage = creep.pos.findClosestByPath(Game.getObjectById(towerNotHalfFull.id));
                 if (storage.amount >= reservedAmount) {
                     storagePoolController.reserveTransfer(creep, storage.id, reservedAmount);
                 } else {
                     storagePoolController.reserveTransfer(creep, storage.id, storage.amount);
                 }
             } else if (extensionNotFull.length > 0) {
-                // storage = extensionNotFull[0];
-                storage = creep.pos.findClosestByPath(extensionNotFull);
+                storage = creep.pos.findClosestByPath(Game.getObjectById(extensionNotFull.id));
                 if (storage.amount >= reservedAmount) {
                     storagePoolController.reserveTransfer(creep, storage.id, reservedAmount);
                 } else {
                     storagePoolController.reserveTransfer(creep, storage.id, storage.amount);
                 }
             } else if (spawnerNotFull.length > 0) {
-                // storage = spawnerNotFull[0];
-                storage = creep.pos.findClosestByPath(spawnerNotFull);
+                storage = creep.pos.findClosestByPath(Game.getObjectById(spawnerNotFull.id));
                 if (storage.amount >= reservedAmount) {
                     storagePoolController.reserveTransfer(creep, storage.id, reservedAmount);
                 } else {
                     storagePoolController.reserveTransfer(creep, storage.id, storage.amount);
                 }
             } else {
-                // storage = storageNotFull[0];
-                storage = creep.pos.findClosestByPath(storageNotFull);
+                storage = creep.pos.findClosestByPath(Game.getObjectById(storageNotFull.id));
                 if (storage.amount >= reservedAmount) {
                     storagePoolController.reserveTransfer(creep, storage.id, reservedAmount);
                 } else {

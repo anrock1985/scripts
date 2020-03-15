@@ -23,7 +23,7 @@ let storagePoolController = {
         if (creep.memory.reservedStorageResource === undefined) {
             creep.memory.reservedStorageResource = {};
         }
-        if (Game.getObjectById(id).store[RESOURCE_ENERGY] >= amount) {
+        if (Game.getObjectById(id).amount >= amount) {
             creep.memory.reservedStorageResource.id = id;
             creep.memory.reservedStorageResource.resourceType = resourceType;
             creep.memory.reservedStorageResource.amount = amount;

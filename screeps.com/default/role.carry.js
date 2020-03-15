@@ -121,7 +121,7 @@ let roleCarry = {
                     return a.id === creep.memory.reservedResource.id;
                 });
                 if (filteredDrops.length === 0) {
-                    console.log("WARN: Reserved resource disappear");
+                    console.log("WARN: Reserved resource disappears");
                     creep.memory.reservedResource = {};
                 }
             }

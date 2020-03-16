@@ -8,7 +8,7 @@ let roleCarry = {
         let logLevel = "info";
 
         Memory.debugRoom = creep.room.memory;
-        
+
         if (creep.memory.carrying === undefined) {
             creep.memory.carrying = true;
         }
@@ -35,13 +35,13 @@ let roleCarry = {
 
             towerNotHalfFull = _.filter(creep.room.memory.storageSpacePool, function (a) {
                 return a.storageType === STRUCTURE_TOWER
-                    && a.amount >= 50
+                    && a.amount >= 500
             });
 
             if (towerNotHalfFull.length === 0) {
                 extensionNotFull = _.filter(creep.room.memory.storageSpacePool, function (a) {
                     return a.storageType === STRUCTURE_EXTENSION
-                        && a.amount >= 500
+                        && a.amount >= 50
                 });
             }
 

@@ -7,6 +7,8 @@ let roleCarry = {
 
         let logLevel = "info";
 
+        Memory.debugRoom = creep.room.memory;
+        
         if (creep.memory.carrying === undefined) {
             creep.memory.carrying = true;
         }

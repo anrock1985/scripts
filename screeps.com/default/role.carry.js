@@ -146,8 +146,8 @@ let roleCarry = {
             }
 
             tmp = creep.pos.findClosestByPath(storages);
-            if (tmp == null)
-                return {};
+            if (tmp === null)
+                return undefined;
             else
                 closest = tmp;
 

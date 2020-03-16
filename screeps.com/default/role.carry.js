@@ -139,13 +139,14 @@ let roleCarry = {
 
         function findClosestByPath(creep, storagesIds) {
             let closest;
+            let tmp;
             let storages = [];
             for (let s in storagesIds) {
                 storages.push(Game.getObjectById(storagesIds[s].id));
             }
 
-            let tmp = creep.pos.findClosestByPath(storages);
-            if (tmp === null)
+            tmp = creep.pos.findClosestByPath(storages);
+            if (tmp == null)
                 return {};
             else
                 closest = tmp;

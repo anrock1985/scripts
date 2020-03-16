@@ -137,8 +137,8 @@ let roleCarry = {
             let closest;
             let storages = [];
             for (let s in storagesIds) {
-                console.log(storagesIds[s]);
-                storages.push(Game.getObjectById(storagesIds[s]));
+                console.log(storagesIds[s].id);
+                storages.push(Game.getObjectById(storagesIds[s].id));
             }
             Memory.debugStorages = storages;
             closest = creep.pos.findClosestByPath(storages);

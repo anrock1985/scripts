@@ -63,31 +63,39 @@ let roleCarry = {
 
             if (towerNotHalfFull.length > 0) {
                 storage = findClosestByPath(creep, towerNotHalfFull);
-                if (storage.amount >= reservedAmount) {
-                    storagePoolController.reserveTransfer(creep, storage.id, reservedAmount);
-                } else {
-                    storagePoolController.reserveTransfer(creep, storage.id, storage.amount);
+                if (storage) {
+                    if (storage.amount >= reservedAmount) {
+                        storagePoolController.reserveTransfer(creep, storage.id, reservedAmount);
+                    } else {
+                        storagePoolController.reserveTransfer(creep, storage.id, storage.amount);
+                    }
                 }
             } else if (extensionNotFull.length > 0) {
                 storage = findClosestByPath(creep, extensionNotFull);
-                if (storage.amount >= reservedAmount) {
-                    storagePoolController.reserveTransfer(creep, storage.id, reservedAmount);
-                } else {
-                    storagePoolController.reserveTransfer(creep, storage.id, storage.amount);
+                if (storage) {
+                    if (storage.amount >= reservedAmount) {
+                        storagePoolController.reserveTransfer(creep, storage.id, reservedAmount);
+                    } else {
+                        storagePoolController.reserveTransfer(creep, storage.id, storage.amount);
+                    }
                 }
             } else if (spawnerNotFull.length > 0) {
                 storage = findClosestByPath(creep, spawnerNotFull);
-                if (storage.amount >= reservedAmount) {
-                    storagePoolController.reserveTransfer(creep, storage.id, reservedAmount);
-                } else {
-                    storagePoolController.reserveTransfer(creep, storage.id, storage.amount);
+                if (storage) {
+                    if (storage.amount >= reservedAmount) {
+                        storagePoolController.reserveTransfer(creep, storage.id, reservedAmount);
+                    } else {
+                        storagePoolController.reserveTransfer(creep, storage.id, storage.amount);
+                    }
                 }
             } else {
                 storage = findClosestByPath(creep, storageNotFull);
-                if (storage.amount >= reservedAmount) {
-                    storagePoolController.reserveTransfer(creep, storage.id, reservedAmount);
-                } else {
-                    storagePoolController.reserveTransfer(creep, storage.id, storage.amount);
+                if (storage) {
+                    if (storage.amount >= reservedAmount) {
+                        storagePoolController.reserveTransfer(creep, storage.id, reservedAmount);
+                    } else {
+                        storagePoolController.reserveTransfer(creep, storage.id, storage.amount);
+                    }
                 }
             }
         }
@@ -135,9 +143,13 @@ let roleCarry = {
             for (let s in storagesIds) {
                 storages.push(Game.getObjectById(storagesIds[s].id));
             }
-            Memory.debugStorages = storages;
-            closest = creep.pos.findClosestByPath(storages);
-            Memory.debugClosest = closest;
+
+            let tmp = creep.pos.findClosestByPath(storages);
+            if (tmp === null)
+                return {};
+            else
+                closest = tmp;
+
             return {id: closest.id, amount: closest.store.getFreeCapacity(RESOURCE_ENERGY)};
         }
     }

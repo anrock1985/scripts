@@ -63,8 +63,8 @@ let roleBuilder = {
         }
 
         if (creep.store[RESOURCE_ENERGY] < creep.store.getCapacity(RESOURCE_ENERGY) && !creep.memory.building) {
-            creep.memory.idle = undefined;
             if (creep.memory.closestStorageId) {
+                creep.memory.idle = undefined;
                 if (storagesWithEnoughEnergy.structureType === STRUCTURE_CONTAINER) {
                     if (creep.withdraw(Game.getObjectById(creep.memory.closestStorageId), RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
                         creep.moveTo(Game.getObjectById(creep.memory.closestStorageId));

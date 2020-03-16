@@ -31,8 +31,9 @@ let roleBuilder = {
             filter: (s) => {
                 return (s.structureType === STRUCTURE_EXTENSION
                     || s.structureType === STRUCTURE_CONTAINER
-                    || s.structureType === STRUCTURE_SPAWN)
-                    && s.store[RESOURCE_ENERGY] >= (creep.store.getCapacity(RESOURCE_ENERGY) - creep.store[RESOURCE_ENERGY])
+                    || s.structureType === STRUCTURE_SPAWN
+                    || s.structureType === STRUCTURE_STORAGE)
+                    && s.store[RESOURCE_ENERGY] >= (creep.store.getFreeCapacity(RESOURCE_ENERGY))
             }
         });
 
@@ -53,7 +54,7 @@ let roleBuilder = {
         if (creep.store[RESOURCE_ENERGY] === 0 && creep.memory.building) {
             creep.memory.building = false;
         }
-        if (creep.store[RESOURCE_ENERGY] === creep.store.getCapacity(RESOURCE_ENERGY) && !creep.memory.building) {
+        if (creep.store.getFreeCapacity(RESOURCE_ENERGY) === 0 && !creep.memory.building) {
             creep.memory.building = true;
         }
 

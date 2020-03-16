@@ -27,8 +27,9 @@ let roleRepairer = {
             filter: (s) => {
                 return (s.structureType === STRUCTURE_EXTENSION
                     || s.structureType === STRUCTURE_CONTAINER
-                    || s.structureType === STRUCTURE_SPAWN)
-                    && s.store[RESOURCE_ENERGY] >= (creep.store.getCapacity(RESOURCE_ENERGY) - creep.store[RESOURCE_ENERGY])
+                    || s.structureType === STRUCTURE_SPAWN
+                    || s.structureType === STRUCTURE_STORAGE)
+                    && s.store[RESOURCE_ENERGY] >= (creep.store.getFreeCapacity(RESOURCE_ENERGY))
             }
         });
 
@@ -49,7 +50,7 @@ let roleRepairer = {
         if (creep.store[RESOURCE_ENERGY] === 0 && creep.memory.repairing) {
             creep.memory.repairing = false;
         }
-        if (creep.store[RESOURCE_ENERGY] === creep.store.getCapacity(RESOURCE_ENERGY)) {
+        if (creep.store.getFreeCapacity(RESOURCE_ENERGY) === 0) {
             creep.memory.repairing = true;
         }
 

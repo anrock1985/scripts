@@ -10,7 +10,7 @@ let roleUpgrader = {
         if (creep.store[RESOURCE_ENERGY] === 0 && creep.memory.upgrading) {
             creep.memory.upgrading = false;
         }
-        if (creep.store[RESOURCE_ENERGY] === creep.store.getCapacity(RESOURCE_ENERGY) && !creep.memory.upgrading) {
+        if (creep.store.getFreeCapacity(RESOURCE_ENERGY) === 0 && !creep.memory.upgrading) {
             creep.memory.upgrading = true;
             storagePoolController.releaseWithdraw(creep);
         }
@@ -23,8 +23,9 @@ let roleUpgrader = {
         let storages = creep.room.find(FIND_MY_STRUCTURES, {
             filter: (s) => {
                 return (s.structureType === STRUCTURE_EXTENSION
-                    || s.structureType === STRUCTURE_CONTAINER)
-                    && s.store[RESOURCE_ENERGY] >= (creep.store.getCapacity(RESOURCE_ENERGY) - creep.store[RESOURCE_ENERGY])
+                    || s.structureType === STRUCTURE_CONTAINER
+                    || s.structureType === STRUCTURE_STORAGE)
+                    && s.store[RESOURCE_ENERGY] >= (creep.store.getFreeCapacity(RESOURCE_ENERGY))
             }
         });
 
@@ -52,7 +53,7 @@ let roleUpgrader = {
             let reservedAmount;
             for (let s in creep.room.memory.storageResourcePool) {
                 storage = creep.room.memory.storageResourcePool[s];
-                reservedAmount = creep.store.getCapacity(RESOURCE_ENERGY) - creep.store[RESOURCE_ENERGY];
+                reservedAmount = creep.store.getFreeCapacity(RESOURCE_ENERGY);
                 if (storage.amount >= reservedAmount) {
                     storagePoolController.reserveWithdraw(creep, storage.id,
                         storage.resourceType,

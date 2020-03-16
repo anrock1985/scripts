@@ -10,7 +10,7 @@ let roleCarry = {
         if (creep.memory.carrying === undefined) {
             creep.memory.carrying = true;
         }
-        if (creep.store[RESOURCE_ENERGY] === creep.store.getCapacity(RESOURCE_ENERGY) && !creep.memory.carrying) {
+        if (creep.store.getFreeCapacity(RESOURCE_ENERGY) === 0 && !creep.memory.carrying) {
             creep.memory.carrying = true;
             creep.memory.closestDroppedEnergyId = undefined;
             if (creep.memory.reservedResource) {

@@ -62,7 +62,6 @@ let roleCarry = {
             }
 
             if (towerNotHalfFull.length > 0) {
-                // storage = towerNotHalfFull[0];
                 storage = findClosestByPath(creep, towerNotHalfFull);
                 if (storage.amount >= reservedAmount) {
                     storagePoolController.reserveTransfer(creep, storage.id, reservedAmount);
@@ -70,7 +69,6 @@ let roleCarry = {
                     storagePoolController.reserveTransfer(creep, storage.id, storage.amount);
                 }
             } else if (extensionNotFull.length > 0) {
-                // storage = extensionNotFull[0];
                 storage = findClosestByPath(creep, extensionNotFull);
                 if (storage.amount >= reservedAmount) {
                     storagePoolController.reserveTransfer(creep, storage.id, reservedAmount);
@@ -78,7 +76,6 @@ let roleCarry = {
                     storagePoolController.reserveTransfer(creep, storage.id, storage.amount);
                 }
             } else if (spawnerNotFull.length > 0) {
-                // storage = spawnerNotFull[0];
                 storage = findClosestByPath(creep, spawnerNotFull);
                 if (storage.amount >= reservedAmount) {
                     storagePoolController.reserveTransfer(creep, storage.id, reservedAmount);
@@ -86,7 +83,6 @@ let roleCarry = {
                     storagePoolController.reserveTransfer(creep, storage.id, storage.amount);
                 }
             } else {
-                // storage = storageNotFull[0];
                 storage = findClosestByPath(creep, storageNotFull);
                 if (storage.amount >= reservedAmount) {
                     storagePoolController.reserveTransfer(creep, storage.id, reservedAmount);
@@ -137,12 +133,9 @@ let roleCarry = {
             let closest;
             let storages = [];
             for (let s in storagesIds) {
-                console.log(storagesIds[s].id);
                 storages.push(Game.getObjectById(storagesIds[s].id));
             }
-            Memory.debugStorages = storages;
             closest = creep.pos.findClosestByPath(storages);
-            Memory.debugClosest = closest;
             return {id: closest.id, amount: closest.store[RESOURCE_ENERGY]};
         }
     }

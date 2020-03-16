@@ -7,8 +7,10 @@ let roleCarry = {
 
         let logLevel = "info";
 
-        if (!creep.memory.idle)
+        if (!creep.memory.idle) {
             creep.memory.idle = Game.time;
+            console.log("Creep " + creep.name + " idle");
+        }
 
         Memory.debugRoom = creep.room.memory;
 

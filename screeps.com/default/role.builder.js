@@ -14,11 +14,9 @@ let roleBuilder = {
 
         constructionSites = creep.room.find(FIND_MY_CONSTRUCTION_SITES);
 
+        Memory.myConstructionSiteIds = [];
         if (constructionSites.length > 0) {
             for (let c in constructionSites) {
-                if (!Memory.myConstructionSiteIds) {
-                    Memory.myConstructionSiteIds = [];
-                }
                 Memory.myConstructionSiteIds.push(constructionSites[c].id);
             }
             closestConstructionSite = creep.pos.findClosestByRange(constructionSites);

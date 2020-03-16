@@ -6,6 +6,9 @@ let roleBuilder = {
         let constructionController = require('constructionController');
         let storagePoolController = require('storagePoolController');
 
+        if (!creep.memory.idle)
+            creep.memory.idle = Game.time;
+
         let constructionSites;
         let closestConstructionSite;
 
@@ -60,6 +63,7 @@ let roleBuilder = {
         }
 
         if (creep.store[RESOURCE_ENERGY] < creep.store.getCapacity(RESOURCE_ENERGY) && !creep.memory.building) {
+            creep.memory.idle = undefined;
             if (creep.memory.closestStorageId) {
                 if (storagesWithEnoughEnergy.structureType === STRUCTURE_CONTAINER) {
                     if (creep.withdraw(Game.getObjectById(creep.memory.closestStorageId), RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
@@ -74,6 +78,7 @@ let roleBuilder = {
         }
 
         if (creep.memory.closestConstructionSiteId && creep.store[RESOURCE_ENERGY] !== 0 && creep.memory.building) {
+            creep.memory.idle = undefined;
             if (creep.memory.closestConstructionSiteId && creep.build(Game.getObjectById(creep.memory.closestConstructionSiteId)) === ERR_NOT_IN_RANGE) {
                 creep.moveTo(Game.getObjectById(creep.memory.closestConstructionSiteId));
             }

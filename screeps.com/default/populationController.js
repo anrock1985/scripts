@@ -139,6 +139,10 @@ let populationController = {
                 Memory.harvesters++;
                 console.log("WARN: Lost creep recovered. He is " + creep.memory.role.toUpperCase() + " now. (" + creep.body.toString() + ")")
             }
+
+            if (creep.memory.idle) {
+                creep.moveTo(Game.flags[name["Idle"]]);
+            }
         }
 
         creepConstructor.construct(Game.getObjectById(mainSpawnerId));

@@ -7,6 +7,9 @@ let roleCarry = {
 
         let logLevel = "info";
 
+        if (!creep.memory.idle)
+            creep.memory.idle = Game.time;
+
         Memory.debugRoom = creep.room.memory;
 
         if (creep.memory.carrying === undefined) {
@@ -101,6 +104,7 @@ let roleCarry = {
         }
 
         if (creep.memory.reservedStorageSpace && creep.memory.reservedStorageSpace.id) {
+            creep.memory.idle = undefined;
             let resultCode = creep.transfer(Game.getObjectById(creep.memory.reservedStorageSpace.id), RESOURCE_ENERGY);
             if (resultCode === ERR_NOT_IN_RANGE) {
                 creep.moveTo(Game.getObjectById(creep.memory.reservedStorageSpace.id));
@@ -132,6 +136,7 @@ let roleCarry = {
         }
 
         if (creep.memory.reservedResource) {
+            creep.memory.idle = undefined;
             if (creep.pickup(Game.getObjectById(creep.memory.reservedResource.id)) === ERR_NOT_IN_RANGE) {
                 creep.moveTo(Game.getObjectById(creep.memory.reservedResource.id))
             }

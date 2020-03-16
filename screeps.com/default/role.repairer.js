@@ -6,6 +6,9 @@ let roleRepairer = {
 
         let storagePoolController = require('storagePoolController');
 
+        if (!creep.memory.idle)
+            creep.memory.idle = Game.time;
+
         let damagedStructures = creep.room.find(FIND_STRUCTURES, {
             filter: (s) => {
                 return ((s.structureType !== STRUCTURE_CONTROLLER) && (s.hits <= (s.hitsMax - (s.hitsMax / 6))));
@@ -55,6 +58,7 @@ let roleRepairer = {
         }
 
         if (creep.memory.closestDamagedStructureId) {
+            creep.memory.idle = undefined;
             if (creep.store[RESOURCE_ENERGY] !== 0 && creep.memory.repairing) {
                 if (creep.repair(Game.getObjectById(creep.memory.closestDamagedStructureId)) === ERR_NOT_IN_RANGE) {
                     creep.moveTo(Game.getObjectById(creep.memory.closestDamagedStructureId))
@@ -63,6 +67,7 @@ let roleRepairer = {
         }
 
         if (creep.store[RESOURCE_ENERGY] < creep.store.getCapacity(RESOURCE_ENERGY) && !creep.memory.repairing) {
+            creep.memory.idle = undefined;
             if (creep.memory.closestStorageId) {
                 if (storagesWithEnoughEnergy.structureType === STRUCTURE_CONTAINER) {
                     if (creep.withdraw(Game.getObjectById(creep.memory.closestStorageId), RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {

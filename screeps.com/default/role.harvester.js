@@ -2,6 +2,9 @@ let roleHarvester = {
     run: function (creep) {
         let debug = true;
 
+        if (!creep.memory.idle)
+            creep.memory.idle = Game.time;
+
         if (creep.memory.harvesting === undefined) {
             creep.memory.harvesting = true;
         }
@@ -49,12 +52,14 @@ let roleHarvester = {
         }
 
         if (creep.memory.harvesting && creep.store[RESOURCE_ENERGY] !== creep.store.getCapacity(RESOURCE_ENERGY)) {
+            creep.memory.idle = undefined;
             if (creep.harvest(Game.getObjectById(creep.memory.closestActiveSourceId)) === ERR_NOT_IN_RANGE) {
                 creep.moveTo(Game.getObjectById(creep.memory.closestActiveSourceId));
             }
         }
 
         if (!creep.memory.harvesting && creep.store[RESOURCE_ENERGY] !== 0) {
+            creep.memory.idle = undefined;
             if (Memory.carry > 0) {
                 let result = creep.drop(RESOURCE_ENERGY);
                 if (result !== 0) {

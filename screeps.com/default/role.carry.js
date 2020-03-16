@@ -136,7 +136,7 @@ let roleCarry = {
                 storages.push(Game.getObjectById(storagesIds[s].id));
             }
             closest = creep.pos.findClosestByPath(storages);
-            return {id: closest.id, amount: closest.store[RESOURCE_ENERGY]};
+            return {id: closest.id, amount: closest.store.getFreeCapacity(RESOURCE_ENERGY)};
         }
     }
 };

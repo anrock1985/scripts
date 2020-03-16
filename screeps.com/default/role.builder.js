@@ -8,7 +8,6 @@ let roleBuilder = {
 
         let constructionSites;
         let closestConstructionSite;
-        Memory.myConstructionSiteIds = [];
 
         constructionSites = creep.room.find(FIND_MY_CONSTRUCTION_SITES);
 
@@ -25,6 +24,8 @@ let roleBuilder = {
             } else {
                 creep.memory.closestConstructionSiteId = undefined;
             }
+        } else {
+            creep.memory.newRole = "repairer";
         }
 
         let storages = creep.room.find(FIND_STRUCTURES, {

@@ -98,29 +98,46 @@ let populationController = {
 
             creep.memory.currentRoomName = creep.room.name;
 
+            if (creep.memory.newRole) {
+                creep.memory.role = creep.memory.newRole;
+                creep.memory.newRole = undefined;
+            }
+
             if (creep.memory.role === "harvester") {
                 roleHarvester.run(creep);
-            } else if (creep.memory.role === "upgrader") {
+            }
+
+            if (creep.memory.role === "upgrader") {
                 roleUpgrader.run(creep);
-            } else if (creep.memory.role === "carry") {
+            }
+
+            if (creep.memory.role === "carry") {
                 roleCarry.run(creep);
-            } else if (creep.memory.role === "builder") {
+            }
+
+            if (creep.memory.role === "builder") {
                 roleBuilder.run(creep);
-            } else if (creep.memory.role === "repairer") {
+            }
+
+            if (creep.memory.role === "repairer") {
                 roleRepairer.assign(creep);
-            } else if (creep.memory.role === "scout") {
+            }
+
+            if (creep.memory.role === "scout") {
                 roleScout.assign(creep);
-            } else if (creep.memory.role === "deadman") {
+            }
+
+            if (creep.memory.role === "deadman") {
                 roleDeadman.assign(creep);
-            } else if (!creep.memory.role
+            }
+
+            if (!creep.memory.role
                 && _.filter(creep.body, (body) => body.type = WORK)
                 && _.filter(creep.body, (body) => body.type = CARRY)
                 && _.filter(creep.body, (body) => body.type = MOVE)) {
                 creep.memory.role = "harvester";
                 Memory.harvesters++;
-                if (debug) {
-                    console.log("WARN: Lost creep recovered. He is " + creep.memory.role.toUpperCase() + " now. (" + creep.body.toString() + ")")
-                }
+                console.log("WARN: Lost creep recovered. He is " + creep.memory.role.toUpperCase() + " now. (" + creep.body.toString() + ")")
             }
         }
 

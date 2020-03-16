@@ -143,7 +143,7 @@ let roomInit = {
             for (let s in storages) {
                 let storageId = storages[s].id;
                 let storageSpaceUsed = storages[s].store[RESOURCE_ENERGY];
-                let storageSpaceAvailable = storages[s].store.getCapacity(RESOURCE_ENERGY) - storageSpaceUsed;
+                let storageSpaceAvailable = storages[s].store.getFreeCapacity(RESOURCE_ENERGY);
                 room.memory.storageResourcePool[storageId] = {
                     id: storageId,
                     type: RESOURCE_ENERGY,

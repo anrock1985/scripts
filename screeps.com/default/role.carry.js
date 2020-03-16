@@ -35,20 +35,20 @@ let roleCarry = {
 
             towerNotHalfFull = _.filter(creep.room.memory.storageSpacePool, function (a) {
                 return a.storageType === STRUCTURE_TOWER
-                    && a.amount >= 500
+                    && (creep.room.energyAvailable === creep.room.energyCapacityAvailable ? a.amount > 0 : a.amount >= 500)
             });
 
             if (towerNotHalfFull.length === 0) {
                 extensionNotFull = _.filter(creep.room.memory.storageSpacePool, function (a) {
                     return a.storageType === STRUCTURE_EXTENSION
-                        && a.amount >= 50
+                        && a.amount > 0
                 });
             }
 
             if (extensionNotFull.length === 0) {
                 spawnerNotFull = _.filter(creep.room.memory.storageSpacePool, function (a) {
                     return a.storageType === STRUCTURE_SPAWN
-                        && a.amount >= 50
+                        && a.amount > 0
                 });
             }
 
@@ -57,7 +57,7 @@ let roleCarry = {
                     return (a.storageType !== STRUCTURE_SPAWN
                         && a.storageType !== STRUCTURE_EXTENSION
                         && a.storageType !== STRUCTURE_TOWER)
-                        && a.amount >= 50
+                        && a.amount > 0
                 });
             }
 

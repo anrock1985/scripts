@@ -36,6 +36,9 @@ let roleCarry = {
                     && a.amount >= 50
             });
 
+            Memory.debugTowerNotHalfFull = towerNotHalfFull;
+            Memory.debugRoom = creep.room.memory;
+
             if (towerNotHalfFull.length === 0) {
                 extensionNotFull = _.filter(creep.room.memory.storageSpacePool, function (a) {
                     return a.storageType === STRUCTURE_EXTENSION

@@ -11,7 +11,7 @@ let roleBuilder = {
 
         constructionSites = creep.room.find(FIND_MY_CONSTRUCTION_SITES);
 
-        if (constructionSites) {
+        if (constructionSites.length > 0) {
             for (let c in constructionSites) {
                 if (!Memory.myConstructionSiteIds) {
                     Memory.myConstructionSiteIds = [];

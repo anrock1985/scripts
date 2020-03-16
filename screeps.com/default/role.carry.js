@@ -105,7 +105,7 @@ let roleCarry = {
             }
         }
 
-        if (creep.memory.reservedStorageSpace && creep.memory.reservedStorageSpace.id) {
+        if (creep.memory.reservedStorageSpace && !_.isEmpty(creep.memory.reservedStorageSpace)) {
             if (creep.memory.idle) {
                 console.log(creep.name + " fail");
             }

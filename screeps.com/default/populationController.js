@@ -142,7 +142,7 @@ let populationController = {
 
             if (creep.memory.idle) {
                 Memory.flags = Game.flags;
-                creep.moveTo(Game.flags[name["Idle"]]);
+                creep.moveTo(Game.flags["Idle"]);
             }
         }
 

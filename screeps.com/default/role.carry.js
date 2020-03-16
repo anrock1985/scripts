@@ -9,7 +9,7 @@ let roleCarry = {
 
         if (!creep.memory.idle) {
             creep.memory.idle = Game.time;
-            console.log("Creep " + creep.name + " idle");
+            // console.log("Creep " + creep.name + " idle");
         }
 
         Memory.debugRoom = creep.room.memory;
@@ -106,6 +106,9 @@ let roleCarry = {
         }
 
         if (creep.memory.reservedStorageSpace && creep.memory.reservedStorageSpace.id) {
+            if (creep.memory.idle) {
+                console.log(creep.name + " fail");
+            }
             creep.memory.idle = undefined;
             let resultCode = creep.transfer(Game.getObjectById(creep.memory.reservedStorageSpace.id), RESOURCE_ENERGY);
             if (resultCode === ERR_NOT_IN_RANGE) {

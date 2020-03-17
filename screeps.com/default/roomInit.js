@@ -168,6 +168,7 @@ let roomInit = {
         //TODO: Optimize
         function actualizeRoomResourcePool(room) {
             if (room.memory.creeps.length > 0) {
+                room.memory.availableDroppedEnergyInRoom = 0;
                 for (let i = 0; i < room.memory.creeps.length; i++) {
                     let creep = Game.getObjectById(room.memory.creeps[i]);
                     if (creep.memory.role === "carry") {
@@ -177,6 +178,9 @@ let roomInit = {
                             room.memory.resourcePool[creepReservedResourceId].amount -= Game.getObjectById(room.memory.creeps[i]).memory.reservedResource.amount;
                         }
                     }
+                }
+                for (let r in room.memory.resourcePool) {
+                    room.memory.availableDroppedEnergyInRoom += room.memory.resourcePool.amount;
                 }
             }
         }

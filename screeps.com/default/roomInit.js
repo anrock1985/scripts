@@ -144,11 +144,13 @@ let roomInit = {
                 let storageId = storages[s].id;
                 let storageSpaceUsed = storages[s].store[RESOURCE_ENERGY];
                 let storageSpaceAvailable = storages[s].store.getFreeCapacity(RESOURCE_ENERGY);
-                room.memory.storageResourcePool[storageId] = {
-                    id: storageId,
-                    type: RESOURCE_ENERGY,
-                    amount: storageSpaceUsed
-                };
+                if (storages[s].structureType !== STRUCTURE_TOWER) {
+                    room.memory.storageResourcePool[storageId] = {
+                        id: storageId,
+                        type: RESOURCE_ENERGY,
+                        amount: storageSpaceUsed
+                    };
+                }
                 room.memory.storageSpacePool[storageId] = {
                     id: storageId,
                     storageType: storages[s].structureType,

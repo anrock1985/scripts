@@ -60,7 +60,7 @@ let roleBuilder = {
             creep.memory.building = true;
         }
 
-        if (creep.store[RESOURCE_ENERGY] < creep.store.getCapacity(RESOURCE_ENERGY) && !creep.memory.building) {
+        if (creep.store.getFreeCapacity(RESOURCE_ENERGY) > 0 && !creep.memory.building) {
             if (creep.memory.closestStorageId) {
                 creep.memory.idle = undefined;
                 if (storagesWithEnoughEnergy.structureType === STRUCTURE_CONTAINER) {

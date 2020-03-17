@@ -103,7 +103,7 @@ let roleCarry = {
             }
         }
 
-        if (/*creep.memory.reservedStorageSpace && */creep.memory.reservedStorageSpace.id) {
+        if (creep.memory.reservedStorageSpace && creep.memory.reservedStorageSpace.id) {
             creep.memory.idle = undefined;
             let resultCode = creep.transfer(Game.getObjectById(creep.memory.reservedStorageSpace.id), RESOURCE_ENERGY);
             if (resultCode === ERR_NOT_IN_RANGE) {

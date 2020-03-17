@@ -180,7 +180,7 @@ let roomInit = {
                     }
                 }
                 for (let r in room.memory.resourcePool) {
-                    room.memory.availableDroppedEnergyInRoom += room.memory.resourcePool.amount;
+                    room.memory.availableDroppedEnergyInRoom += room.memory.resourcePool[r].amount;
                 }
             }
         }

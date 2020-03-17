@@ -22,10 +22,13 @@ let roleUpgrader = {
         let storage = {};
         if (creep.memory.reservedStorageResource && !creep.memory.reservedStorageResource.id && !creep.memory.upgrading) {
             for (let s in creep.room.memory.storageResourcePool) {
+                Memory.debugS = s;
+                Memory.debugFullS = creep.room.memory.storageResourcePool[s];
                 let st = creep.room.memory.storageResourcePool[s];
                 if (st.storageType === STRUCTURE_CONTAINER || st.storageType === STRUCTURE_STORAGE)
                     containers.push(st.id);
             }
+            Memory.debugCont = containers;
             if (containers.length > 0 && creep.room.memory.storageResourcePool) {
                 storage = findClosestStorageResourceByPath(creep, containers);
             } else if (creep.room.memory.storageResourcePool)

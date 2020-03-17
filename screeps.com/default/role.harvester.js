@@ -109,7 +109,7 @@ let roleHarvester = {
             }
         }
 
-        if (creep.memory.harvesting && creep.memory.closestSourceId.id && (creep.store.getFreeCapacity(RESOURCE_ENERGY) > 0 || creep.store.getFreeCapacity(RESOURCE_ENERGY) === null)) {
+        if (creep.memory.harvesting && creep.memory.closestSourceId.id && creep.store[RESOURCE_ENERGY] !== creep.store.getCapacity(RESOURCE_ENERGY)) {
             creep.memory.idle = undefined;
             if (creep.harvest(Game.getObjectById(creep.memory.closestSourceId.id)) === ERR_NOT_IN_RANGE) {
                 creep.moveTo(Game.getObjectById(creep.memory.closestSourceId.id));

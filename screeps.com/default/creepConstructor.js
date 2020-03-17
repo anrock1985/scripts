@@ -176,7 +176,7 @@ let creepConstructor = {
             }
 
             //Carry
-            else if (spawner.room.memory.availableDroppedEnergyInRoom > 100
+            else if (spawner.room.memory.availableDroppedEnergyInRoom > (spawner.room.energyCapacityAvailable / 3)
                 && spawner.isActive()
                 && !spawner.spawning
                 && spawner.room.energyAvailable >= 300

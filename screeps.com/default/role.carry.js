@@ -27,7 +27,7 @@ let roleCarry = {
             storagePoolController.releaseTransfer(creep);
         }
 
-        if (!creep.memory.reservedStorageSpace || !creep.memory.reservedStorageSpace.id && creep.memory.carrying) {
+        if (creep.memory.reservedStorageSpace && !creep.memory.reservedStorageSpace.id && creep.memory.carrying) {
             let storage;
             let reservedAmount = creep.store[RESOURCE_ENERGY];
 

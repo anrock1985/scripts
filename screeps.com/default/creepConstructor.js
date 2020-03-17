@@ -8,6 +8,8 @@ let creepConstructor = {
 
         let totalAvailableEnergy = spawner.room.energyAvailable;
 
+        let name = Game.time;
+
         function prepareBody(role) {
             let result = [];
             let count = 0;
@@ -87,7 +89,7 @@ let creepConstructor = {
                         if (spawner.isActive()
                             && !spawner.spawning
                             && spawner.room.energyAvailable >= 300 && Memory.carry < 2) {
-                            let name = Game.time + "_C";
+                            name += "_C";
                             let resultCode = spawner.spawnCreep(prepareBody("carry"), name, {memory: {role: "carry"}});
                             if (resultCode === 0) {
                                 Memory.carry++;
@@ -114,7 +116,7 @@ let creepConstructor = {
                     && spawner.room.energyAvailable >= 300) {
                     if (logLevel === "debug")
                         console.log("DEBUG: Constructing default harvester");
-                    let name = Game.time + "_H";
+                    name += "_H";
                     let resultCode = spawner.spawnCreep(prepareBody("defaultHarvester"), name, {memory: {role: "harvester"}});
                     if (resultCode === 0) {
                         Memory.harvesters++;
@@ -136,7 +138,7 @@ let creepConstructor = {
                 && !spawner.spawning
                 && spawner.room.energyAvailable >= 100
                 && Memory.carry < 1) {
-                let name = Game.time + "_C";
+                name += "_C";
                 let resultCode = spawner.spawnCreep(prepareBody("carry"), name, {memory: {role: "carry"}});
                 if (resultCode === 0) {
                     Memory.carry++;
@@ -157,7 +159,7 @@ let creepConstructor = {
                 && !spawner.spawning
                 && spawner.room.energyAvailable >= 300
                 && Memory.harvesters < 2) {
-                let name = Game.time + "_H";
+                name += "_H";
                 let resultCode = spawner.spawnCreep(prepareBody("harvester"), name, {memory: {role: "harvester"}});
                 if (resultCode === 0) {
                     Memory.harvesters++;
@@ -179,7 +181,7 @@ let creepConstructor = {
                 && !spawner.spawning
                 && spawner.room.energyAvailable >= 300
                 && Memory.carry < 8) {
-                let name = Game.time + "_C";
+                name += "_C";
                 let resultCode = spawner.spawnCreep(prepareBody("carry"), name, {memory: {role: "carry"}});
                 if (resultCode === 0) {
                     Memory.carry++;
@@ -201,7 +203,7 @@ let creepConstructor = {
                 && spawner.room.memory.myConstructionSiteIds.length > 0
                 && spawner.room.energyAvailable >= 300
                 && Memory.builders < ((spawner.room.memory.myConstructionSiteIds.length > 2) ? 2 : 1)) {
-                let name = Game.time + "_B";
+                name += "_B";
                 let resultCode = spawner.spawnCreep(prepareBody("builder"), name, {memory: {role: "builder"}});
                 if (resultCode === 0) {
                     Memory.builders++;
@@ -222,7 +224,7 @@ let creepConstructor = {
                 && !spawner.spawning
                 && spawner.room.energyAvailable >= 300
                 && Memory.repairers < 2) {
-                let name = Game.time + "_R";
+                name += "_R";
                 let resultCode = spawner.spawnCreep(prepareBody("repairer"), name, {memory: {role: "repairer"}});
                 if (resultCode === 0) {
                     Memory.repairers++;
@@ -243,7 +245,7 @@ let creepConstructor = {
                 && !spawner.spawning
                 && spawner.room.energyAvailable >= 300
                 && Memory.upgraders < ((spawner.room.memory.myConstructionSiteIds.length === 0) ? 4 : 2)) {
-                let name = Game.time + "_U";
+                name += "_U";
                 let resultCode = spawner.spawnCreep(prepareBody("upgrader"), name, {memory: {role: "upgrader"}});
                 if (resultCode === 0) {
                     Memory.upgraders++;

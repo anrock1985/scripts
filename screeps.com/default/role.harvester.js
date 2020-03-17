@@ -1,5 +1,9 @@
 let roleHarvester = {
     run: function (creep) {
+        let _ = require('lodash');
+
+        let storagePoolController = require('storagePoolController');
+
         let debug = true;
 
         if (!creep.memory.idle)
@@ -8,7 +12,7 @@ let roleHarvester = {
         if (creep.memory.harvesting === undefined) {
             creep.memory.harvesting = true;
         }
-        if (creep.store[RESOURCE_ENERGY] === creep.store.getCapacity(RESOURCE_ENERGY) && creep.memory.harvesting) {
+        if (creep.store.getFreeCapacity(RESOURCE_ENERGY) === 0 && creep.memory.harvesting) {
             creep.memory.harvesting = false;
             creep.memory.closestActiveSourceId = undefined;
         }
@@ -16,40 +20,124 @@ let roleHarvester = {
             creep.memory.harvesting = true;
         }
 
-        //TODO: Определить безопасные источники.
-        // let allEnergySourcesIdsInRoom = [];
-        // let allSafeEnergySourcesIdsInRoom = [];
-        // for (let source in creep.room.find(FIND_SOURCES)) {
-        //     allEnergySourcesIdsInRoom.push(source.id);
-        // }
-
-        let closestSpawner = creep.pos.findClosestByPath(FIND_MY_SPAWNS);
-        if (closestSpawner) {
-            creep.memory.closestSpawnerId = closestSpawner.id;
+        if (!creep.memory.closestSourceId) {
+            creep.memory.closestSourceId = {};
         }
 
-        let activeSources = creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
-
-        if (activeSources && !creep.memory.closestActiveSourceId && creep.memory.harvesting) {
-            creep.memory.closestActiveSourceId = activeSources.id;
-        }
-
-        let storagesNotFull = creep.room.find(FIND_STRUCTURES, {
-            filter: (s) => {
-                return (s.structureType === STRUCTURE_EXTENSION
-                    || s.structureType === STRUCTURE_SPAWN) && s.store[RESOURCE_ENERGY] < s.store.getCapacity(RESOURCE_ENERGY)
+        if (!creep.memory.closestSourceId.id && creep.memory.harvesting) {
+            let source = {};
+            if (creep.room.memory.sourceIds.length > 0) {
+                source = findClosestIdByPath(creep, creep.room.memory.sourceIds);
             }
-        });
+            if (source.id) {
+                creep.memory.closestSourceId.id = source.id;
+            }
+        }
+        // room.memory.sourceIds
 
-        let closestStorageNotFull = {};
-        if (storagesNotFull !== null) {
-            closestStorageNotFull = creep.pos.findClosestByPath(storagesNotFull);
+        if (!creep.memory.reservedStorageSpace || !creep.memory.reservedStorageSpace.id && !creep.memory.harvesting && Memory.carry === 0) {
+            let storage;
+            let reservedAmount = creep.store[RESOURCE_ENERGY];
+
+            let spawnerNotFull = [];
+            let extensionNotFull = [];
+            let towerNotHalfFull = [];
+            let storageNotFull = [];
+
+            towerNotHalfFull = _.filter(creep.room.memory.storageSpacePool, function (a) {
+                return a.storageType === STRUCTURE_TOWER
+                    && (creep.room.energyAvailable === creep.room.energyCapacityAvailable ? a.amount > 0 : a.amount >= 500)
+            });
+
+            if (towerNotHalfFull.length === 0) {
+                extensionNotFull = _.filter(creep.room.memory.storageSpacePool, function (a) {
+                    return a.storageType === STRUCTURE_EXTENSION
+                        && a.amount > 0
+                });
+            }
+
+            if (extensionNotFull.length === 0) {
+                spawnerNotFull = _.filter(creep.room.memory.storageSpacePool, function (a) {
+                    return a.storageType === STRUCTURE_SPAWN
+                        && a.amount > 0
+                });
+            }
+
+            if (spawnerNotFull.length === 0) {
+                storageNotFull = _.filter(creep.room.memory.storageSpacePool, function (a) {
+                    return (a.storageType !== STRUCTURE_SPAWN
+                        && a.storageType !== STRUCTURE_EXTENSION
+                        && a.storageType !== STRUCTURE_TOWER)
+                        && a.amount > 0
+                });
+            }
+
+            if (towerNotHalfFull.length > 0) {
+                storage = findClosestStorageSpaceByPath(creep, towerNotHalfFull);
+                if (storage) {
+                    if (storage.amount >= reservedAmount) {
+                        storagePoolController.reserveTransfer(creep, storage.id, reservedAmount);
+                    } else {
+                        storagePoolController.reserveTransfer(creep, storage.id, storage.amount);
+                    }
+                }
+            } else if (extensionNotFull.length > 0) {
+                storage = findClosestStorageSpaceByPath(creep, extensionNotFull);
+                if (storage) {
+                    if (storage.amount >= reservedAmount) {
+                        storagePoolController.reserveTransfer(creep, storage.id, reservedAmount);
+                    } else {
+                        storagePoolController.reserveTransfer(creep, storage.id, storage.amount);
+                    }
+                }
+            } else if (spawnerNotFull.length > 0) {
+                storage = findClosestStorageSpaceByPath(creep, spawnerNotFull);
+                if (storage) {
+                    if (storage.amount >= reservedAmount) {
+                        storagePoolController.reserveTransfer(creep, storage.id, reservedAmount);
+                    } else {
+                        storagePoolController.reserveTransfer(creep, storage.id, storage.amount);
+                    }
+                }
+            } else {
+                storage = findClosestStorageSpaceByPath(creep, storageNotFull);
+                if (storage) {
+                    if (storage.amount >= reservedAmount) {
+                        storagePoolController.reserveTransfer(creep, storage.id, reservedAmount);
+                    } else {
+                        storagePoolController.reserveTransfer(creep, storage.id, storage.amount);
+                    }
+                }
+            }
         }
-        if (closestStorageNotFull) {
-            creep.memory.closestStorageNotFullId = closestStorageNotFull.id;
-        } else {
-            creep.memory.closestStorageNotFullId = undefined;
-        }
+
+        // let closestSpawner = creep.pos.findClosestByPath(FIND_MY_SPAWNS);
+        // if (closestSpawner) {
+        //     creep.memory.closestSpawnerId = closestSpawner.id;
+        // }
+        //
+        // let activeSources = creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
+        //
+        // if (activeSources && !creep.memory.closestActiveSourceId && creep.memory.harvesting) {
+        //     creep.memory.closestActiveSourceId = activeSources.id;
+        // }
+        //
+        // let storagesNotFull = creep.room.find(FIND_STRUCTURES, {
+        //     filter: (s) => {
+        //         return (s.structureType === STRUCTURE_EXTENSION
+        //             || s.structureType === STRUCTURE_SPAWN) && s.store[RESOURCE_ENERGY] < s.store.getCapacity(RESOURCE_ENERGY)
+        //     }
+        // });
+        //
+        // let closestStorageNotFull = {};
+        // if (storagesNotFull !== null) {
+        //     closestStorageNotFull = creep.pos.findClosestByPath(storagesNotFull);
+        // }
+        // if (closestStorageNotFull) {
+        //     creep.memory.closestStorageNotFullId = closestStorageNotFull.id;
+        // } else {
+        //     creep.memory.closestStorageNotFullId = undefined;
+        // }
 
         if (creep.memory.harvesting && creep.store[RESOURCE_ENERGY] !== creep.store.getCapacity(RESOURCE_ENERGY)) {
             creep.memory.idle = undefined;
@@ -72,7 +160,38 @@ let roleHarvester = {
             }
         }
 
-        function getSafeEnergySource() {
+        function findClosestStorageSpaceByPath(creep, storagesIds) {
+            let closest;
+            let tmp;
+            let storages = [];
+            for (let s in storagesIds) {
+                storages.push(Game.getObjectById(storagesIds[s].id));
+            }
+
+            tmp = creep.pos.findClosestByPath(storages);
+            if (tmp === null)
+                return undefined;
+            else
+                closest = tmp;
+
+            return {id: closest.id, amount: closest.store.getFreeCapacity(RESOURCE_ENERGY)};
+        }
+
+        function findClosestIdByPath(creep, ids) {
+            let closest;
+            let tmp;
+            let idsObjects = [];
+            for (let s in ids) {
+                idsObjects.push(Game.getObjectById(ids[s]));
+            }
+
+            tmp = creep.pos.findClosestByPath(idsObjects);
+            if (tmp === null)
+                return undefined;
+            else
+                closest = tmp;
+
+            return {id: closest.id};
         }
     }
 };
@@ -88,3 +207,5 @@ module.exports = roleHarvester;
 
 //TODO: Кол-во харвестеров = кол-ву источников.
 // Резервируем спот у источника, чтобы другие не ходили туда.
+
+//TODO: Определить безопасные источники.

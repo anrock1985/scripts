@@ -35,8 +35,8 @@ let roleBuilder = {
 
         if (!creep.memory.closestConstructionSiteId.id && creep.memory.building) {
             let constructionSite = {};
-            if (creep.room.memory.myConstructionSiteIds.id) {
-                constructionSite = findClosestConstructionSiteByPath(creep, creep.room.memory.myConstructionSiteIds);
+            if (creep.room.memory.myConstructionSiteIds.length > 0) {
+                constructionSite = findClosestIdByPath(creep, creep.room.memory.myConstructionSiteIds);
             }
             if (constructionSite.id) {
                 creep.memory.closestConstructionSiteId.id = constructionSite.id;
@@ -74,15 +74,15 @@ let roleBuilder = {
             return {id: closest.id, resourceType: RESOURCE_ENERGY, amount: closest.store[RESOURCE_ENERGY]};
         }
 
-        function findClosestConstructionSiteByPath(creep, constructionSitesIds) {
+        function findClosestIdByPath(creep, ids) {
             let closest;
             let tmp;
-            let constructionSites = [];
-            for (let s in constructionSitesIds) {
-                constructionSites.push(Game.getObjectById(constructionSitesIds[s].id));
+            let idsObjects = [];
+            for (let s in ids) {
+                idsObjects.push(Game.getObjectById(ids[s]));
             }
 
-            tmp = creep.pos.findClosestByPath(constructionSites);
+            tmp = creep.pos.findClosestByPath(idsObjects);
             if (tmp === null)
                 return undefined;
             else

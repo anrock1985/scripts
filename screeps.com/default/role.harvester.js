@@ -14,7 +14,6 @@ let roleHarvester = {
         }
         if (creep.store.getFreeCapacity(RESOURCE_ENERGY) === 0 && creep.memory.harvesting) {
             creep.memory.harvesting = false;
-            creep.memory.closestActiveSourceId = undefined;
         }
         if (creep.store[RESOURCE_ENERGY] === 0 && !creep.memory.harvesting) {
             creep.memory.harvesting = true;
@@ -33,7 +32,6 @@ let roleHarvester = {
                 creep.memory.closestSourceId.id = source.id;
             }
         }
-        // room.memory.sourceIds
 
         if (!creep.memory.reservedStorageSpace || !creep.memory.reservedStorageSpace.id && !creep.memory.harvesting && Memory.carry === 0) {
             let storage;
@@ -110,58 +108,31 @@ let roleHarvester = {
                 }
             }
         }
-
-        //
-        //
-        //
-        let closestSpawner = creep.pos.findClosestByPath(FIND_MY_SPAWNS);
-        if (closestSpawner) {
-            creep.memory.closestSpawnerId = closestSpawner.id;
-        }
-
-        let activeSources = creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
-
-        if (activeSources && !creep.memory.closestActiveSourceId && creep.memory.harvesting) {
-            creep.memory.closestActiveSourceId = activeSources.id;
-        }
-
-        let storagesNotFull = creep.room.find(FIND_STRUCTURES, {
-            filter: (s) => {
-                return (s.structureType === STRUCTURE_EXTENSION
-                    || s.structureType === STRUCTURE_SPAWN) && s.store[RESOURCE_ENERGY] < s.store.getCapacity(RESOURCE_ENERGY)
-            }
-        });
-
-        let closestStorageNotFull = {};
-        if (storagesNotFull !== null) {
-            closestStorageNotFull = creep.pos.findClosestByPath(storagesNotFull);
-        }
-        if (closestStorageNotFull) {
-            creep.memory.closestStorageNotFullId = closestStorageNotFull.id;
-        } else {
-            creep.memory.closestStorageNotFullId = undefined;
-        }
-
-        if (creep.memory.harvesting && creep.store[RESOURCE_ENERGY] !== creep.store.getCapacity(RESOURCE_ENERGY)) {
+        
+        if (creep.memory.harvesting && creep.memory.closestSourceId.id && creep.store.getFreeCapacity(RESOURCE_ENERGY) > 0) {
             creep.memory.idle = undefined;
-            if (creep.harvest(Game.getObjectById(creep.memory.closestActiveSourceId)) === ERR_NOT_IN_RANGE) {
-                creep.moveTo(Game.getObjectById(creep.memory.closestActiveSourceId));
+            if (creep.harvest(Game.getObjectById(creep.memory.closestSourceId.id)) === ERR_NOT_IN_RANGE) {
+                creep.moveTo(Game.getObjectById(creep.memory.closestSourceId.id));
             }
         }
-        //
-        //
-        //
 
         if (!creep.memory.harvesting && creep.store[RESOURCE_ENERGY] !== 0) {
             creep.memory.idle = undefined;
             if (Memory.carry > 0) {
                 let result = creep.drop(RESOURCE_ENERGY);
                 if (result !== 0) {
-                    console.log("ERROR: Harvester dropping result = " + result);
+                    console.log("ERROR: Harvester dropping result: " + result);
                 }
             } else {
-                if (creep.memory.closestStorageNotFullId !== undefined && creep.transfer(Game.getObjectById(creep.memory.closestStorageNotFullId), RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
-                    creep.moveTo(Game.getObjectById(creep.memory.closestStorageNotFullId));
+                if (creep.memory.reservedStorageSpace && creep.memory.reservedStorageSpace.id) {
+                    let resultCode = creep.transfer(Game.getObjectById(creep.memory.reservedStorageSpace.id), RESOURCE_ENERGY);
+                    if (resultCode === ERR_NOT_IN_RANGE) {
+                        creep.moveTo(Game.getObjectById(creep.memory.reservedStorageSpace.id));
+                    }
+                    if (resultCode === 0) {
+                        storagePoolController.releaseTransfer(creep);
+                        // creep.memory.reservedStorageSpace = {};
+                    }
                 }
             }
         }

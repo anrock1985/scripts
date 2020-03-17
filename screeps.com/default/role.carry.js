@@ -18,10 +18,9 @@ let roleCarry = {
         }
         if (creep.store.getFreeCapacity(RESOURCE_ENERGY) === 0 && !creep.memory.carrying) {
             creep.memory.carrying = true;
-            creep.memory.closestDroppedEnergyId = undefined;
-            if (creep.memory.reservedResource) {
-                resourcePoolController.release(creep);
-            }
+            // if (creep.memory.reservedResource) {
+            //     resourcePoolController.release(creep);
+            // }
         }
         if (creep.store[RESOURCE_ENERGY] === 0 && creep.memory.carrying) {
             creep.memory.carrying = false;
@@ -111,7 +110,7 @@ let roleCarry = {
                 creep.moveTo(Game.getObjectById(creep.memory.reservedStorageSpace.id));
             }
             if (resultCode === 0) {
-                creep.memory.reservedStorageSpace = {};
+                storagePoolController.releaseTransfer(creep);
             }
         }
 

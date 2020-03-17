@@ -111,33 +111,36 @@ let roleHarvester = {
             }
         }
 
-        // let closestSpawner = creep.pos.findClosestByPath(FIND_MY_SPAWNS);
-        // if (closestSpawner) {
-        //     creep.memory.closestSpawnerId = closestSpawner.id;
-        // }
         //
-        // let activeSources = creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
         //
-        // if (activeSources && !creep.memory.closestActiveSourceId && creep.memory.harvesting) {
-        //     creep.memory.closestActiveSourceId = activeSources.id;
-        // }
         //
-        // let storagesNotFull = creep.room.find(FIND_STRUCTURES, {
-        //     filter: (s) => {
-        //         return (s.structureType === STRUCTURE_EXTENSION
-        //             || s.structureType === STRUCTURE_SPAWN) && s.store[RESOURCE_ENERGY] < s.store.getCapacity(RESOURCE_ENERGY)
-        //     }
-        // });
-        //
-        // let closestStorageNotFull = {};
-        // if (storagesNotFull !== null) {
-        //     closestStorageNotFull = creep.pos.findClosestByPath(storagesNotFull);
-        // }
-        // if (closestStorageNotFull) {
-        //     creep.memory.closestStorageNotFullId = closestStorageNotFull.id;
-        // } else {
-        //     creep.memory.closestStorageNotFullId = undefined;
-        // }
+        let closestSpawner = creep.pos.findClosestByPath(FIND_MY_SPAWNS);
+        if (closestSpawner) {
+            creep.memory.closestSpawnerId = closestSpawner.id;
+        }
+
+        let activeSources = creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
+
+        if (activeSources && !creep.memory.closestActiveSourceId && creep.memory.harvesting) {
+            creep.memory.closestActiveSourceId = activeSources.id;
+        }
+
+        let storagesNotFull = creep.room.find(FIND_STRUCTURES, {
+            filter: (s) => {
+                return (s.structureType === STRUCTURE_EXTENSION
+                    || s.structureType === STRUCTURE_SPAWN) && s.store[RESOURCE_ENERGY] < s.store.getCapacity(RESOURCE_ENERGY)
+            }
+        });
+
+        let closestStorageNotFull = {};
+        if (storagesNotFull !== null) {
+            closestStorageNotFull = creep.pos.findClosestByPath(storagesNotFull);
+        }
+        if (closestStorageNotFull) {
+            creep.memory.closestStorageNotFullId = closestStorageNotFull.id;
+        } else {
+            creep.memory.closestStorageNotFullId = undefined;
+        }
 
         if (creep.memory.harvesting && creep.store[RESOURCE_ENERGY] !== creep.store.getCapacity(RESOURCE_ENERGY)) {
             creep.memory.idle = undefined;
@@ -145,6 +148,9 @@ let roleHarvester = {
                 creep.moveTo(Game.getObjectById(creep.memory.closestActiveSourceId));
             }
         }
+        //
+        //
+        //
 
         if (!creep.memory.harvesting && creep.store[RESOURCE_ENERGY] !== 0) {
             creep.memory.idle = undefined;

@@ -17,6 +17,7 @@ let roleHarvester = {
         }
         if (creep.store[RESOURCE_ENERGY] === 0 && !creep.memory.harvesting) {
             creep.memory.harvesting = true;
+            storagePoolController.releaseTransfer(creep);
         }
 
         if (!creep.memory.closestSourceId) {
@@ -130,8 +131,8 @@ let roleHarvester = {
                         creep.moveTo(Game.getObjectById(creep.memory.reservedStorageSpace.id));
                     }
                     if (resultCode === 0) {
-                        storagePoolController.releaseTransfer(creep);
-                        // creep.memory.reservedStorageSpace = {};
+                        //Сбрасываем, на случай если хранилище не вместило весь наш store
+                        creep.memory.reservedStorageSpace = {};
                     }
                 }
             }

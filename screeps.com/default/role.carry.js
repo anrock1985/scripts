@@ -18,9 +18,9 @@ let roleCarry = {
         }
         if (creep.store.getFreeCapacity(RESOURCE_ENERGY) === 0 && !creep.memory.carrying) {
             creep.memory.carrying = true;
-            // if (creep.memory.reservedResource) {
-            //     resourcePoolController.release(creep);
-            // }
+            if (creep.memory.reservedResource) {
+                resourcePoolController.release(creep);
+            }
         }
         if (creep.store[RESOURCE_ENERGY] === 0 && creep.memory.carrying) {
             creep.memory.carrying = false;
@@ -110,7 +110,8 @@ let roleCarry = {
                 creep.moveTo(Game.getObjectById(creep.memory.reservedStorageSpace.id));
             }
             if (resultCode === 0) {
-                storagePoolController.releaseTransfer(creep);
+                //Сбрасываем, на случай если хранилище не вместило весь наш store
+                creep.memory.reservedStorageSpace = {};
             }
         }
 

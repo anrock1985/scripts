@@ -51,7 +51,7 @@ let roleRepairer = {
             }
         }
 
-        if (creep.memory.reservedStorageResource.id && creep.store.getFreeCapacity(RESOURCE_ENERGY) > 0 && !creep.memory.repairing) {
+        if (creep.memory.reservedStorageResource && creep.memory.reservedStorageResource.id && creep.store.getFreeCapacity(RESOURCE_ENERGY) > 0 && !creep.memory.repairing) {
             creep.memory.idle = undefined;
             if (creep.memory.reservedStorageResource.storageType === STRUCTURE_CONTAINER
                 || creep.memory.reservedStorageResource.storageType === STRUCTURE_STORAGE) {

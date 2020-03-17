@@ -43,14 +43,6 @@ let roleUpgrader = {
             creep.memory.closestStorageId = storagesWithEnoughEnergy.id;
         }
 
-        //TODO: Проверка что ресурс за которым идем в хранилище не пропал (например потрачен на спавн)
-        // if (creep.memory.reservedStorageResource && creep.memory.reservedStorageResource.id) {
-        //     if (creep.memory.reservedStorageResource.amount > creep.room.memory.storageResourcePool[creep.memory.reservedStorageResource.id].amount) {
-        //         console.log("WARN: Reserved storage resource disappears!");
-        //         creep.memory.reservedStorageResource = {};
-        //     }
-        // }
-
         if (!creep.memory.reservedStorageResource || !creep.memory.reservedStorageResource.id && !creep.memory.upgrading && creep.room.energyAvailable >= 300) {
             let storage;
             let reservedAmount;
@@ -83,3 +75,5 @@ let roleUpgrader = {
 };
 
 module.exports = roleUpgrader;
+
+//TODO: Проверка что ресурс за которым идем в хранилище не пропал (например потрачен на спавн)

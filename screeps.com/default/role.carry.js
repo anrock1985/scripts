@@ -66,7 +66,7 @@ let roleCarry = {
             }
 
             if (towerNotHalfFull.length > 0) {
-                storage = findClosestByPath(creep, towerNotHalfFull);
+                storage = findClosestStorageSpaceByPath(creep, towerNotHalfFull);
                 if (storage) {
                     if (storage.amount >= reservedAmount) {
                         storagePoolController.reserveTransfer(creep, storage.id, reservedAmount);
@@ -75,7 +75,7 @@ let roleCarry = {
                     }
                 }
             } else if (extensionNotFull.length > 0) {
-                storage = findClosestByPath(creep, extensionNotFull);
+                storage = findClosestStorageSpaceByPath(creep, extensionNotFull);
                 if (storage) {
                     if (storage.amount >= reservedAmount) {
                         storagePoolController.reserveTransfer(creep, storage.id, reservedAmount);
@@ -84,7 +84,7 @@ let roleCarry = {
                     }
                 }
             } else if (spawnerNotFull.length > 0) {
-                storage = findClosestByPath(creep, spawnerNotFull);
+                storage = findClosestStorageSpaceByPath(creep, spawnerNotFull);
                 if (storage) {
                     if (storage.amount >= reservedAmount) {
                         storagePoolController.reserveTransfer(creep, storage.id, reservedAmount);
@@ -93,7 +93,7 @@ let roleCarry = {
                     }
                 }
             } else {
-                storage = findClosestByPath(creep, storageNotFull);
+                storage = findClosestStorageSpaceByPath(creep, storageNotFull);
                 if (storage) {
                     if (storage.amount >= reservedAmount) {
                         storagePoolController.reserveTransfer(creep, storage.id, reservedAmount);
@@ -143,7 +143,7 @@ let roleCarry = {
             }
         }
 
-        function findClosestByPath(creep, storagesIds) {
+        function findClosestStorageSpaceByPath(creep, storagesIds) {
             let closest;
             let tmp;
             let storages = [];

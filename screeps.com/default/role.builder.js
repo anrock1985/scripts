@@ -33,7 +33,7 @@ let roleBuilder = {
             }
         }
 
-        if (!creep.memory.reservedStorageResource || !creep.memory.closestConstructionSiteId.id && creep.memory.building) {
+        if (creep.memory.reservedStorageResource && !creep.memory.closestConstructionSiteId.id && creep.memory.building) {
             let constructionSite = {};
             if (creep.room.memory.myConstructionSiteIds.length > 0) {
                 constructionSite = findClosestIdByPath(creep, creep.room.memory.myConstructionSiteIds);

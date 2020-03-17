@@ -40,6 +40,9 @@ let roleCarry = {
                 return a.storageType === STRUCTURE_TOWER
                     && ((creep.room.energyAvailable === creep.room.energyCapacityAvailable) ? a.amount > 0 : a.amount >= 500)
             });
+            console.log(creep.room.energyAvailable);
+            console.log(creep.room.energyCapacityAvailable);
+            console.log(((creep.room.energyAvailable === creep.room.energyCapacityAvailable) ? "FIRST" : "SECOND"));
 
             if (towerNotHalfFull.length === 0) {
                 extensionNotFull = _.filter(creep.room.memory.storageSpacePool, function (a) {

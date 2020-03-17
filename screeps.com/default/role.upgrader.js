@@ -32,7 +32,7 @@ let roleUpgrader = {
                         amount: st.amount
                     };
             }
-            if (bigStorages && bigStorages.id && creep.room.memory.storageResourcePool) {
+            if (bigStorages && creep.room.memory.storageResourcePool) {
                 storage = findClosestStorageResourceByPath(creep, bigStorages);
             } else if (creep.room.memory.storageResourcePool)
                 storage = findClosestStorageResourceByPath(creep, creep.room.memory.storageResourcePool);

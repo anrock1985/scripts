@@ -18,8 +18,8 @@ let roleUpgrader = {
             storagePoolController.releaseWithdraw(creep);
         }
 
+        let storage = {};
         if (!creep.memory.reservedStorageResource || !creep.memory.reservedStorageResource.id && !creep.memory.upgrading) {
-            let storage = {};
             if (creep.room.memory.storageResourcePool) {
                 storage = findClosestStorageResourceByPath(creep, creep.room.memory.storageResourcePool);
             }

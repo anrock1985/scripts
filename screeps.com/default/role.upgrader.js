@@ -17,7 +17,7 @@ let roleUpgrader = {
             creep.memory.upgrading = true;
             storagePoolController.releaseWithdraw(creep);
         }
-        
+
         if (!creep.memory.reservedStorageResource.id && !creep.memory.upgrading) {
             let storage = {};
             if (creep.room.memory.storageResourcePool) {
@@ -47,9 +47,13 @@ let roleUpgrader = {
             let tmp;
             let storages = [];
             for (let s in storagesIds) {
-                storages.push(Game.getObjectById(storagesIds[s].id));
+                if (storagesIds[s].amount >= creep.store.getFreeCapacity(RESOURCE_ENERGY))
+                    storages.push(Game.getObjectById(storagesIds[s].id));
             }
 
+            if (storages.length === 0) {
+                return undefined;
+            }
             tmp = creep.pos.findClosestByPath(storages);
             if (tmp === null)
                 return undefined;

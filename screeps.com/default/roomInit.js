@@ -150,6 +150,7 @@ let roomInit = {
                 if (storages[s].structureType !== STRUCTURE_TOWER) {
                     room.memory.storageResourcePool[storageId] = {
                         id: storageId,
+                        storageType: storages[s].structureType,
                         type: RESOURCE_ENERGY,
                         amount: storageSpaceUsed
                     };

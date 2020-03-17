@@ -45,7 +45,7 @@ let roleHarvester = {
 
             towerNotHalfFull = _.filter(creep.room.memory.storageSpacePool, function (a) {
                 return a.storageType === STRUCTURE_TOWER
-                    && (creep.room.energyAvailable === creep.room.energyCapacityAvailable ? a.amount > 0 : a.amount >= 500)
+                    && ((creep.room.energyAvailable === creep.room.energyCapacityAvailable) ? a.amount > 0 : a.amount >= 500)
             });
 
             if (towerNotHalfFull.length === 0) {

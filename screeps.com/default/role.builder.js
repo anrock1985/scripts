@@ -28,7 +28,7 @@ let roleBuilder = {
             if (creep.room.memory.storageResourcePool) {
                 storage = findClosestStorageResourceByPath(creep, creep.room.memory.storageResourcePool);
             }
-            if (storage.id && !creep.memory.building) {
+            if (storage && storage.id && !creep.memory.building) {
                 storagePoolController.reserveWithdraw(creep, storage.id, storage.resourceType, creep.store.getFreeCapacity(RESOURCE_ENERGY))
             }
         }

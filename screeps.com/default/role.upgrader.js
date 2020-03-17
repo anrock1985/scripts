@@ -22,6 +22,7 @@ let roleUpgrader = {
         let storage = {};
         if (creep.memory.reservedStorageResource && !creep.memory.reservedStorageResource.id && !creep.memory.upgrading) {
             for (let c in creep.room.memory.storageResourcePool) {
+                Memory.debugC = c;
                 if (c.storageType === STRUCTURE_CONTAINER || c.storageType === STRUCTURE_STORAGE)
                     containers.push(c.id);
             }

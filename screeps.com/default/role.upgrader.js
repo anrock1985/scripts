@@ -18,11 +18,17 @@ let roleUpgrader = {
             storagePoolController.releaseWithdraw(creep);
         }
 
+        let containers = [];
         let storage = {};
         if (creep.memory.reservedStorageResource && !creep.memory.reservedStorageResource.id && !creep.memory.upgrading) {
-            if (creep.room.memory.storageResourcePool) {
-                storage = findClosestStorageResourceByPath(creep, creep.room.memory.storageResourcePool);
+            for (let c in creep.room.memory.storageResourcePool) {
+                if (c.storageType === STRUCTURE_CONTAINER || c.storageType === STRUCTURE_STORAGE)
+                    containers.push(c.id);
             }
+            if (containers.length > 0 && creep.room.memory.storageResourcePool) {
+                storage = findClosestStorageResourceByPath(creep, containers);
+            } else if (creep.room.memory.storageResourcePool)
+                storage = findClosestStorageResourceByPath(creep, creep.room.memory.storageResourcePool);
             if (storage && storage.id && !creep.memory.upgrading) {
                 storagePoolController.reserveWithdraw(creep, storage.id, storage.resourceType, creep.store.getFreeCapacity(RESOURCE_ENERGY))
             }

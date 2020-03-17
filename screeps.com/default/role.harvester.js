@@ -24,18 +24,18 @@ let roleHarvester = {
             creep.memory.closestSourceId = {};
         }
 
+        let source = {};
         if (!creep.memory.closestSourceId.id && creep.memory.harvesting) {
-            let source = {};
             if (creep.room.memory.sourceIds.length > 0) {
                 source = findClosestIdByPath(creep, creep.room.memory.sourceIds);
             }
-            if (source.id) {
+            if (source && source.id) {
                 creep.memory.closestSourceId.id = source.id;
             }
         }
 
+        let storage;
         if (!creep.memory.reservedStorageSpace || !creep.memory.reservedStorageSpace.id && !creep.memory.harvesting && Memory.carry === 0) {
-            let storage;
             let reservedAmount = creep.store[RESOURCE_ENERGY];
 
             let spawnerNotFull = [];

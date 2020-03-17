@@ -24,16 +24,22 @@ let roleRepairer = {
             creep.memory.closestDamagedStructureId = {};
         }
 
-        let containers = [];
+        let bigStorages = {};
         let storage = {};
-        if (creep.memory.reservedStorageResource && !creep.memory.reservedStorageResource.id && !creep.memory.repairing) {
+        if (creep.memory.reservedStorageResource && !creep.memory.reservedStorageResource.id && !creep.memory.upgrading) {
             for (let s in creep.room.memory.storageResourcePool) {
                 let st = creep.room.memory.storageResourcePool[s];
                 if (st.storageType === STRUCTURE_CONTAINER || st.storageType === STRUCTURE_STORAGE)
-                    containers.push(st.id);
+                    bigStorages[s] = {
+                        id: s,
+                        storageType: st.structureType,
+                        type: RESOURCE_ENERGY,
+                        amount: st.amount
+                    };
             }
-            if (containers.length > 0 && creep.room.memory.storageResourcePool) {
-                storage = findClosestStorageResourceByPath(creep, containers);
+            if (bigStorages && bigStorages.id && creep.room.memory.storageResourcePool) {
+                storage = findClosestStorageResourceByPath(creep, bigStorages);
+
             } else if (creep.room.memory.storageResourcePool)
                 storage = findClosestStorageResourceByPath(creep, creep.room.memory.storageResourcePool);
             if (storage && storage.id && !creep.memory.repairing) {

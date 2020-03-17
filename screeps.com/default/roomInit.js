@@ -127,15 +127,18 @@ let roomInit = {
 
         //Вычисляем количество каждого брошенного ресурса в комнате
         if (droppedEnergy.length > 0) {
+            let totalDroppedEnergyInRoom = 0;
             for (let e in droppedEnergy) {
                 let droppedEnergyId = droppedEnergy[e].id;
                 let droppedEnergyAmount = droppedEnergy[e].amount;
+                totalDroppedEnergyInRoom += droppedEnergyAmount;
                 room.memory.resourcePool[droppedEnergyId] = {
                     id: droppedEnergyId,
                     type: RESOURCE_ENERGY,
                     amount: droppedEnergyAmount
                 };
             }
+            room.memory.totalDroppedEnergyInRoom = totalDroppedEnergyInRoom;
         }
 
         //Вычисляем параметры каждого хранилища в комнате

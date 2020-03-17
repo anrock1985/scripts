@@ -174,7 +174,8 @@ let creepConstructor = {
             }
 
             //Carry
-            else if (spawner.isActive()
+            else if (spawner.room.memory.totalDroppedEnergyInRoom > 100
+                && spawner.isActive()
                 && !spawner.spawning
                 && spawner.room.energyAvailable >= 300
                 && Memory.carry < 8) {
@@ -285,3 +286,5 @@ let creepConstructor = {
 module.exports = creepConstructor;
 
 //TODO: Если достигнут предел по крипам, а крипы слабее чем позволяет конструктор, надо их обновить.
+
+//TODO: Спавнить carry в зависимости от лежащих ресурсов.

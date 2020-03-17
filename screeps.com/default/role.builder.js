@@ -24,7 +24,7 @@ let roleBuilder = {
         }
 
         let storage = {};
-        if (!creep.memory.reservedStorageResource.id && !creep.memory.building) {
+        if (creep.memory.reservedStorageResource &&  !creep.memory.reservedStorageResource.id && !creep.memory.building) {
             if (creep.room.memory.storageResourcePool) {
                 storage = findClosestStorageResourceByPath(creep, creep.room.memory.storageResourcePool);
             }

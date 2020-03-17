@@ -19,7 +19,7 @@ let roleUpgrader = {
         }
 
         let storage = {};
-        if (!creep.memory.reservedStorageResource || !creep.memory.reservedStorageResource.id && !creep.memory.upgrading) {
+        if (creep.memory.reservedStorageResource && !creep.memory.reservedStorageResource.id && !creep.memory.upgrading) {
             if (creep.room.memory.storageResourcePool) {
                 storage = findClosestStorageResourceByPath(creep, creep.room.memory.storageResourcePool);
             }

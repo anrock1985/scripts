@@ -2,7 +2,7 @@ let roleUpgrader = {
     run: function (creep) {
         let _ = require('lodash');
 
-        let storagePoolController = require('storagePoolController');
+        let storagePoolController = require('../controller/storagePoolController');
 
         if (!creep.memory.idle)
             creep.memory.idle = Game.time;

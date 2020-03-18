@@ -1,26 +1,27 @@
-let roleBuilder = {
-    run: function (creep) {
-
+let roleRepairer = {
+    assign: function (creep) {
         let _ = require('lodash');
 
-        let storagePoolController = require('storagePoolController');
+        let debug = true;
+
+        let storagePoolController = require('../controller/storagePoolController');
 
         if (!creep.memory.idle)
             creep.memory.idle = Game.time;
 
-        if (creep.memory.building === undefined) {
-            creep.memory.building = true;
+        if (creep.memory.repairing === undefined) {
+            creep.memory.repairing = true;
         }
-        if (creep.store[RESOURCE_ENERGY] === 0 && creep.memory.building) {
-            creep.memory.building = false;
+        if (creep.store[RESOURCE_ENERGY] === 0 && creep.memory.repairing) {
+            creep.memory.repairing = false;
         }
-        if (creep.store.getFreeCapacity(RESOURCE_ENERGY) === 0 && !creep.memory.building) {
-            creep.memory.building = true;
+        if (creep.store.getFreeCapacity(RESOURCE_ENERGY) === 0 && !creep.memory.repairing) {
+            creep.memory.repairing = true;
             storagePoolController.releaseWithdraw(creep);
         }
 
-        if (!creep.memory.closestConstructionSiteId) {
-            creep.memory.closestConstructionSiteId = {};
+        if (!creep.memory.closestDamagedStructureId) {
+            creep.memory.closestDamagedStructureId = {};
         }
 
         let bigStorages = {};
@@ -39,36 +40,44 @@ let roleBuilder = {
             }
             if (bigStorages && creep.room.memory.storageResourcePool) {
                 storage = findClosestStorageResourceByPath(creep, bigStorages);
+
             } else if (creep.room.memory.storageResourcePool)
                 storage = findClosestStorageResourceByPath(creep, creep.room.memory.storageResourcePool);
-            if (storage && storage.id && !creep.memory.building) {
+            if (storage && storage.id && !creep.memory.repairing) {
                 storagePoolController.reserveWithdraw(creep, storage.id, storage.resourceType, creep.store.getFreeCapacity(RESOURCE_ENERGY))
             }
         }
 
-        if (creep.memory.reservedStorageResource && !creep.memory.closestConstructionSiteId.id && creep.memory.building) {
-            let constructionSite = {};
-            if (creep.room.memory.myConstructionSiteIds.length > 0) {
-                constructionSite = findClosestIdByPath(creep, creep.room.memory.myConstructionSiteIds);
+        if (creep.memory.reservedStorageResource && !creep.memory.closestDamagedStructureId.id && creep.memory.repairing) {
+            let damagedStructure = {};
+            if (creep.room.memory.myDamagedStructuresIds.length > 0) {
+                damagedStructure = findClosestIdByPath(creep, creep.room.memory.myDamagedStructuresIds);
             }
-            if (constructionSite && constructionSite.id) {
-                creep.memory.closestConstructionSiteId.id = constructionSite.id;
-            }
-        }
-
-        if (creep.memory.reservedStorageResource && creep.memory.reservedStorageResource.id && creep.store.getFreeCapacity(RESOURCE_ENERGY) > 0 && !creep.memory.building) {
-            creep.memory.idle = undefined;
-            if (creep.withdraw(Game.getObjectById(creep.memory.reservedStorageResource.id), RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
-                creep.moveTo(Game.getObjectById(creep.memory.reservedStorageResource.id));
+            if (damagedStructure && damagedStructure.id) {
+                creep.memory.closestDamagedStructureId.id = damagedStructure.id;
             }
         }
 
-        if (creep.memory.closestConstructionSiteId.id && creep.store[RESOURCE_ENERGY] !== 0 && creep.memory.building) {
+        if (creep.memory.closestDamagedStructureId.id && creep.store[RESOURCE_ENERGY] !== 0 && creep.memory.repairing) {
             creep.memory.idle = undefined;
-            if (creep.build(Game.getObjectById(creep.memory.closestConstructionSiteId.id)) === ERR_NOT_IN_RANGE) {
-                creep.moveTo(Game.getObjectById(creep.memory.closestConstructionSiteId.id));
+            if (creep.repair(Game.getObjectById(creep.memory.closestDamagedStructureId.id)) === ERR_NOT_IN_RANGE) {
+                creep.moveTo(Game.getObjectById(creep.memory.closestDamagedStructureId.id))
             }
-            creep.memory.closestConstructionSiteId = {};
+            creep.memory.closestDamagedStructureId = {};
+        }
+
+        if (creep.memory.reservedStorageResource && creep.memory.reservedStorageResource.id && creep.store.getFreeCapacity(RESOURCE_ENERGY) > 0 && !creep.memory.repairing) {
+            creep.memory.idle = undefined;
+            if (creep.memory.reservedStorageResource.storageType === STRUCTURE_CONTAINER
+                || creep.memory.reservedStorageResource.storageType === STRUCTURE_STORAGE) {
+                if (creep.withdraw(Game.getObjectById(creep.memory.reservedStorageResource.id), RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
+                    creep.moveTo(Game.getObjectById(creep.memory.reservedStorageResource.id));
+                }
+            } else if (creep.room.energyAvailable >= 300 && Memory.harvesters > 1) {
+                if (creep.withdraw(Game.getObjectById(creep.memory.reservedStorageResource.id), RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
+                    creep.moveTo(Game.getObjectById(creep.memory.reservedStorageResource.id));
+                }
+            }
         }
 
         function findClosestStorageResourceByPath(creep, storagesIds) {
@@ -111,6 +120,4 @@ let roleBuilder = {
     }
 };
 
-module.exports = roleBuilder;
-
-//TODO: Ступенчатое строительство стен.
+module.exports = roleRepairer;

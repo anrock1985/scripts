@@ -3,8 +3,8 @@ module.exports.loop = function () {
 
     let _ = require('lodash');
 
-    let populationController = require('populationController');
-    let towerController = require('towerController');
+    let populationController = require('controller/populationController');
+    let towerController = require('controller/towerController');
 
     let roomInit = require('roomInit');
 

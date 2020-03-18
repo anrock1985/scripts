@@ -292,26 +292,26 @@ let creepConstructor = {
                 //     }
                 // }
 
-            //Warrior
-            else if (spawner.isActive()
-                && !spawner.spawning
-                && spawner.room.energyAvailable >= 300
-                && Memory.warriors < 1) {
-                name += "_W";
-                let resultCode = spawner.spawnCreep(prepareBody("warrior"), name, {memory: {role: "warrior"}});
-                if (resultCode === 0) {
-                    Memory.warriors++;
-                    let bodyParts = [];
-                    _.forEach(Game.creeps[name].body, function (item) {
-                        bodyParts.push(item.type.toString().toUpperCase());
-                    });
-                    if (debug) {
-                        console.log("INFO: new WARRIOR [total:" + Memory.warriors + "] (" + bodyParts + ")");
-                    }
-                } else {
-                    console.log("ERROR: Spawning WARRIOR result code: " + resultCode);
-                }
-            }
+            // //Warrior
+            // else if (spawner.isActive()
+            //     && !spawner.spawning
+            //     && spawner.room.energyAvailable >= 300
+            //     && Memory.warriors < 1) {
+            //     name += "_W";
+            //     let resultCode = spawner.spawnCreep(prepareBody("warrior"), name, {memory: {role: "warrior"}});
+            //     if (resultCode === 0) {
+            //         Memory.warriors++;
+            //         let bodyParts = [];
+            //         _.forEach(Game.creeps[name].body, function (item) {
+            //             bodyParts.push(item.type.toString().toUpperCase());
+            //         });
+            //         if (debug) {
+            //             console.log("INFO: new WARRIOR [total:" + Memory.warriors + "] (" + bodyParts + ")");
+            //         }
+            //     } else {
+            //         console.log("ERROR: Spawning WARRIOR result code: " + resultCode);
+            //     }
+            // }
         }
     }
 };

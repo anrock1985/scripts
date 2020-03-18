@@ -14,13 +14,15 @@ let roleWarrior = {
         for (let f in Game.flags) {
             let flag = Game.flags[f];
             if (flag.name === "Attack") {
-                let look = flag.pos.look();
-                look.forEach(function (lookObject) {
-                    if (lookObject.type === LOOK_STRUCTURES) {
-                        target = lookObject.structure;
-                    }
-                });
-                Memory.attackTarget[flag.pos.roomName] = target;
+                if (creep.moveTo(flag) === 0) {
+                    let look = flag.pos.look();
+                    look.forEach(function (lookObject) {
+                        if (lookObject.type === LOOK_STRUCTURES) {
+                            target = lookObject.structure;
+                        }
+                    });
+                    Memory.attackTarget[flag.pos.roomName] = target;
+                }
             }
         }
 

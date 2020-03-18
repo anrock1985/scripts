@@ -1,5 +1,6 @@
 let towerController = {
     control: function (towerId) {
+        let _ = require('lodash');
 
         let tower = Game.getObjectById(towerId);
 

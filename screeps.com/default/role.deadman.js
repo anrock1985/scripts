@@ -5,7 +5,35 @@ let roleDeadman = {
         if (creep.memory.role !== "deadman") {
             creep.memory.lastRole = creep.memory.role;
             creep.memory.role = "deadman";
-            creep.memory.reservedResource = {};
+            if (creep.memory.reservedResource && creep.memory.reservedResource.id)
+                creep.memory.reservedResource = {};
+            if (creep.memory.reservedStorageResource && creep.memory.reservedStorageResource.id)
+                creep.memory.reservedStorageResource = {};
+            if (creep.memory.reservedStorageSpace && creep.memory.reservedStorageSpace.id)
+                creep.memory.reservedStorageSpace = {};
+            switch (creep.memory.lastRole) {
+                case "harvester":
+                    Memory.harvesters--;
+                    break;
+                case "carry":
+                    Memory.carry--;
+                    break;
+                case "upgrader":
+                    Memory.upgraders--;
+                    break;
+                case "builder":
+                    Memory.builders--;
+                    break;
+                case "repairer":
+                    Memory.repairers--;
+                    break;
+                case "scout":
+                    Memory.scouts--;
+                    break;
+                case "claimer":
+                    Memory.claimers--;
+                    break;
+            }
             if (debug) {
                 console.log("INFO: Creep " + creep.name + " marked as deadman now.");
             }

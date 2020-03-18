@@ -10,19 +10,15 @@ let roleWarrior = {
         }
 
         for (let f in Game.flags) {
-            console.log(Game.flags[f].name);
             if (Game.flags[f].name === "Attack") {
-                Memory.attackTarget[Game.flags[f].pos.roomName] = {
-                    id: Game.time,
-                    room: Game.flags[f].pos.roomName
-                }
+                Memory.attackTarget[Game.flags[f].pos.roomName] = Game.flags[f];
             }
         }
 
         let target;
-        if (Memory.attackTarget && Memory.attackTarget[0].id) {
-            target = Game.getObjectById(Memory.attackTarget[0].id);
-            creep.memory.targetId = Memory.attackTarget[0].id;
+        if (Memory.attackTarget) {
+            target = creep.pos.findClosestByPath(Memory.attackTarget[Game.flags["Attack"]]);
+            creep.memory.target = target;
             if (creep.attack(target) === ERR_NOT_IN_RANGE) {
                 creep.moveTo(target);
             }

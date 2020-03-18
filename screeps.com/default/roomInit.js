@@ -1,5 +1,6 @@
 let roomInit = {
     init: function (room) {
+        let _ = require('lodash');
 
         let resourcePoolController = require('resourcePoolController');
         let storagePoolController = require('storagePoolController');
@@ -129,11 +130,9 @@ let roomInit = {
             }
             //TODO: Добавить отдельно сломанные структуры с большим кол-вом HP.
             Memory.debugMyDamagedStructures = myDamagedStructures;
-            
-            myDamagedFortifications = room.find(myDamagedStructures, {
-                filter: (s) => {
-                    return s.structureType === STRUCTURE_WALL || s.structureType === STRUCTURE_RAMPART
-                }
+
+            myDamagedFortifications = _.filter(myDamagedStructures, function (s) {
+                return s.structureType === STRUCTURE_WALL || s.structureType === STRUCTURE_RAMPART
             });
             if (myDamagedFortifications) {
                 myDamagedRamparts = room.find(myDamagedFortifications, {

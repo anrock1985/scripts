@@ -295,7 +295,8 @@ let creepConstructor = {
             //Warrior
             else if (spawner.isActive()
                 && !spawner.spawning
-                && spawner.room.energyAvailable >= 300) {
+                && spawner.room.energyAvailable >= 300
+                && Memory.warriors < 1) {
                 name += "_W";
                 let resultCode = spawner.spawnCreep(prepareBody("warrior"), name, {memory: {role: "warrior"}});
                 if (resultCode === 0) {

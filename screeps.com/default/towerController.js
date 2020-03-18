@@ -35,15 +35,15 @@ let towerController = {
                     console.log("T1, l: " + tower.room.memory.myDamagedRamparts.length);
                     damagedStructure = findClosestIdByRange(tower, damageStepCalculator(tower.room.memory.myDamagedRamparts));
                 }
-                if (damagedStructure.length === 0 && tower.room.memory.myDamagedStructuresIds.length > 0) {
+                if (!damagedStructure.id && tower.room.memory.myDamagedStructuresIds.length > 0) {
                     console.log("T2");
                     damagedStructure = findClosestIdByRange(tower, damageStepCalculator(tower.room.memory.myDamagedStructuresIds));
                 }
-                if (damagedStructure.length === 0 && tower.room.memory.myDamagedFortifications && tower.room.memory.myDamagedFortifications.length > 0) {
+                if (!damagedStructure.id && tower.room.memory.myDamagedFortifications && tower.room.memory.myDamagedFortifications.length > 0) {
                     console.log("T3, l: " + tower.room.memory.myDamagedFortifications.length);
                     damagedStructure = findClosestIdByRange(tower, damageStepCalculator(tower.room.memory.myDamagedFortifications));
                 }
-                if (damagedStructure.length === 0 && tower.room.memory.myDamagedStructuresIds.length > 0) {
+                if (!damagedStructure.id && tower.room.memory.myDamagedStructuresIds.length > 0) {
                     console.log("T4");
                     damagedStructure = findClosestIdByRange(tower.room.memory.myDamagedStructuresIds);
                 }

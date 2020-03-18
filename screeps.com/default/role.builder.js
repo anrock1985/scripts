@@ -116,5 +116,3 @@ let roleBuilder = {
 };
 
 module.exports = roleBuilder;
-
-//TODO: Ступенчатое строительство стен.

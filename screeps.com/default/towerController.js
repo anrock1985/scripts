@@ -99,7 +99,6 @@ let towerController = {
                 for (let s in structures) {
                     if (structures[s].hits < count) {
                         result.push(structures[s].id);
-                        console.log(count + ", " + result);
                         return result;
                     }
                 }
@@ -109,3 +108,5 @@ let towerController = {
 };
 
 module.exports = towerController;
+
+//TODO: Если в комнате враг - сливаем всю энергию в tower

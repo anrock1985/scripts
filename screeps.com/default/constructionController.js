@@ -71,3 +71,7 @@ let constructionController = {
 };
 
 module.exports = constructionController;
+
+//TODO: Прокладка дорог.
+
+//TODO: Вычисление оптимального расположения структур.

@@ -53,7 +53,7 @@ let roleRepairer = {
             if (creep.room.memory.myDamagedStructuresIds.length > 0) {
                 damagedStructure = findClosestIdByPath(creep, creep.room.memory.myDamagedStructuresIds);
             }
-            if (damagedStructure.id) {
+            if (damagedStructure && damagedStructure.id) {
                 creep.memory.closestDamagedStructureId.id = damagedStructure.id;
             }
         }

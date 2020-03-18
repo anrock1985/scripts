@@ -51,7 +51,7 @@ let roleBuilder = {
             if (creep.room.memory.myConstructionSiteIds.length > 0) {
                 constructionSite = findClosestIdByPath(creep, creep.room.memory.myConstructionSiteIds);
             }
-            if (constructionSite.id) {
+            if (constructionSite && constructionSite.id) {
                 creep.memory.closestConstructionSiteId.id = constructionSite.id;
             }
         }

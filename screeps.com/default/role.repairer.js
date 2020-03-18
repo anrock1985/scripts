@@ -126,10 +126,13 @@ let roleRepairer = {
         }
 
         function damageStepCalculator(structures) {
+            let result = [];
             for (let s in structures) {
                 for (let count = 0; count < (structures[s].hitsMax / 4); count += 100) {
-                    if (structures[s].hits < count)
-                        return structures[s].id;
+                    if (structures[s].hits < count) {
+                        result.push(structures[s].id);
+                        return result;
+                    }
                 }
             }
         }

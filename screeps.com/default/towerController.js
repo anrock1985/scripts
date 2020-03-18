@@ -23,15 +23,44 @@ let towerController = {
             }
 
             if (Game.getObjectById(towerId).store[RESOURCE_ENERGY] > (Game.getObjectById(towerId).store.getCapacity(RESOURCE_ENERGY) / 1.5)) {
-                if (Game.getObjectById(towerId).room.memory.myDamagedStructuresIds.length > 0) {
-                    let target = findClosestMyDamagedStructure(Game.getObjectById(towerId).room.memory.myDamagedStructuresIds);
-                    if (target !== -1) {
-                        let resultCode = Game.getObjectById(towerId).repair(target);
-                        if (resultCode !== 0) {
-                            console.log("ERROR: Tower repair result code: " + resultCode);
-                        }
+
+
+                let target;
+                let tower = Game.getObjectById(towerId);
+
+                let damagedStructure = {};
+                if (tower.room.memory.myDamagedRamparts && !_.isEmpty(tower.room.memory.myDamagedRamparts)) {
+                    console.log(1);
+                    damagedStructure = findClosestIdByRange(tower, damageStepCalculator(tower.room.memory.myDamagedRamparts));
+                } else if (tower.room.memory.myDamagedStructuresIds.length > 0) {
+                    console.log(2);
+                    damagedStructure = findClosestIdByRange(tower, damageStepCalculator(tower.room.memory.myDamagedStructuresIds));
+                } else if (tower.room.memory.myDamagedFortifications && !_.isEmpty(tower.room.memory.myDamagedFortifications)) {
+                    console.log(3);
+                    damagedStructure = findClosestIdByRange(tower, damageStepCalculator(tower.room.memory.myDamagedFortifications));
+                } else {
+                    console.log(4);
+                    damagedStructure = findClosestIdByRange(tower.room.memory.myDamagedStructuresIds);
+                }
+
+                if (damagedStructure && damagedStructure.id) {
+                    target = damagedStructure.id;
+                    let resultCode = tower.repair(target);
+                    if (resultCode !== 0) {
+                        console.log("ERROR: Tower repair result code: " + resultCode);
                     }
                 }
+
+
+                // if (Game.getObjectById(towerId).room.memory.myDamagedStructuresIds.length > 0) {
+                //     let target = findClosestMyDamagedStructure(Game.getObjectById(towerId).room.memory.myDamagedStructuresIds);
+                //     if (target !== -1) {
+                //         let resultCode = Game.getObjectById(towerId).repair(target);
+                //         if (resultCode !== 0) {
+                //             console.log("ERROR: Tower repair result code: " + resultCode);
+                //         }
+                //     }
+                // }
             }
         }
 
@@ -68,6 +97,36 @@ let towerController = {
                 return Game.getObjectById(towerId).pos.findClosestByRange(myDamagedStructures);
             } else {
                 return -1;
+            }
+        }
+
+        function findClosestIdByRange(creep, ids) {
+            let closest;
+            let tmp;
+            let idsObjects = [];
+            for (let s in ids) {
+                idsObjects.push(Game.getObjectById(ids[s]));
+            }
+
+            tmp = creep.pos.findClosestByRange(idsObjects);
+            if (tmp === null)
+                return undefined;
+            else
+                closest = tmp;
+
+            return {id: closest.id};
+        }
+
+        function damageStepCalculator(structures) {
+            let result = [];
+            for (let count = 0; count < 100000; count += 1000) {
+                for (let s in structures) {
+                    if (structures[s].hits < count) {
+                        result.push(structures[s].id);
+                        console.log(count + ", " + result);
+                        return result;
+                    }
+                }
             }
         }
     }

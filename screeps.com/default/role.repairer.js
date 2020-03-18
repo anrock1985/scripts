@@ -129,19 +129,6 @@ let roleRepairer = {
             return {id: closest.id};
         }
 
-        // function damageStepCalculator(structures) {
-        //     let result = [];
-        //     for (let s in structures) {
-        //         for (let count = 0; count < (structures[s].hitsMax / 4); count += 1000) {
-        //             if (structures[s].hits < count) {
-        //                 result.push(structures[s].id);
-        //                 console.log(result);
-        //                 return result;
-        //             }
-        //         }
-        //     }
-        // }
-
         function damageStepCalculator(structures) {
             let result = [];
             for (let count = 0; count < 100000; count += 1000) {

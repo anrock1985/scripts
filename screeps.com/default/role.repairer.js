@@ -148,7 +148,7 @@ let roleRepairer = {
                 for (let s in structures) {
                     if (structures[s].hits < count) {
                         result.push(structures[s].id);
-                        console.log(result);
+                        console.log(count + ", " + result);
                         return result;
                     }
                 }

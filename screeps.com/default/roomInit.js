@@ -118,6 +118,7 @@ let roomInit = {
                 return ((s.structureType !== STRUCTURE_CONTROLLER) && (s.hits <= (s.hitsMax - (s.hitsMax / 6))));
             }
         });
+        Memory.debugMyDamagedStructures = myDamagedStructures;
         if (myDamagedStructures) {
             room.memory.myDamagedStructuresIds = [];
             for (let s in myDamagedStructures) {

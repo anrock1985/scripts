@@ -10,6 +10,7 @@ let roleWarrior = {
         }
 
         for (let f in Game.flags) {
+            console.log(Game.flags[f]);
             if (Game.flags[f] === "Attack") {
                 Memory.attackTarget[Game.flags[f].pos.roomName] = {
                     id: Game.time,
@@ -19,7 +20,7 @@ let roleWarrior = {
         }
 
         let target;
-        if (Memory.attackTarget && Memory.attackTarget.id) {
+        if (Memory.attackTarget && Memory.attackTarget[0].id) {
             target = Game.getObjectById(Memory.attackTarget[0].id);
             creep.memory.targetId = Memory.attackTarget[0].id;
             if (creep.attack(target) === ERR_NOT_IN_RANGE) {

@@ -30,21 +30,22 @@ let towerController = {
 
                 let damagedStructure = {};
                 if (tower.room.memory.myDamagedRamparts && !_.isEmpty(tower.room.memory.myDamagedRamparts)) {
-                    console.log(1);
+                    console.log("T1");
                     damagedStructure = findClosestIdByRange(tower, damageStepCalculator(tower.room.memory.myDamagedRamparts));
                 } else if (tower.room.memory.myDamagedStructuresIds.length > 0) {
-                    console.log(2);
+                    console.log("T2");
                     damagedStructure = findClosestIdByRange(tower, damageStepCalculator(tower.room.memory.myDamagedStructuresIds));
                 } else if (tower.room.memory.myDamagedFortifications && !_.isEmpty(tower.room.memory.myDamagedFortifications)) {
-                    console.log(3);
+                    console.log("T3");
                     damagedStructure = findClosestIdByRange(tower, damageStepCalculator(tower.room.memory.myDamagedFortifications));
                 } else {
-                    console.log(4);
+                    console.log("T4");
                     damagedStructure = findClosestIdByRange(tower.room.memory.myDamagedStructuresIds);
                 }
 
                 if (damagedStructure && damagedStructure.id) {
                     target = damagedStructure.id;
+                    console.log("T Target: " + target);
                     let resultCode = tower.repair(target);
                     if (resultCode !== 0) {
                         console.log("ERROR: Tower repair result code: " + resultCode);

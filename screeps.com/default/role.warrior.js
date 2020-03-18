@@ -9,23 +9,31 @@ let roleWarrior = {
             Memory.attackTarget = {};
         }
 
+        let target = {};
+
         for (let f in Game.flags) {
-            if (Game.flags[f].name === "Attack") {
-                Memory.attackTarget[Game.flags[f].pos.roomName] = Game.flags[f];
+            let flag = Game.flags[f];
+            if (flag.name === "Attack") {
+                let look = flag.pos.look();
+                look.forEach(function (lookObject) {
+                    if (lookObject.type === LOOK_STRUCTURES) {
+                        target = lookObject.structure;
+                    }
+                });
+                Memory.attackTarget[flag.pos.roomName] = target;
             }
         }
 
-        let target;
-        if (Memory.attackTarget) {
-            creep.memory.target = Game.flags["Attack"];
+        if (Memory.attackTarget && target) {
+            creep.memory.target = target;
             // if (creep.memory.target.pos.roomName !== creep.pos.roomName) {
             // }
             // target = creep.pos.findClosestByPath(Memory.attackTarget[Game.flags["Attack"]]);
             // creep.memory.target = target;
             // if (creep.memory.target)
-            let resultCode = creep.attack(creep.memory.target);
+            let resultCode = creep.attack(target);
             if (resultCode === ERR_NOT_IN_RANGE) {
-                creep.moveTo(creep.memory.target);
+                creep.moveTo(target);
             } else {
                 if (resultCode !== 0) {
                     console.log("ERROR: Warrior attack result: " + resultCode);

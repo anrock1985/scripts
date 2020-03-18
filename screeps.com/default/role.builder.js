@@ -68,6 +68,7 @@ let roleBuilder = {
             if (creep.build(Game.getObjectById(creep.memory.closestConstructionSiteId.id)) === ERR_NOT_IN_RANGE) {
                 creep.moveTo(Game.getObjectById(creep.memory.closestConstructionSiteId.id));
             }
+            creep.memory.closestConstructionSiteId = {};
         }
 
         function findClosestStorageResourceByPath(creep, storagesIds) {

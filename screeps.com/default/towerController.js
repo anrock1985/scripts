@@ -1,32 +1,33 @@
 let towerController = {
     control: function (towerId) {
 
-        if (Game.getObjectById(towerId).store[RESOURCE_ENERGY] > 0) {
-            if (Game.getObjectById(towerId).room.memory.enemyCreepsIds.length > 0) {
-                let target = findClosestEnemyCreep(Game.getObjectById(towerId).room.memory.enemyCreepsIds);
+        let tower = Game.getObjectById(towerId);
+
+        if (tower.store[RESOURCE_ENERGY] > 0) {
+            if (tower.room.memory.enemyCreepsIds.length > 0) {
+                let target = findClosestEnemyCreep(tower.room.memory.enemyCreepsIds);
                 if (target !== -1) {
-                    let resultCode = Game.getObjectById(towerId).attack(target);
+                    let resultCode = tower.attack(target);
                     if (resultCode !== 0) {
                         console.log("ERROR: Tower attack result code: " + resultCode);
                     }
                 }
             }
 
-            if (Game.getObjectById(towerId).room.memory.myWoundedCreepsIds.length > 0) {
-                let target = findClosestMyWoundedCreep(Game.getObjectById(towerId).room.memory.myWoundedCreepsIds);
+            if (tower.room.memory.myWoundedCreepsIds.length > 0) {
+                let target = findClosestMyWoundedCreep(tower.room.memory.myWoundedCreepsIds);
                 if (target !== -1) {
-                    let resultCode = Game.getObjectById(towerId).heal(target);
+                    let resultCode = tower.heal(target);
                     if (resultCode !== 0) {
                         console.log("ERROR: Tower heal result code: " + resultCode);
                     }
                 }
             }
 
-            if (Game.getObjectById(towerId).store[RESOURCE_ENERGY] > (Game.getObjectById(towerId).store.getCapacity(RESOURCE_ENERGY) / 1.5)) {
+            if (tower.store[RESOURCE_ENERGY] > (tower.store.getCapacity(RESOURCE_ENERGY) / 1.5)) {
 
 
                 let target;
-                let tower = Game.getObjectById(towerId);
 
                 let damagedStructure = {};
                 if (tower.room.memory.myDamagedRamparts && !_.isEmpty(tower.room.memory.myDamagedRamparts)) {
@@ -46,17 +47,17 @@ let towerController = {
                 if (damagedStructure && damagedStructure.id) {
                     target = damagedStructure.id;
                     console.log("T Target: " + target);
-                    let resultCode = tower.repair(target);
+                    let resultCode = tower.repair(Game.getObjectById(target));
                     if (resultCode !== 0) {
                         console.log("ERROR: Tower repair result code: " + resultCode);
                     }
                 }
 
 
-                // if (Game.getObjectById(towerId).room.memory.myDamagedStructuresIds.length > 0) {
-                //     let target = findClosestMyDamagedStructure(Game.getObjectById(towerId).room.memory.myDamagedStructuresIds);
+                // if (tower.room.memory.myDamagedStructuresIds.length > 0) {
+                //     let target = findClosestMyDamagedStructure(tower.room.memory.myDamagedStructuresIds);
                 //     if (target !== -1) {
-                //         let resultCode = Game.getObjectById(towerId).repair(target);
+                //         let resultCode = towerrepair(target);
                 //         if (resultCode !== 0) {
                 //             console.log("ERROR: Tower repair result code: " + resultCode);
                 //         }
@@ -71,7 +72,7 @@ let towerController = {
                 for (let i in enemyCreepsIds) {
                     enemyCreeps.push(Game.getObjectById(enemyCreepsIds[i]));
                 }
-                return Game.getObjectById(towerId).pos.findClosestByRange(enemyCreeps);
+                return tower.pos.findClosestByRange(enemyCreeps);
             } else {
                 return -1;
             }
@@ -83,7 +84,7 @@ let towerController = {
                 for (let c in myWoundedCreepsIds) {
                     myWoundedCreeps.push(Game.getObjectById(myWoundedCreepsIds[c]));
                 }
-                return Game.getObjectById(towerId).pos.findClosestByRange(myWoundedCreeps);
+                return tower.pos.findClosestByRange(myWoundedCreeps);
             } else {
                 return -1;
             }
@@ -95,7 +96,7 @@ let towerController = {
                 for (let s in myDamagedStructuresIds) {
                     myDamagedStructures.push(Game.getObjectById(myDamagedStructuresIds[s]));
                 }
-                return Game.getObjectById(towerId).pos.findClosestByRange(myDamagedStructures);
+                return tower.pos.findClosestByRange(myDamagedStructures);
             } else {
                 return -1;
             }
@@ -120,7 +121,7 @@ let towerController = {
 
         function damageStepCalculator(structures) {
             let result = [];
-            for (let count = 0; count < 100000; count += 1000) {
+            for (let count = 0; count < 10000; count += 1000) {
                 for (let s in structures) {
                     if (structures[s].hits < count) {
                         result.push(structures[s].id);

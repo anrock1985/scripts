@@ -1,5 +1,10 @@
 let roleWarrior = {
     assign: function (creep) {
+
+        if (creep.memory.targetId === undefined) {
+            creep.memory.targetId = [];
+        }
+        
         if (Game.flags) {
             for (let f in Game.flags) {
                 if (Game.flags[f] === "Attack") {
@@ -14,6 +19,7 @@ let roleWarrior = {
         let target;
         if (Memory.attackTarget && Memory.attackTarget.id) {
             target = Game.getObjectById(Memory.attackTarget[0].id);
+            creep.memory.targetId = Memory.attackTarget[0].id;
             if (creep.attack(target) === ERR_NOT_IN_RANGE) {
                 creep.moveTo(target);
             }

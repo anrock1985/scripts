@@ -129,7 +129,7 @@ let roleRepairer = {
             for (let s in structures) {
                 for (let count = 0; count < (structures[s].hitsMax / 4); count += 100) {
                     if (structures[s].hits < count)
-                        return {id: structures[s].id};
+                        return structures[s].id;
                 }
             }
         }

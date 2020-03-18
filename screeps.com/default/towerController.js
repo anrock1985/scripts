@@ -31,13 +31,13 @@ let towerController = {
                 let target;
 
                 let damagedStructure = {};
-                if (tower.room.memory.myDamagedRamparts && !_.isEmpty(tower.room.memory.myDamagedRamparts)) {
+                if (tower.room.memory.myDamagedRamparts && tower.room.memory.myDamagedRamparts.length > 0) {
                     console.log("T1");
                     damagedStructure = findClosestIdByRange(tower, damageStepCalculator(tower.room.memory.myDamagedRamparts));
                 } else if (tower.room.memory.myDamagedStructuresIds.length > 0) {
                     console.log("T2");
                     damagedStructure = findClosestIdByRange(tower, damageStepCalculator(tower.room.memory.myDamagedStructuresIds));
-                } else if (tower.room.memory.myDamagedFortifications && !_.isEmpty(tower.room.memory.myDamagedFortifications)) {
+                } else if (tower.room.memory.myDamagedFortifications && tower.room.memory.myDamagedFortifications.length > 0) {
                     console.log("T3");
                     damagedStructure = findClosestIdByRange(tower, damageStepCalculator(tower.room.memory.myDamagedFortifications));
                 } else {

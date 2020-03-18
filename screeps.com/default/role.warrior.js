@@ -17,10 +17,14 @@ let roleWarrior = {
 
         let target;
         if (Memory.attackTarget) {
-            target = creep.pos.findClosestByPath(Memory.attackTarget[Game.flags["Attack"]]);
-            creep.memory.target = target;
-            if (creep.attack(target) === ERR_NOT_IN_RANGE) {
-                creep.moveTo(target);
+            creep.memory.target = Game.flags["Attack"];
+            if (creep.memory.target.pos.roomName !== creep.pos.roomName) {
+            }
+            // target = creep.pos.findClosestByPath(Memory.attackTarget[Game.flags["Attack"]]);
+            // creep.memory.target = target;
+            if (creep.memory.target)
+            if (creep.attack(creep.memory.target) === ERR_NOT_IN_RANGE) {
+                creep.moveTo(creep.memory.target);
             }
         }
     }

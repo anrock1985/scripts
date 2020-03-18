@@ -56,7 +56,7 @@ let roleBuilder = {
             }
         }
 
-        if (creep.memory.reservedStorageResource.id && creep.store.getFreeCapacity(RESOURCE_ENERGY) > 0 && !creep.memory.building) {
+        if (creep.memory.reservedStorageResource && creep.memory.reservedStorageResource.id && creep.store.getFreeCapacity(RESOURCE_ENERGY) > 0 && !creep.memory.building) {
             creep.memory.idle = undefined;
             if (creep.withdraw(Game.getObjectById(creep.memory.reservedStorageResource.id), RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
                 creep.moveTo(Game.getObjectById(creep.memory.reservedStorageResource.id));

@@ -113,16 +113,11 @@ let roomInit = {
             }
         }
 
-        Memory.debugMyStructures = room.find(FIND_MY_STRUCTURES);
-
         let myDamagedStructures = room.find(FIND_STRUCTURES, {
             filter: (s) => {
                 return ((s.structureType !== STRUCTURE_CONTROLLER) && (s.hits <= (s.hitsMax - (s.hitsMax / 6))));
             }
         });
-
-        Memory.debugMyDamagedStructures = myDamagedStructures;
-
         if (myDamagedStructures) {
             room.memory.myDamagedStructuresIds = [];
             for (let s in myDamagedStructures) {

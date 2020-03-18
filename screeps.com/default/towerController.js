@@ -39,7 +39,7 @@ let towerController = {
                     damagedStructure = findClosestIdByRange(tower, damageStepCalculator(tower.room.memory.myDamagedFortifications));
                 }
                 if (!damagedStructure && tower.room.memory.myDamagedStructuresIds.length > 0) {
-                    damagedStructure = findClosestIdByRange(tower.room.memory.myDamagedStructuresIds);
+                    damagedStructure = findClosestIdByRange(tower, tower.room.memory.myDamagedStructuresIds);
                 }
 
                 if (damagedStructure && damagedStructure.id) {

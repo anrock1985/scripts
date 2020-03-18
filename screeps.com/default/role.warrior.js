@@ -11,9 +11,9 @@ let roleWarrior = {
 
         for (let f in Game.flags) {
             if (Game.flags[f] === "Attack") {
-                Memory.attackTarget[Game.flags[f].room.name] = {
+                Memory.attackTarget[Game.flags[f].pos.roomName] = {
                     id: Game.time,
-                    room: Game.flags[f].room.name
+                    room: Game.flags[f].pos.roomName
                 }
             }
         }

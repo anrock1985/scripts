@@ -19,6 +19,10 @@ let roleBuilder = {
             storagePoolController.releaseWithdraw(creep);
         }
 
+        if (creep.room.memory.myConstructionSiteIds.length === 0) {
+            creep.memory.newRole = "repairer";
+        }
+
         if (!creep.memory.closestConstructionSiteId) {
             creep.memory.closestConstructionSiteId = {};
         }

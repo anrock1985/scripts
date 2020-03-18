@@ -18,13 +18,18 @@ let roleWarrior = {
         let target;
         if (Memory.attackTarget) {
             creep.memory.target = Game.flags["Attack"];
-            if (creep.memory.target.pos.roomName !== creep.pos.roomName) {
-            }
+            // if (creep.memory.target.pos.roomName !== creep.pos.roomName) {
+            // }
             // target = creep.pos.findClosestByPath(Memory.attackTarget[Game.flags["Attack"]]);
             // creep.memory.target = target;
-            if (creep.memory.target)
-            if (creep.attack(creep.memory.target) === ERR_NOT_IN_RANGE) {
+            // if (creep.memory.target)
+            let resultCode = creep.attack(creep.memory.target);
+            if (resultCode === ERR_NOT_IN_RANGE) {
                 creep.moveTo(creep.memory.target);
+            } else {
+                if (resultCode !== 0) {
+                    console.log("ERROR: Warrior attack result: " + resultCode);
+                }
             }
         }
     }

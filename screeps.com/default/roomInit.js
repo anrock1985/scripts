@@ -129,29 +129,22 @@ let roomInit = {
                 room.memory.myDamagedStructuresIds.push(myDamagedStructures[s].id);
             }
             //TODO: Добавить отдельно сломанные структуры с большим кол-вом HP.
-            Memory.debugMyDamagedStructures = myDamagedStructures;
-
             myDamagedFortifications = _.filter(myDamagedStructures, function (s) {
                 return s.structureType === STRUCTURE_WALL || s.structureType === STRUCTURE_RAMPART
             });
             if (myDamagedFortifications) {
-                myDamagedRamparts = room.find(myDamagedFortifications, {
-                    filter: (s) => {
-                        return s.structureType === STRUCTURE_RAMPART
-                    }
+                myDamagedRamparts = _.filter(myDamagedFortifications, function (s) {
+                    return s.structureType === STRUCTURE_RAMPART
                 });
             }
             if (myDamagedFortifications) {
                 room.memory.myDamagedFortifications = myDamagedFortifications;
-                Memory.debugMyDamagedFortifications = myDamagedFortifications;
             }
             if (myDamagedRamparts) {
                 room.memory.myDamagedRamparts = myDamagedRamparts;
-                Memory.debugMyDamagedRamparts = myDamagedRamparts;
             }
         }
-
-
+        
         //Вычисляем количество каждого брошенного ресурса в комнате
         if (droppedEnergy.length > 0) {
             let totalDroppedEnergyInRoom = 0;

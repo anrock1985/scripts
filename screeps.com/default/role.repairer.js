@@ -50,17 +50,17 @@ let roleRepairer = {
 
         if (creep.memory.reservedStorageResource && !creep.memory.closestDamagedStructureId.id && creep.memory.repairing) {
             let damagedStructure = {};
-            if (creep.room.memory.myDamagedRamparts && !_.isEmpty(creep.room.memory.myDamagedRamparts)) {
-                console.log(1);
+
+            if (creep.room.memory.myDamagedRamparts && creep.room.memory.myDamagedRamparts.length > 0) {
                 damagedStructure = findClosestIdByPath(creep, damageStepCalculator(creep.room.memory.myDamagedRamparts));
-            } else if (creep.room.memory.myDamagedStructuresIds.length > 0) {
-                console.log(2);
+            }
+            if (!damagedStructure && creep.room.memory.myDamagedStructuresIds.length > 0) {
                 damagedStructure = findClosestIdByPath(creep, damageStepCalculator(creep.room.memory.myDamagedStructuresIds));
-            } else if (creep.room.memory.myDamagedFortifications && !_.isEmpty(creep.room.memory.myDamagedFortifications)) {
-                console.log(3);
+            }
+            if (!damagedStructure && creep.room.memory.myDamagedFortifications && creep.room.memory.myDamagedFortifications.length > 0) {
                 damagedStructure = findClosestIdByPath(creep, damageStepCalculator(creep.room.memory.myDamagedFortifications));
-            } else {
-                console.log(4);
+            }
+            if (!damagedStructure) {
                 damagedStructure = findClosestIdByPath(creep.room.memory.myDamagedStructuresIds);
             }
 

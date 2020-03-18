@@ -26,47 +26,29 @@ let towerController = {
             }
 
             if (tower.store[RESOURCE_ENERGY] > (tower.store.getCapacity(RESOURCE_ENERGY) / 1.5)) {
-
-
                 let target;
-
                 let damagedStructure = {};
+
                 if (tower.room.memory.myDamagedRamparts && tower.room.memory.myDamagedRamparts.length > 0) {
-                    console.log("T1, l: " + tower.room.memory.myDamagedRamparts.length);
                     damagedStructure = findClosestIdByRange(tower, damageStepCalculator(tower.room.memory.myDamagedRamparts));
                 }
                 if (!damagedStructure && tower.room.memory.myDamagedStructuresIds.length > 0) {
-                    console.log("T2");
                     damagedStructure = findClosestIdByRange(tower, damageStepCalculator(tower.room.memory.myDamagedStructuresIds));
                 }
                 if (!damagedStructure && tower.room.memory.myDamagedFortifications && tower.room.memory.myDamagedFortifications.length > 0) {
-                    console.log("T3, l: " + tower.room.memory.myDamagedFortifications.length);
                     damagedStructure = findClosestIdByRange(tower, damageStepCalculator(tower.room.memory.myDamagedFortifications));
                 }
                 if (!damagedStructure && tower.room.memory.myDamagedStructuresIds.length > 0) {
-                    console.log("T4");
                     damagedStructure = findClosestIdByRange(tower.room.memory.myDamagedStructuresIds);
                 }
 
                 if (damagedStructure && damagedStructure.id) {
                     target = damagedStructure.id;
-                    console.log("T Target: " + target);
                     let resultCode = tower.repair(Game.getObjectById(target));
                     if (resultCode !== 0) {
                         console.log("ERROR: Tower repair result code: " + resultCode);
                     }
                 }
-
-
-                // if (tower.room.memory.myDamagedStructuresIds.length > 0) {
-                //     let target = findClosestMyDamagedStructure(tower.room.memory.myDamagedStructuresIds);
-                //     if (target !== -1) {
-                //         let resultCode = towerrepair(target);
-                //         if (resultCode !== 0) {
-                //             console.log("ERROR: Tower repair result code: " + resultCode);
-                //         }
-                //     }
-                // }
             }
         }
 
@@ -89,18 +71,6 @@ let towerController = {
                     myWoundedCreeps.push(Game.getObjectById(myWoundedCreepsIds[c]));
                 }
                 return tower.pos.findClosestByRange(myWoundedCreeps);
-            } else {
-                return -1;
-            }
-        }
-
-        function findClosestMyDamagedStructure(myDamagedStructuresIds) {
-            let myDamagedStructures = [];
-            if (myDamagedStructuresIds) {
-                for (let s in myDamagedStructuresIds) {
-                    myDamagedStructures.push(Game.getObjectById(myDamagedStructuresIds[s]));
-                }
-                return tower.pos.findClosestByRange(myDamagedStructures);
             } else {
                 return -1;
             }

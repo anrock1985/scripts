@@ -116,7 +116,8 @@ let roomInit = {
 
         let myDamagedStructures = room.find(FIND_STRUCTURES, {
             filter: (s) => {
-                return ((s.structureType !== STRUCTURE_CONTROLLER) && (s.hits <= (s.hitsMax - (s.hitsMax / 6))));
+                // return ((s.structureType !== STRUCTURE_CONTROLLER) && (s.hits <= (s.hitsMax - (s.hitsMax / 6))));
+                return (s.structureType !== STRUCTURE_CONTROLLER) && (s.hits < s.hitsMax);
             }
         });
         if (myDamagedStructures) {
@@ -144,7 +145,7 @@ let roomInit = {
                 room.memory.myDamagedRamparts = myDamagedRamparts;
             }
         }
-        
+
         //Вычисляем количество каждого брошенного ресурса в комнате
         if (droppedEnergy.length > 0) {
             let totalDroppedEnergyInRoom = 0;

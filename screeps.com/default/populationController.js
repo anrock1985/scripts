@@ -13,6 +13,7 @@ let populationController = {
         let roleRepairer = require('role.repairer');
         let roleScout = require('role.scout');
         let roleDeadman = require('role.deadman');
+        let roleWarrior = require('role.warrior');
         let creepConstructor = require('creepConstructor');
 
         let mainSpawnerId = Game.spawns["Spawn1"].id;
@@ -80,6 +81,9 @@ let populationController = {
                     case "scout":
                         Memory.scouts--;
                         break;
+                    case "warrior":
+                        Memory.warriors--;
+                        break;
                 }
                 delete Memory.creeps[c];
             }
@@ -127,6 +131,10 @@ let populationController = {
                 roleScout.assign(creep);
             }
 
+            if (creep.memory.role === "warrior") {
+                roleWarrior.assign(creep);
+            }
+
             if (creep.memory.role === "deadman") {
                 roleDeadman.assign(creep);
             }
@@ -155,6 +163,7 @@ let populationController = {
             let currentBuilders = 0;
             let currentRepairers = 0;
             let currentScouts = 0;
+            let currentWarriors = 0;
 
             if (!_.isEmpty(Game.creeps)) {
                 for (let c in Game.creeps) {
@@ -176,6 +185,9 @@ let populationController = {
                     if (Game.creeps[c].memory.role === "scout") {
                         currentScouts++;
                     }
+                    if (Game.creeps[c].memory.role === "warrior") {
+                        currentWarriors++;
+                    }
                 }
                 if (currentHarvesters !== Memory.harvesters) {
                     initRoles(true);
@@ -188,6 +200,8 @@ let populationController = {
                 } else if (currentRepairers !== Memory.repairers) {
                     initRoles(true);
                 } else if (currentScouts !== Memory.scouts) {
+                    initRoles(true);
+                } else if (currentWarriors !== Memory.warriors) {
                     initRoles(true);
                 }
             }
@@ -253,10 +267,20 @@ let populationController = {
                     }
                 }
             }
+
+            //Warrior
+            if (Memory.warriors === undefined || forceInit) {
+                Memory.warriors = 0;
+                for (let c in Game.creeps) {
+                    if (Game.creeps[c].memory.role === "warrior") {
+                        Memory.warriors++;
+                    }
+                }
+            }
             console.log("[T:" + Game.time
                 + "] INFO: Initialization complete. Founded [H:"
                 + Memory.harvesters + " U:" + Memory.upgraders + " C:" + Memory.carry +
-                " B:" + Memory.builders + " R:" + Memory.repairers + " S:" + Memory.scouts + "]")
+                " B:" + Memory.builders + " R:" + Memory.repairers + " S:" + Memory.scouts + " W:" + Memory.warriors + "]")
         }
     }
 };

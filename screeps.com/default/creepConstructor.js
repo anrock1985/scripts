@@ -73,6 +73,16 @@ let creepConstructor = {
                 case "claimer":
                     //TODO: Claimer body.
                     break;
+                case "warrior":
+                    for (count = 0; count < Math.trunc(totalAvailableEnergy / (BODYPART_COST.move + BODYPART_COST.attack + (BODYPART_COST.tough * 2))); count++) {
+                        if (result.length === 50)
+                            break;
+                        result.push(TOUGH);
+                        result.push(TOUGH);
+                        result.push(MOVE);
+                        result.push(ATTACK);
+                    }
+                    break;
             }
             return result;
         }
@@ -261,26 +271,46 @@ let creepConstructor = {
                 }
             }
 
-            // //Scout
-            // else if (spawner.isActive()
-            //     && !spawner.spawning
-            //     && spawner.room.energyAvailable >= 300
-            //     && Memory.scouts < 1) {
-            //     let name = Game.time + "_S";
-            //     let resultCode = spawner.spawnCreep(prepareBody("scout"), name, {memory: {role: "scout"}});
-            //     if (resultCode === 0) {
-            //         Memory.scouts++;
-            //         let bodyParts = [];
-            //         _.forEach(Game.creeps[name].body, function (item) {
-            //             bodyParts.push(item.type.toString().toUpperCase());
-            //         });
-            //         if (debug) {
-            //             console.log("INFO: new SCOUT [total:" + Memory.scouts + "] (" + bodyParts + ")");
-            //         }
-            //     } else {
-            //         console.log("ERROR: Spawning SCOUT result code: " + resultCode);
-            //     }
-            // }
+                // //Scout
+                // else if (spawner.isActive()
+                //     && !spawner.spawning
+                //     && spawner.room.energyAvailable >= 300
+                //     && Memory.scouts < 1) {
+                //     let name = Game.time + "_S";
+                //     let resultCode = spawner.spawnCreep(prepareBody("scout"), name, {memory: {role: "scout"}});
+                //     if (resultCode === 0) {
+                //         Memory.scouts++;
+                //         let bodyParts = [];
+                //         _.forEach(Game.creeps[name].body, function (item) {
+                //             bodyParts.push(item.type.toString().toUpperCase());
+                //         });
+                //         if (debug) {
+                //             console.log("INFO: new SCOUT [total:" + Memory.scouts + "] (" + bodyParts + ")");
+                //         }
+                //     } else {
+                //         console.log("ERROR: Spawning SCOUT result code: " + resultCode);
+                //     }
+                // }
+
+            //Warrior
+            else if (spawner.isActive()
+                && !spawner.spawning
+                && spawner.room.energyAvailable >= 300) {
+                name += "_W";
+                let resultCode = spawner.spawnCreep(prepareBody("warrior"), name, {memory: {role: "warrior"}});
+                if (resultCode === 0) {
+                    Memory.warriors++;
+                    let bodyParts = [];
+                    _.forEach(Game.creeps[name].body, function (item) {
+                        bodyParts.push(item.type.toString().toUpperCase());
+                    });
+                    if (debug) {
+                        console.log("INFO: new WARRIOR [total:" + Memory.warriors + "] (" + bodyParts + ")");
+                    }
+                } else {
+                    console.log("ERROR: Spawning WARRIOR result code: " + resultCode);
+                }
+            }
         }
     }
 };
@@ -290,3 +320,6 @@ module.exports = creepConstructor;
 //TODO: Если достигнут предел по крипам, а крипы слабее чем позволяет конструктор, надо их обновить.
 
 //TODO: Спавнить carry в зависимости от лежащих ресурсов.
+
+//TODO: Если хранилища пусты и остался только один харвестер, копим по максимуму чтобы заспавнить большого.
+//TODO: На время накопления блокируем спавн других крипов.

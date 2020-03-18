@@ -6,14 +6,14 @@ let populationController = {
 
         let _ = require('lodash');
 
-        let roleHarvester = require('../role/role.harvester');
-        let roleUpgrader = require('../role/role.upgrader');
-        let roleBuilder = require('../role/role.builder');
-        let roleCarry = require('../role/role.carry');
-        let roleRepairer = require('../role/role.repairer');
-        let roleScout = require('../role/role.scout');
-        let roleDeadman = require('../role/role.deadman');
-        let creepConstructor = require('../creepConstructor');
+        let roleHarvester = require('role.harvester');
+        let roleUpgrader = require('role.upgrader');
+        let roleBuilder = require('role.builder');
+        let roleCarry = require('role.carry');
+        let roleRepairer = require('role.repairer');
+        let roleScout = require('role.scout');
+        let roleDeadman = require('role.deadman');
+        let creepConstructor = require('creepConstructor');
 
         let mainSpawnerId = Game.spawns["Spawn1"].id;
         let initPeriod = 100;

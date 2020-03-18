@@ -1,8 +1,8 @@
 let roomInit = {
     init: function (room) {
 
-        let resourcePoolController = require('controller/resourcePoolController');
-        let storagePoolController = require('controller/storagePoolController');
+        let resourcePoolController = require('resourcePoolController');
+        let storagePoolController = require('storagePoolController');
 
         room.memory.resourcePool = {};
         room.memory.storageResourcePool = {};

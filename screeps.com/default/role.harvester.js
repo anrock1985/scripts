@@ -1,34 +1,41 @@
-let roleCarry = {
+let roleHarvester = {
     run: function (creep) {
         let _ = require('lodash');
 
-        let resourcePoolController = require('../controller/resourcePoolController');
-        let storagePoolController = require('../controller/storagePoolController');
+        let storagePoolController = require('storagePoolController');
 
-        let logLevel = "info";
+        let debug = true;
 
-        if (!creep.memory.idle) {
+        if (!creep.memory.idle)
             creep.memory.idle = Game.time;
-        }
 
-        Memory.debugRoom = creep.room.memory;
-
-        if (creep.memory.carrying === undefined) {
-            creep.memory.carrying = true;
+        if (creep.memory.harvesting === undefined) {
+            creep.memory.harvesting = true;
         }
-        if (creep.store.getFreeCapacity(RESOURCE_ENERGY) === 0 && !creep.memory.carrying) {
-            creep.memory.carrying = true;
-            if (creep.memory.reservedResource) {
-                resourcePoolController.release(creep);
-            }
+        if (creep.store.getFreeCapacity(RESOURCE_ENERGY) === 0 && creep.memory.harvesting) {
+            creep.memory.harvesting = false;
         }
-        if (creep.store[RESOURCE_ENERGY] === 0 && creep.memory.carrying) {
-            creep.memory.carrying = false;
+        if (creep.store[RESOURCE_ENERGY] === 0 && !creep.memory.harvesting) {
+            creep.memory.harvesting = true;
             storagePoolController.releaseTransfer(creep);
         }
 
-        if (creep.memory.reservedStorageSpace && !creep.memory.reservedStorageSpace.id && creep.memory.carrying) {
-            let storage;
+        if (!creep.memory.closestSourceId) {
+            creep.memory.closestSourceId = {};
+        }
+
+        let source = {};
+        if (!creep.memory.closestSourceId.id && creep.memory.harvesting) {
+            if (creep.room.memory.sourceIds.length > 0) {
+                source = findClosestIdByPath(creep, creep.room.memory.sourceIds);
+            }
+            if (source && source.id) {
+                creep.memory.closestSourceId.id = source.id;
+            }
+        }
+
+        let storage;
+        if (!creep.memory.reservedStorageSpace || !creep.memory.reservedStorageSpace.id && !creep.memory.harvesting && Memory.carry === 0) {
             let reservedAmount = creep.store[RESOURCE_ENERGY];
 
             let spawnerNotFull = [];
@@ -103,43 +110,31 @@ let roleCarry = {
             }
         }
 
-        if (creep.memory.reservedStorageSpace && creep.memory.reservedStorageSpace.id) {
+        if (creep.memory.harvesting && creep.memory.closestSourceId.id && creep.store[RESOURCE_ENERGY] !== creep.store.getCapacity(RESOURCE_ENERGY)) {
             creep.memory.idle = undefined;
-            let resultCode = creep.transfer(Game.getObjectById(creep.memory.reservedStorageSpace.id), RESOURCE_ENERGY);
-            if (resultCode === ERR_NOT_IN_RANGE) {
-                creep.moveTo(Game.getObjectById(creep.memory.reservedStorageSpace.id));
-            }
-            if (resultCode === 0) {
-                //Сбрасываем, на случай если хранилище не вместило весь наш store
-                creep.memory.reservedStorageSpace = {};
+            if (creep.harvest(Game.getObjectById(creep.memory.closestSourceId.id)) === ERR_NOT_IN_RANGE) {
+                creep.moveTo(Game.getObjectById(creep.memory.closestSourceId.id));
             }
         }
 
-        if ((Game.time % 10 === 0) && !creep.memory.carrying && creep.memory.reservedResource && creep.memory.reservedResource.id) {
-            let some = _.find(creep.room.memory.resourcePool, function (a) {
-                return a.id === creep.memory.reservedResource.id
-            });
-            if (!some) {
-                console.log("WARN: Reserved resource " + creep.memory.reservedResource.id + " disappears");
-                creep.memory.reservedResource = {};
-            }
-        }
-
-        if (!creep.memory.reservedResource || !creep.memory.reservedResource.id && !creep.memory.carrying) {
-            for (let r in creep.room.memory.resourcePool) {
-                let droppedEnergy = creep.room.memory.resourcePool[r];
-                if (droppedEnergy.amount >= creep.store.getFreeCapacity(RESOURCE_ENERGY)) {
-                    resourcePoolController.reserve(creep, droppedEnergy.id,
-                        droppedEnergy.resourceType,
-                        creep.store.getFreeCapacity(RESOURCE_ENERGY));
+        if (!creep.memory.harvesting && creep.store[RESOURCE_ENERGY] !== 0) {
+            creep.memory.idle = undefined;
+            if (Memory.carry > 0) {
+                let result = creep.drop(RESOURCE_ENERGY);
+                if (result !== 0) {
+                    console.log("ERROR: Harvester dropping result: " + result);
                 }
-            }
-        }
-
-        if (creep.memory.reservedResource && creep.memory.reservedResource.id) {
-            creep.memory.idle = undefined;
-            if (creep.pickup(Game.getObjectById(creep.memory.reservedResource.id)) === ERR_NOT_IN_RANGE) {
-                creep.moveTo(Game.getObjectById(creep.memory.reservedResource.id))
+            } else {
+                if (/*creep.memory.reservedStorageSpace && */creep.memory.reservedStorageSpace.id) {
+                    let resultCode = creep.transfer(Game.getObjectById(creep.memory.reservedStorageSpace.id), RESOURCE_ENERGY);
+                    if (resultCode === ERR_NOT_IN_RANGE) {
+                        creep.moveTo(Game.getObjectById(creep.memory.reservedStorageSpace.id));
+                    }
+                    if (resultCode === 0) {
+                        //Сбрасываем, на случай если хранилище не вместило весь наш store
+                        creep.memory.reservedStorageSpace = {};
+                    }
+                }
             }
         }
 
@@ -159,15 +154,36 @@ let roleCarry = {
 
             return {id: closest.id, amount: closest.store.getFreeCapacity(RESOURCE_ENERGY)};
         }
+
+        function findClosestIdByPath(creep, ids) {
+            let closest;
+            let tmp;
+            let idsObjects = [];
+            for (let s in ids) {
+                idsObjects.push(Game.getObjectById(ids[s]));
+            }
+
+            tmp = creep.pos.findClosestByPath(idsObjects);
+            if (tmp === null)
+                return undefined;
+            else
+                closest = tmp;
+
+            return {id: closest.id};
+        }
     }
 };
 
-module.exports = roleCarry;
+module.exports = roleHarvester;
 
-//TODO: Если от ресурса до склада - дорога, строим только грузовики.
 
-//TODO: Подбор соринок энергии оставшихся от трупов, если они не далеко от основного пути.
+//TODO: Если при moveTo ошибка ERR_NO_PATH, меняем на несколько ходов источник энергии
+// Проверку делаем перед тем как идти к источнику, чтобы не ходить зря.
 
-//TODO: Если загружены хоть чем-то, не ходить на дальний спот для полной загрузки.
+//TODO: Храним координаты точек доступности источника энергии, отправляем на добычу именно в эти точки, балансируем по кол-ву.
+// Если за время жизни не успеваем сходить туда-обратно - самоуничтожаемся.
 
-//TODO: Учитывать ближайшие места выгрузки.
+//TODO: Кол-во харвестеров = кол-ву источников.
+// Резервируем спот у источника, чтобы другие не ходили туда.
+
+//TODO: Определить безопасные источники.

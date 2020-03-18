@@ -50,9 +50,16 @@ let roleRepairer = {
 
         if (creep.memory.reservedStorageResource && !creep.memory.closestDamagedStructureId.id && creep.memory.repairing) {
             let damagedStructure = {};
-            if (creep.room.memory.myDamagedStructuresIds.length > 0) {
-                damagedStructure = findClosestIdByPath(creep, creep.room.memory.myDamagedStructuresIds);
+            if (creep.room.memory.myDamagedRamparts) {
+                damagedStructure = findClosestIdByPath(creep, damageStepCalculator(creep.room.memory.myDamagedRamparts));
+            } else if (creep.room.memory.myDamagedStructuresIds.length > 0) {
+                damagedStructure = findClosestIdByPath(creep, damageStepCalculator(creep.room.memory.myDamagedStructuresIds));
+            } else if (creep.room.memory.myDamagedFortifications) {
+                damagedStructure = findClosestIdByPath(creep, damageStepCalculator(creep.room.memory.myDamagedFortifications));
+            } else {
+                damagedStructure = findClosestIdByPath(creep.room.memory.myDamagedStructuresIds);
             }
+
             if (damagedStructure && damagedStructure.id) {
                 creep.memory.closestDamagedStructureId.id = damagedStructure.id;
             }
@@ -116,6 +123,15 @@ let roleRepairer = {
                 closest = tmp;
 
             return {id: closest.id};
+        }
+
+        function damageStepCalculator(structures) {
+            for (let s in structures) {
+                for (let count = 0; count < (structures[s].hitsMax / 4); count += 100) {
+                    if (structures[s].hits < count)
+                        return {id: structures[s].id};
+                }
+            }
         }
     }
 };

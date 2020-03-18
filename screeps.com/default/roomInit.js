@@ -120,15 +120,34 @@ let roomInit = {
         });
         if (myDamagedStructures) {
             room.memory.myDamagedStructuresIds = [];
+            room.memory.myDamagedFortifications = {};
+            room.memory.myDamagedRamparts = {};
+            let myDamagedFortifications;
+            let myDamagedRamparts;
             for (let s in myDamagedStructures) {
                 room.memory.myDamagedStructuresIds.push(myDamagedStructures[s].id);
             }
             //TODO: Добавить отдельно сломанные структуры с большим кол-вом HP.
-            let myDamagedFortifications = room.find(myDamagedStructures, {
+            myDamagedFortifications = room.find(myDamagedStructures, {
                 filter: (s) => {
                     return s.structureType === STRUCTURE_WALL || s.structureType === STRUCTURE_RAMPART
                 }
             });
+            if (myDamagedFortifications) {
+                myDamagedRamparts = room.find(myDamagedFortifications, {
+                    filter: (s) => {
+                        return s.structureType === STRUCTURE_RAMPART
+                    }
+                });
+            }
+            if (myDamagedFortifications) {
+                room.memory.myDamagedFortifications = myDamagedFortifications;
+                Memory.debugMyDamagedFortifications = myDamagedFortifications;
+            }
+            if (myDamagedRamparts) {
+                room.memory.myDamagedRamparts = myDamagedRamparts;
+                Memory.debugMyDamagedRamparts = myDamagedRamparts;
+            }
         }
 
 

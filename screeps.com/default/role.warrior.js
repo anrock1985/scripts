@@ -4,11 +4,15 @@ let roleWarrior = {
         if (creep.memory.targetId === undefined) {
             creep.memory.targetId = [];
         }
+
+        if (!Memory.attackTarget) {
+            Memory.attackTarget = {};
+        }
         
         if (Game.flags) {
             for (let f in Game.flags) {
                 if (Game.flags[f] === "Attack") {
-                    Memory.attackTarget[Game.flags[f].room.name] = {
+                    Memory.attackTarget[Game.flags[f].id] = {
                         id: Game.flags[f].id,
                         room: Game.flags[f].room.name
                     }

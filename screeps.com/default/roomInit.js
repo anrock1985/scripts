@@ -128,6 +128,8 @@ let roomInit = {
                 room.memory.myDamagedStructuresIds.push(myDamagedStructures[s].id);
             }
             //TODO: Добавить отдельно сломанные структуры с большим кол-вом HP.
+            Memory.debugMyDamagedStructures = myDamagedStructures;
+            
             myDamagedFortifications = room.find(myDamagedStructures, {
                 filter: (s) => {
                     return s.structureType === STRUCTURE_WALL || s.structureType === STRUCTURE_RAMPART

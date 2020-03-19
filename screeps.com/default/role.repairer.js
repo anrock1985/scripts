@@ -12,7 +12,7 @@ let roleRepairer = {
 
         creepHelper.getClosestStorageForWorker(creep);
 
-        if (creep.memory.reservedStorageResource && creep.memory.closestDamagedStructureId.length === 0 && creep.memory.repairing) {
+        if (creep.memory.reservedStorageResource && creep.memory.closestDamagedStructureId.length === 0 && creep.memory.working) {
             let damagedStructure = {};
 
             if (creep.room.memory.myDamagedRampartsIds && creep.room.memory.myDamagedRampartsIds.length > 0) {
@@ -33,7 +33,7 @@ let roleRepairer = {
             }
         }
 
-        if (creep.memory.closestDamagedStructureId.length > 0 && creep.store[RESOURCE_ENERGY] !== 0 && creep.memory.repairing) {
+        if (creep.memory.closestDamagedStructureId.length > 0 && creep.store[RESOURCE_ENERGY] !== 0 && creep.memory.working) {
             creep.memory.idle = undefined;
             let resultCode = creep.repair(Game.getObjectById(creep.memory.closestDamagedStructureId));
             if (resultCode === ERR_NOT_IN_RANGE) {
@@ -43,7 +43,7 @@ let roleRepairer = {
             }
         }
 
-        if (creep.memory.reservedStorageResource && creep.memory.reservedStorageResource.id && creep.store.getFreeCapacity(RESOURCE_ENERGY) > 0 && !creep.memory.repairing) {
+        if (creep.memory.reservedStorageResource && creep.memory.reservedStorageResource.id && creep.store.getFreeCapacity(RESOURCE_ENERGY) > 0 && !creep.memory.working) {
             creep.memory.idle = undefined;
             if (creep.memory.reservedStorageResource.storageType === STRUCTURE_CONTAINER
                 || creep.memory.reservedStorageResource.storageType === STRUCTURE_STORAGE) {

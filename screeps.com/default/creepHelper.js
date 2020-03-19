@@ -87,14 +87,14 @@ function checkWorkerState(creep) {
     if (!creep.memory.idle)
         creep.memory.idle = Game.time;
 
-    if (creep.memory.repairing === undefined) {
-        creep.memory.repairing = true;
+    if (creep.memory.working === undefined) {
+        creep.memory.working = true;
     }
-    if (creep.store[RESOURCE_ENERGY] === 0 && creep.memory.repairing) {
-        creep.memory.repairing = false;
+    if (creep.store[RESOURCE_ENERGY] === 0 && creep.memory.working) {
+        creep.memory.working = false;
     }
-    if (creep.store.getFreeCapacity(RESOURCE_ENERGY) === 0 && !creep.memory.repairing) {
-        creep.memory.repairing = true;
+    if (creep.store.getFreeCapacity(RESOURCE_ENERGY) === 0 && !creep.memory.working) {
+        creep.memory.working = true;
         storagePoolController.releaseWithdraw(creep);
     }
 }

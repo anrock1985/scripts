@@ -7,12 +7,12 @@ let roleRepairer = {
         creepHelper.checkWorkerState(creep);
 
         if (!creep.memory.closestDamagedStructureId) {
-            creep.memory.closestDamagedStructureId = {};
+            creep.memory.closestDamagedStructureId = [];
         }
 
         creepHelper.getClosestStorageForWorker(creep);
 
-        if (creep.memory.reservedStorageResource && !creep.memory.closestDamagedStructureId.id && creep.memory.repairing) {
+        if (creep.memory.reservedStorageResource && creep.memory.closestDamagedStructureId.length === 0 && creep.memory.repairing) {
             let damagedStructure = {};
 
             if (creep.room.memory.myDamagedRampartsIds && creep.room.memory.myDamagedRampartsIds.length > 0) {
@@ -33,12 +33,12 @@ let roleRepairer = {
             }
         }
 
-        if (creep.memory.closestDamagedStructureId.id && creep.store[RESOURCE_ENERGY] !== 0 && creep.memory.repairing) {
+        if (creep.memory.closestDamagedStructureId.length > 0 && creep.store[RESOURCE_ENERGY] !== 0 && creep.memory.repairing) {
             creep.memory.idle = undefined;
-            if (creep.repair(Game.getObjectById(creep.memory.closestDamagedStructureId.id)) === ERR_NOT_IN_RANGE) {
-                creep.moveTo(Game.getObjectById(creep.memory.closestDamagedStructureId.id))
+            if (creep.repair(Game.getObjectById(creep.memory.closestDamagedStructureId)) === ERR_NOT_IN_RANGE) {
+                creep.moveTo(Game.getObjectById(creep.memory.closestDamagedStructureId))
             }
-            creep.memory.closestDamagedStructureId = {};
+            creep.memory.closestDamagedStructureId = [];
         }
 
         if (creep.memory.reservedStorageResource && creep.memory.reservedStorageResource.id && creep.store.getFreeCapacity(RESOURCE_ENERGY) > 0 && !creep.memory.repairing) {

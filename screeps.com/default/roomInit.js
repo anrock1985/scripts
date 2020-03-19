@@ -116,14 +116,15 @@ let roomInit = {
 
         let myDamagedStructures = room.find(FIND_STRUCTURES, {
             filter: (s) => {
-                // return ((s.structureType !== STRUCTURE_CONTROLLER) && (s.hits <= (s.hitsMax - (s.hitsMax / 6))));
                 return (s.structureType !== STRUCTURE_CONTROLLER) && (s.hits < s.hitsMax);
             }
         });
         if (myDamagedStructures) {
             room.memory.myDamagedStructuresIds = [];
-            room.memory.myDamagedFortifications = {};
-            room.memory.myDamagedRamparts = {};
+            room.memory.myDamagedFortificationsIds = [];
+            room.memory.myDamagedRampartsIds = [];
+            // room.memory.myDamagedFortifications = {};
+            // room.memory.myDamagedRamparts = {};
             let myDamagedFortifications;
             let myDamagedRamparts;
             for (let s in myDamagedStructures) {
@@ -132,16 +133,20 @@ let roomInit = {
             myDamagedFortifications = _.filter(myDamagedStructures, function (s) {
                 return s.structureType === STRUCTURE_WALL || s.structureType === STRUCTURE_RAMPART
             });
+
             if (myDamagedFortifications) {
+                for (let f in myDamagedFortifications) {
+                    room.memory.myDamagedFortificationsIds.push(myDamagedFortifications[f].id);
+                }
                 myDamagedRamparts = _.filter(myDamagedFortifications, function (s) {
                     return s.structureType === STRUCTURE_RAMPART
                 });
             }
-            if (myDamagedFortifications) {
-                room.memory.myDamagedFortifications = myDamagedFortifications;
-            }
+
             if (myDamagedRamparts) {
-                room.memory.myDamagedRamparts = myDamagedRamparts;
+                for (let r in myDamagedRamparts) {
+                    room.memory.myDamagedRampartsIds.push(myDamagedRamparts[r].id);
+                }
             }
         }
 

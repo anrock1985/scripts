@@ -66,6 +66,23 @@ function findClosestIdByPath(creep, ids) {
     return {id: closest.id};
 }
 
+function findClosestIdByRange(creep, ids) {
+    let closest;
+    let tmp;
+    let idsObjects = [];
+    for (let s in ids) {
+        idsObjects.push(Game.getObjectById(ids[s]));
+    }
+
+    tmp = creep.pos.findClosestByRange(idsObjects);
+    if (tmp === null)
+        return undefined;
+    else
+        closest = tmp;
+
+    return {id: closest.id};
+}
+
 function checkWorkerState(creep) {
     if (!creep.memory.idle)
         creep.memory.idle = Game.time;
@@ -175,9 +192,23 @@ function findClosestStorageSpaceByPath(creep, storagesIds) {
     return {id: closest.id, amount: closest.store.getFreeCapacity(RESOURCE_ENERGY)};
 }
 
+function damageStepCalculator(structures) {
+    let result = [];
+    for (let count = 0; count < 100000; count += 1000) {
+        for (let s in structures) {
+            if (Game.getObjectById(s).hits < count) {
+                result.push(Game.getObjectById(s).id);
+                return result;
+            }
+        }
+    }
+}
+
 module.exports = {
     getClosestStorageForWorker,
     findClosestIdByPath,
+    findClosestIdByRange,
     checkWorkerState,
-    assignClosestStorageToTransfer
+    assignClosestStorageToTransfer,
+    damageStepCalculator
 };

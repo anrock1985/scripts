@@ -15,14 +15,14 @@ let roleRepairer = {
         if (creep.memory.reservedStorageResource && !creep.memory.closestDamagedStructureId.id && creep.memory.repairing) {
             let damagedStructure = {};
 
-            if (creep.room.memory.myDamagedRamparts && creep.room.memory.myDamagedRamparts.length > 0) {
-                damagedStructure = creepHelper.findClosestIdByPath(creep, damageStepCalculator(creep.room.memory.myDamagedRamparts));
+            if (creep.room.memory.myDamagedRampartsIds && creep.room.memory.myDamagedRampartsIds.length > 0) {
+                damagedStructure = creepHelper.findClosestIdByPath(creep, creepHelper.damageStepCalculator(creep.room.memory.myDamagedRampartsIds));
             }
             if (!damagedStructure && creep.room.memory.myDamagedStructuresIds.length > 0) {
-                damagedStructure = creepHelper.findClosestIdByPath(creep, damageStepCalculator(creep.room.memory.myDamagedStructuresIds));
+                damagedStructure = creepHelper.findClosestIdByPath(creep, creepHelper.damageStepCalculator(creep.room.memory.myDamagedStructuresIds));
             }
-            if (!damagedStructure && creep.room.memory.myDamagedFortifications && creep.room.memory.myDamagedFortifications.length > 0) {
-                damagedStructure = creepHelper.findClosestIdByPath(creep, damageStepCalculator(creep.room.memory.myDamagedFortifications));
+            if (!damagedStructure && creep.room.memory.myDamagedFortificationsIds && creep.room.memory.myDamagedFortificationsIds.length > 0) {
+                damagedStructure = creepHelper.findClosestIdByPath(creep, creepHelper.damageStepCalculator(creep.room.memory.myDamagedFortificationsIds));
             }
             if (!damagedStructure && creep.room.memory.myDamagedStructuresIds.length > 0) {
                 damagedStructure = creepHelper.findClosestIdByPath(creep, creep.room.memory.myDamagedStructuresIds);
@@ -51,18 +51,6 @@ let roleRepairer = {
             } else if (creep.room.energyAvailable >= 300 && Memory.harvesters > 1) {
                 if (creep.withdraw(Game.getObjectById(creep.memory.reservedStorageResource.id), RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
                     creep.moveTo(Game.getObjectById(creep.memory.reservedStorageResource.id));
-                }
-            }
-        }
-
-        function damageStepCalculator(structures) {
-            let result = [];
-            for (let count = 0; count < 100000; count += 1000) {
-                for (let s in structures) {
-                    if (structures[s].hits < count) {
-                        result.push(structures[s].id);
-                        return result;
-                    }
                 }
             }
         }

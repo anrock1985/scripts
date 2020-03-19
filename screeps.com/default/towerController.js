@@ -2,6 +2,8 @@ let towerController = {
     control: function (towerId) {
         let _ = require('lodash');
 
+        let creepHelper = require('creepHelper');
+
         let tower = Game.getObjectById(towerId);
 
         if (tower.store[RESOURCE_ENERGY] > 0) {
@@ -29,17 +31,17 @@ let towerController = {
                 let target;
                 let damagedStructure = {};
 
-                if (tower.room.memory.myDamagedRamparts && tower.room.memory.myDamagedRamparts.length > 0) {
-                    damagedStructure = findClosestIdByRange(tower, damageStepCalculator(tower.room.memory.myDamagedRamparts));
+                if (tower.room.memory.myDamagedRampartsIds && tower.room.memory.myDamagedRampartsIds.length > 0) {
+                    damagedStructure = creepHelper.findClosestIdByRange(tower, creepHelper.damageStepCalculator(tower.room.memory.myDamagedRampartsIds));
                 }
                 if (!damagedStructure && tower.room.memory.myDamagedStructuresIds.length > 0) {
-                    damagedStructure = findClosestIdByRange(tower, damageStepCalculator(tower.room.memory.myDamagedStructuresIds));
+                    damagedStructure = creepHelper.findClosestIdByRange(tower, creepHelper.damageStepCalculator(tower.room.memory.myDamagedStructuresIds));
                 }
-                if (!damagedStructure && tower.room.memory.myDamagedFortifications && tower.room.memory.myDamagedFortifications.length > 0) {
-                    damagedStructure = findClosestIdByRange(tower, damageStepCalculator(tower.room.memory.myDamagedFortifications));
+                if (!damagedStructure && tower.room.memory.myDamagedFortificationsIds && tower.room.memory.myDamagedFortificationsIds.length > 0) {
+                    damagedStructure = creepHelper.findClosestIdByRange(tower, creepHelper.damageStepCalculator(tower.room.memory.myDamagedFortificationsIds));
                 }
                 if (!damagedStructure && tower.room.memory.myDamagedStructuresIds.length > 0) {
-                    damagedStructure = findClosestIdByRange(tower, tower.room.memory.myDamagedStructuresIds);
+                    damagedStructure = creepHelper.findClosestIdByRange(tower, tower.room.memory.myDamagedStructuresIds);
                 }
 
                 if (damagedStructure && damagedStructure.id) {
@@ -73,35 +75,6 @@ let towerController = {
                 return tower.pos.findClosestByRange(myWoundedCreeps);
             } else {
                 return -1;
-            }
-        }
-
-        function findClosestIdByRange(creep, ids) {
-            let closest;
-            let tmp;
-            let idsObjects = [];
-            for (let s in ids) {
-                idsObjects.push(Game.getObjectById(ids[s]));
-            }
-
-            tmp = creep.pos.findClosestByRange(idsObjects);
-            if (tmp === null)
-                return undefined;
-            else
-                closest = tmp;
-
-            return {id: closest.id};
-        }
-
-        function damageStepCalculator(structures) {
-            let result = [];
-            for (let count = 0; count < 10000; count += 1000) {
-                for (let s in structures) {
-                    if (structures[s].hits < count) {
-                        result.push(structures[s].id);
-                        return result;
-                    }
-                }
             }
         }
     }

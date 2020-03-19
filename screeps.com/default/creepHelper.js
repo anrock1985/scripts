@@ -5,7 +5,7 @@ let storagePoolController = require('storagePoolController');
 function getClosestStorageForWorker(creep) {
     let bigStorages = {};
     let storage = {};
-    if (creep.memory.reservedStorageResource && !creep.memory.reservedStorageResource.id && !creep.memory.upgrading) {
+    if (creep.memory.reservedStorageResource && !creep.memory.reservedStorageResource.id && !creep.memory.working) {
         //В первую очередь выгребаем container и storage
         for (let s in creep.room.memory.storageResourcePool) {
             let st = creep.room.memory.storageResourcePool[s];
@@ -22,7 +22,7 @@ function getClosestStorageForWorker(creep) {
 
         } else if (creep.room.memory.storageResourcePool)
             storage = findClosestStorageResourceByPath(creep, creep.room.memory.storageResourcePool);
-        if (storage && storage.id && !creep.memory.repairing) {
+        if (storage && storage.id && !creep.memory.working) {
             storagePoolController.reserveWithdraw(creep, storage.id, storage.resourceType, creep.store.getFreeCapacity(RESOURCE_ENERGY))
         }
     }
@@ -196,7 +196,7 @@ function damageStepCalculator(structuresIds) {
     let result = [];
     for (let count = 0; count < 100000; count += 1000) {
         for (let s in structuresIds) {
-            if (Game.getObjectById(structuresIds[s]).hits < count && Game.getObjectById(structuresIds[s]).hitsMax > count) {
+            if (Game.getObjectById(structuresIds[s]).hitsMax > count && Game.getObjectById(structuresIds[s]).hits < count) {
                 result.push(Game.getObjectById(structuresIds[s]).id);
                 return result;
             }

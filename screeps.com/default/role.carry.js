@@ -12,8 +12,6 @@ let roleCarry = {
             creep.memory.idle = Game.time;
         }
 
-        Memory.debugRoom = creep.room.memory;
-
         if (creep.memory.carrying === undefined) {
             creep.memory.carrying = true;
         }

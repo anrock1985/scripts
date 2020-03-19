@@ -28,11 +28,6 @@ let roleWarrior = {
 
         if (Memory.attackTarget && target) {
             creep.memory.target = target;
-            // if (creep.memory.target.pos.roomName !== creep.pos.roomName) {
-            // }
-            // target = creep.pos.findClosestByPath(Memory.attackTarget[Game.flags["Attack"]]);
-            // creep.memory.target = target;
-            // if (creep.memory.target)
             let resultCode = creep.attack(target);
             if (resultCode === ERR_NOT_IN_RANGE) {
                 creep.moveTo(target);

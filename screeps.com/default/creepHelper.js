@@ -192,10 +192,11 @@ function findClosestStorageSpaceByPath(creep, storagesIds) {
     return {id: closest.id, amount: closest.store.getFreeCapacity(RESOURCE_ENERGY)};
 }
 
-function damageStepCalculator(structures) {
+function damageStepCalculator(structuresIds) {
     let result = [];
     for (let count = 0; count < 100000; count += 1000) {
-        for (let s in structures) {
+        for (let s in structuresIds) {
+            console.log(s);
             if (Game.getObjectById(s).hits < count) {
                 result.push(Game.getObjectById(s).id);
                 return result;

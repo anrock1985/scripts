@@ -196,7 +196,7 @@ function damageStepCalculator(structuresIds) {
     let result = [];
     for (let count = 0; count < 100000; count += 1000) {
         for (let s in structuresIds) {
-            if (Game.getObjectById(structuresIds[s]).hits < count) {
+            if (Game.getObjectById(structuresIds[s]).hits < count && Game.getObjectById(structuresIds[s]).hitsMax > count) {
                 result.push(Game.getObjectById(structuresIds[s]).id);
                 return result;
             }

@@ -146,7 +146,7 @@ let creepConstructor = {
             }
         } else if (spawnHelper.isSpawnLocked(spawner.room)) {
             if ((spawner.room.energyAvailable >= 750 || spawner.room.energyAvailable === spawner.room.energyCapacityAvailable)
-                && Memory.harvesters < 2 && spawner.isActive() && !spawner.spawning) {
+                && spawner.isActive() && !spawner.spawning) {
                 name += "_H";
                 let resultCode = spawner.spawnCreep(prepareBody("harvester"), name, {memory: {role: "harvester"}});
                 if (resultCode === 0) {

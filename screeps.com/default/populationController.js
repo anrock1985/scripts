@@ -109,7 +109,7 @@ let populationController = {
             }
 
             if (creep.memory.role === "harvester") {
-                if (creep.ticksToLive < 50 && !spawnHelper.isSpawnLocked(creep.room)) {
+                if (creep.ticksToLive < 32 && !spawnHelper.isSpawnLocked(creep.room) && Memory.creeps >= 1) {
                     spawnHelper.lockSpawn(creep.room);
                 }
                 roleHarvester.run(creep);

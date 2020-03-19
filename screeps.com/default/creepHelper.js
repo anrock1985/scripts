@@ -57,15 +57,12 @@ function findClosestIdByPath(creep, ids) {
         idsObjects.push(Game.getObjectById(ids[s]));
     }
 
-    Memory.debugIdsObjects = idsObjects;
-    
     tmp = creep.pos.findClosestByPath(idsObjects);
     if (tmp === null)
         return undefined;
     else
         closest = tmp;
 
-    console.log(closest.id);
     return {id: closest.id};
 }
 

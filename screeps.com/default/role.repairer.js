@@ -29,7 +29,7 @@ let roleRepairer = {
             }
 
             if (damagedStructure && damagedStructure.id) {
-                creep.memory.closestDamagedStructureId.id = damagedStructure.id;
+                creep.memory.closestDamagedStructureId = damagedStructure.id;
             }
         }
 

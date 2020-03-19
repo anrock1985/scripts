@@ -1,3 +1,5 @@
+let _ = require('lodash');
+
 let storagePoolController = require('storagePoolController');
 
 function getClosestStorageForWorker(creep) {
@@ -80,8 +82,102 @@ function checkWorkerState(creep) {
     }
 }
 
+function assignClosestStorageToTransfer(creep) {
+    let storage;
+    let reservedAmount = creep.store[RESOURCE_ENERGY];
+
+    let spawnerNotFull = [];
+    let extensionNotFull = [];
+    let towerNotHalfFull = [];
+    let storageNotFull = [];
+
+    towerNotHalfFull = _.filter(creep.room.memory.storageSpacePool, function (a) {
+        return a.storageType === STRUCTURE_TOWER
+            && ((creep.room.energyAvailable === creep.room.energyCapacityAvailable) ? a.amount > 0 : a.amount >= 500)
+    });
+
+    if (towerNotHalfFull.length === 0) {
+        extensionNotFull = _.filter(creep.room.memory.storageSpacePool, function (a) {
+            return a.storageType === STRUCTURE_EXTENSION
+                && a.amount > 0
+        });
+    }
+
+    if (extensionNotFull.length === 0) {
+        spawnerNotFull = _.filter(creep.room.memory.storageSpacePool, function (a) {
+            return a.storageType === STRUCTURE_SPAWN
+                && a.amount > 0
+        });
+    }
+
+    if (spawnerNotFull.length === 0) {
+        storageNotFull = _.filter(creep.room.memory.storageSpacePool, function (a) {
+            return (a.storageType !== STRUCTURE_SPAWN
+                && a.storageType !== STRUCTURE_EXTENSION
+                && a.storageType !== STRUCTURE_TOWER)
+                && a.amount > 0
+        });
+    }
+
+    if (towerNotHalfFull.length > 0) {
+        storage = findClosestStorageSpaceByPath(creep, towerNotHalfFull);
+        if (storage) {
+            if (storage.amount >= reservedAmount) {
+                storagePoolController.reserveTransfer(creep, storage.id, reservedAmount);
+            } else {
+                storagePoolController.reserveTransfer(creep, storage.id, storage.amount);
+            }
+        }
+    } else if (extensionNotFull.length > 0) {
+        storage = findClosestStorageSpaceByPath(creep, extensionNotFull);
+        if (storage) {
+            if (storage.amount >= reservedAmount) {
+                storagePoolController.reserveTransfer(creep, storage.id, reservedAmount);
+            } else {
+                storagePoolController.reserveTransfer(creep, storage.id, storage.amount);
+            }
+        }
+    } else if (spawnerNotFull.length > 0) {
+        storage = findClosestStorageSpaceByPath(creep, spawnerNotFull);
+        if (storage) {
+            if (storage.amount >= reservedAmount) {
+                storagePoolController.reserveTransfer(creep, storage.id, reservedAmount);
+            } else {
+                storagePoolController.reserveTransfer(creep, storage.id, storage.amount);
+            }
+        }
+    } else {
+        storage = findClosestStorageSpaceByPath(creep, storageNotFull);
+        if (storage) {
+            if (storage.amount >= reservedAmount) {
+                storagePoolController.reserveTransfer(creep, storage.id, reservedAmount);
+            } else {
+                storagePoolController.reserveTransfer(creep, storage.id, storage.amount);
+            }
+        }
+    }
+}
+
+function findClosestStorageSpaceByPath(creep, storagesIds) {
+    let closest;
+    let tmp;
+    let storages = [];
+    for (let s in storagesIds) {
+        storages.push(Game.getObjectById(storagesIds[s].id));
+    }
+
+    tmp = creep.pos.findClosestByPath(storages);
+    if (tmp === null)
+        return undefined;
+    else
+        closest = tmp;
+
+    return {id: closest.id, amount: closest.store.getFreeCapacity(RESOURCE_ENERGY)};
+}
+
 module.exports = {
     getClosestStorageForWorker,
     findClosestIdByPath,
-    checkWorkerState
+    checkWorkerState,
+    assignClosestStorageToTransfer
 };

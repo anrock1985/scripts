@@ -3,7 +3,6 @@ let roleBuilder = {
 
         let _ = require('lodash');
 
-        let storagePoolController = require('storagePoolController');
         let creepHelper = require('creepHelper');
 
         creepHelper.checkWorkerState(creep);

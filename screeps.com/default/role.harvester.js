@@ -2,9 +2,8 @@ let roleHarvester = {
     run: function (creep) {
         let _ = require('lodash');
 
+        let creepHelper = require('creepHelper');
         let storagePoolController = require('storagePoolController');
-
-        let debug = true;
 
         if (!creep.memory.idle)
             creep.memory.idle = Game.time;
@@ -27,87 +26,15 @@ let roleHarvester = {
         let source = {};
         if (!creep.memory.closestSourceId.id && creep.memory.harvesting) {
             if (creep.room.memory.sourceIds.length > 0) {
-                source = findClosestIdByPath(creep, creep.room.memory.sourceIds);
+                source = creepHelper.findClosestIdByPath(creep, creep.room.memory.sourceIds);
             }
             if (source && source.id) {
                 creep.memory.closestSourceId.id = source.id;
             }
         }
 
-        let storage;
-        if (!creep.memory.reservedStorageSpace || !creep.memory.reservedStorageSpace.id && !creep.memory.harvesting && Memory.carry === 0) {
-            let reservedAmount = creep.store[RESOURCE_ENERGY];
-
-            let spawnerNotFull = [];
-            let extensionNotFull = [];
-            let towerNotHalfFull = [];
-            let storageNotFull = [];
-
-            towerNotHalfFull = _.filter(creep.room.memory.storageSpacePool, function (a) {
-                return a.storageType === STRUCTURE_TOWER
-                    && ((creep.room.energyAvailable === creep.room.energyCapacityAvailable) ? a.amount > 0 : a.amount >= 500)
-            });
-
-            if (towerNotHalfFull.length === 0) {
-                extensionNotFull = _.filter(creep.room.memory.storageSpacePool, function (a) {
-                    return a.storageType === STRUCTURE_EXTENSION
-                        && a.amount > 0
-                });
-            }
-
-            if (extensionNotFull.length === 0) {
-                spawnerNotFull = _.filter(creep.room.memory.storageSpacePool, function (a) {
-                    return a.storageType === STRUCTURE_SPAWN
-                        && a.amount > 0
-                });
-            }
-
-            if (spawnerNotFull.length === 0) {
-                storageNotFull = _.filter(creep.room.memory.storageSpacePool, function (a) {
-                    return (a.storageType !== STRUCTURE_SPAWN
-                        && a.storageType !== STRUCTURE_EXTENSION
-                        && a.storageType !== STRUCTURE_TOWER)
-                        && a.amount > 0
-                });
-            }
-
-            if (towerNotHalfFull.length > 0) {
-                storage = findClosestStorageSpaceByPath(creep, towerNotHalfFull);
-                if (storage) {
-                    if (storage.amount >= reservedAmount) {
-                        storagePoolController.reserveTransfer(creep, storage.id, reservedAmount);
-                    } else {
-                        storagePoolController.reserveTransfer(creep, storage.id, storage.amount);
-                    }
-                }
-            } else if (extensionNotFull.length > 0) {
-                storage = findClosestStorageSpaceByPath(creep, extensionNotFull);
-                if (storage) {
-                    if (storage.amount >= reservedAmount) {
-                        storagePoolController.reserveTransfer(creep, storage.id, reservedAmount);
-                    } else {
-                        storagePoolController.reserveTransfer(creep, storage.id, storage.amount);
-                    }
-                }
-            } else if (spawnerNotFull.length > 0) {
-                storage = findClosestStorageSpaceByPath(creep, spawnerNotFull);
-                if (storage) {
-                    if (storage.amount >= reservedAmount) {
-                        storagePoolController.reserveTransfer(creep, storage.id, reservedAmount);
-                    } else {
-                        storagePoolController.reserveTransfer(creep, storage.id, storage.amount);
-                    }
-                }
-            } else {
-                storage = findClosestStorageSpaceByPath(creep, storageNotFull);
-                if (storage) {
-                    if (storage.amount >= reservedAmount) {
-                        storagePoolController.reserveTransfer(creep, storage.id, reservedAmount);
-                    } else {
-                        storagePoolController.reserveTransfer(creep, storage.id, storage.amount);
-                    }
-                }
-            }
+        if (creep.memory.reservedStorageSpace || !creep.memory.reservedStorageSpace.id && !creep.memory.harvesting && Memory.carry === 0) {
+            creepHelper.assignClosestStorageToTransfer(creep);
         }
 
         if (creep.memory.harvesting && creep.memory.closestSourceId.id && creep.store[RESOURCE_ENERGY] !== creep.store.getCapacity(RESOURCE_ENERGY)) {
@@ -125,7 +52,7 @@ let roleHarvester = {
                     console.log("ERROR: Harvester dropping result: " + result);
                 }
             } else {
-                if (/*creep.memory.reservedStorageSpace && */creep.memory.reservedStorageSpace.id) {
+                if (creep.memory.reservedStorageSpace.id) {
                     let resultCode = creep.transfer(Game.getObjectById(creep.memory.reservedStorageSpace.id), RESOURCE_ENERGY);
                     if (resultCode === ERR_NOT_IN_RANGE) {
                         creep.moveTo(Game.getObjectById(creep.memory.reservedStorageSpace.id));
@@ -136,40 +63,6 @@ let roleHarvester = {
                     }
                 }
             }
-        }
-
-        function findClosestStorageSpaceByPath(creep, storagesIds) {
-            let closest;
-            let tmp;
-            let storages = [];
-            for (let s in storagesIds) {
-                storages.push(Game.getObjectById(storagesIds[s].id));
-            }
-
-            tmp = creep.pos.findClosestByPath(storages);
-            if (tmp === null)
-                return undefined;
-            else
-                closest = tmp;
-
-            return {id: closest.id, amount: closest.store.getFreeCapacity(RESOURCE_ENERGY)};
-        }
-
-        function findClosestIdByPath(creep, ids) {
-            let closest;
-            let tmp;
-            let idsObjects = [];
-            for (let s in ids) {
-                idsObjects.push(Game.getObjectById(ids[s]));
-            }
-
-            tmp = creep.pos.findClosestByPath(idsObjects);
-            if (tmp === null)
-                return undefined;
-            else
-                closest = tmp;
-
-            return {id: closest.id};
         }
     }
 };

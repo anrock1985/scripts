@@ -114,17 +114,15 @@ let roomInit = {
             }
         }
 
+        room.memory.myDamagedStructuresIds = [];
+        room.memory.myDamagedFortificationsIds = [];
+        room.memory.myDamagedRampartsIds = [];
         let myDamagedStructures = room.find(FIND_STRUCTURES, {
             filter: (s) => {
                 return (s.structureType !== STRUCTURE_CONTROLLER) && (s.hits < s.hitsMax);
             }
         });
         if (myDamagedStructures) {
-            room.memory.myDamagedStructuresIds = [];
-            room.memory.myDamagedFortificationsIds = [];
-            room.memory.myDamagedRampartsIds = [];
-            // room.memory.myDamagedFortifications = {};
-            // room.memory.myDamagedRamparts = {};
             let myDamagedFortifications;
             let myDamagedRamparts;
             for (let s in myDamagedStructures) {

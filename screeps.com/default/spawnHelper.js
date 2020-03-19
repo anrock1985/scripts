@@ -10,7 +10,7 @@ function isSpawnLocked(room) {
 }
 
 function lockSpawn(room) {
-    console.log("INFO: " + room.name + " SPAWNERS LOCKED!");
+    console.log("===== ===== WARN: " + room.name + " SPAWNERS LOCKED! ===== =====");
     if (!room.memory.spawnLocked) {
         room.memory.spawnLocked = true;
         return;
@@ -19,7 +19,7 @@ function lockSpawn(room) {
 }
 
 function unlockSpawn(room) {
-    console.log("INFO: " + room.name + " SPAWNERS UNLOCKED!");
+    console.log("===== ===== WARN: " + room.name + " SPAWNERS UNLOCKED! ===== =====");
     if (!room.memory.spawnLocked) {
         room.memory.spawnLocked = false;
         return;

@@ -15,6 +15,7 @@ let populationController = {
         let roleDeadman = require('role.deadman');
         let roleWarrior = require('role.warrior');
         let creepConstructor = require('creepConstructor');
+        let spawnHelper = require('spawnHelper');
 
         let mainSpawnerId = Game.spawns["Spawn1"].id;
         let initPeriod = 100;
@@ -108,6 +109,9 @@ let populationController = {
             }
 
             if (creep.memory.role === "harvester") {
+                if (creep.ticksToLive < 50 && !spawnHelper.isSpawnLocked(creep.room)) {
+                    spawnHelper.lockSpawn(creep.room);
+                }
                 roleHarvester.run(creep);
             }
 

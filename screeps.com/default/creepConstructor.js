@@ -4,6 +4,8 @@ let creepConstructor = {
 
         let _ = require('lodash');
 
+        let spawnHelper = require('spawnHelper');
+
         let logLevel = "debug";
 
         let totalAvailableEnergy = spawner.room.energyAvailable;
@@ -142,6 +144,25 @@ let creepConstructor = {
                     }
                 }
             }
+        } else if (spawnHelper.isSpawnLocked(spawner.room)) {
+            if ((spawner.room.energyAvailable >= 750 || spawner.room.energyAvailable === spawner.room.energyCapacityAvailable)
+                && Memory.harvesters < 2 && spawner.isActive() && !spawner.spawning) {
+                name += "_H";
+                let resultCode = spawner.spawnCreep(prepareBody("harvester"), name, {memory: {role: "harvester"}});
+                if (resultCode === 0) {
+                    Memory.harvesters++;
+                    let bodyParts = [];
+                    _.forEach(Game.creeps[name].body, function (item) {
+                        bodyParts.push(item.type.toString().toUpperCase());
+                    });
+                    if (debug) {
+                        console.log("INFO: new HARVESTER [total:" + Memory.harvesters + "] (" + bodyParts + ")");
+                    }
+                } else {
+                    console.log("ERROR: Spawning HARVESTER result code: " + resultCode);
+                }
+            }
+            spawnHelper.unlockSpawn(spawner.room);
         } else {
             //Carry
             if (spawner.isActive()
@@ -161,27 +182,6 @@ let creepConstructor = {
                     }
                 } else {
                     console.log("ERROR: Spawning CARRY result code: " + resultCode);
-                }
-            }
-
-            // Harvester
-            else if (spawner.isActive()
-                && !spawner.spawning
-                && spawner.room.energyAvailable >= 300
-                && Memory.harvesters < 2) {
-                name += "_H";
-                let resultCode = spawner.spawnCreep(prepareBody("harvester"), name, {memory: {role: "harvester"}});
-                if (resultCode === 0) {
-                    Memory.harvesters++;
-                    let bodyParts = [];
-                    _.forEach(Game.creeps[name].body, function (item) {
-                        bodyParts.push(item.type.toString().toUpperCase());
-                    });
-                    if (debug) {
-                        console.log("INFO: new HARVESTER [total:" + Memory.harvesters + "] (" + bodyParts + ")");
-                    }
-                } else {
-                    console.log("ERROR: Spawning HARVESTER result code: " + resultCode);
                 }
             }
 
@@ -271,26 +271,26 @@ let creepConstructor = {
                 }
             }
 
-                // //Scout
-                // else if (spawner.isActive()
-                //     && !spawner.spawning
-                //     && spawner.room.energyAvailable >= 300
-                //     && Memory.scouts < 1) {
-                //     let name = Game.time + "_S";
-                //     let resultCode = spawner.spawnCreep(prepareBody("scout"), name, {memory: {role: "scout"}});
-                //     if (resultCode === 0) {
-                //         Memory.scouts++;
-                //         let bodyParts = [];
-                //         _.forEach(Game.creeps[name].body, function (item) {
-                //             bodyParts.push(item.type.toString().toUpperCase());
-                //         });
-                //         if (debug) {
-                //             console.log("INFO: new SCOUT [total:" + Memory.scouts + "] (" + bodyParts + ")");
-                //         }
-                //     } else {
-                //         console.log("ERROR: Spawning SCOUT result code: " + resultCode);
-                //     }
-                // }
+            // //Scout
+            // else if (spawner.isActive()
+            //     && !spawner.spawning
+            //     && spawner.room.energyAvailable >= 300
+            //     && Memory.scouts < 1) {
+            //     let name = Game.time + "_S";
+            //     let resultCode = spawner.spawnCreep(prepareBody("scout"), name, {memory: {role: "scout"}});
+            //     if (resultCode === 0) {
+            //         Memory.scouts++;
+            //         let bodyParts = [];
+            //         _.forEach(Game.creeps[name].body, function (item) {
+            //             bodyParts.push(item.type.toString().toUpperCase());
+            //         });
+            //         if (debug) {
+            //             console.log("INFO: new SCOUT [total:" + Memory.scouts + "] (" + bodyParts + ")");
+            //         }
+            //     } else {
+            //         console.log("ERROR: Spawning SCOUT result code: " + resultCode);
+            //     }
+            // }
 
             // //Warrior
             // else if (spawner.isActive()

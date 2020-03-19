@@ -56,8 +56,7 @@ let roleHarvester = {
                     let resultCode = creep.transfer(Game.getObjectById(creep.memory.reservedStorageSpace.id), RESOURCE_ENERGY);
                     if (resultCode === ERR_NOT_IN_RANGE) {
                         creep.moveTo(Game.getObjectById(creep.memory.reservedStorageSpace.id));
-                    }
-                    if (resultCode === 0) {
+                    } else {
                         //Сбрасываем, на случай если хранилище не вместило весь наш store
                         creep.memory.reservedStorageSpace = {};
                     }

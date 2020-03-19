@@ -36,10 +36,12 @@ let roleBuilder = {
 
         if (creep.memory.closestConstructionSiteId.id && creep.store[RESOURCE_ENERGY] !== 0 && creep.memory.building) {
             creep.memory.idle = undefined;
-            if (creep.build(Game.getObjectById(creep.memory.closestConstructionSiteId.id)) === ERR_NOT_IN_RANGE) {
+            let resultCode = creep.build(Game.getObjectById(creep.memory.closestConstructionSiteId.id));
+            if (resultCode === ERR_NOT_IN_RANGE) {
                 creep.moveTo(Game.getObjectById(creep.memory.closestConstructionSiteId.id));
+            } else {
+                creep.memory.closestConstructionSiteId = {};
             }
-            creep.memory.closestConstructionSiteId = {};
         }
     }
 };

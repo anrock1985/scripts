@@ -14,7 +14,7 @@ let roleUpgrader = {
             }
         }
 
-        if (creep.store[RESOURCE_ENERGY] !== 0 && creep.memory.upgrading) {
+        if (creep.store[RESOURCE_ENERGY] !== 0 && creep.memory.working) {
             creep.memory.idle = undefined;
             if (creep.upgradeController(Game.getObjectById(creep.room.controller.id)) === ERR_NOT_IN_RANGE) {
                 creep.moveTo(Game.getObjectById(creep.room.controller.id));

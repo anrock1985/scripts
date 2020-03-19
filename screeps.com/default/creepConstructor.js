@@ -158,11 +158,11 @@ let creepConstructor = {
                     if (debug) {
                         console.log("INFO: new HARVESTER [total:" + Memory.harvesters + "] (" + bodyParts + ")");
                     }
+                    spawnHelper.unlockSpawn(spawner.room);
                 } else {
                     console.log("ERROR: Spawning HARVESTER result code: " + resultCode);
                 }
             }
-            spawnHelper.unlockSpawn(spawner.room);
         } else {
             //Carry
             if (spawner.isActive()

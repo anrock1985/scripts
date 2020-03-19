@@ -48,7 +48,7 @@ let creepConstructor = {
 
                 case "carry":
                     while (totalAvailableEnergy >= 100) {
-                        if (result.length === 50)
+                        if (result.length === 12)
                             break;
                         result.push(MOVE);
                         result.push(CARRY);

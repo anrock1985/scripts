@@ -108,6 +108,19 @@ let roomInit = {
             }
         }
 
+        //TODO: Withdraw from ruins, if safe.
+        room.memory.ruinsWithEnergyIds = [];
+        let ruinsWithEnergy = room.find(FIND_RUINS, {
+            filter: (r) => {
+                return r.store.getUsedCapacity(RESOURCE_ENERGY) > 50
+            }
+        });
+        if (ruinsWithEnergy) {
+            for (let r in ruinsWithEnergy) {
+                room.memory.ruinsWithEnergyIds.push(ruinsWithEnergy[r].id);
+            }
+        }
+
         let mySpawners = room.find(FIND_MY_SPAWNS);
         if (mySpawners) {
             room.memory.mySpawnerIds = [];

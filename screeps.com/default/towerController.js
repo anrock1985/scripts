@@ -70,7 +70,7 @@ let towerController = {
                         let healParts = healers[h].getActiveBodyparts(HEAL);
                         healPower += (healParts * 12);
                     }
-                    if (healPower < 150) {
+                    if (healPower < (150 * Game.getObjectById(towerId).memory.myTowerIds.length)) {
                         return tower.pos.findClosestByRange(healers);
                     }
                 } else {

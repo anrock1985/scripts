@@ -30,8 +30,6 @@ let creepConstructor = {
                     totalAvailableEnergy -= (BODYPART_COST.move);
 
                     for (count = 0; count < Math.trunc(totalAvailableEnergy / BODYPART_COST.work); count++) {
-                        if (result.length === 50)
-                            break;
                         if (count > 4)
                             break;
                         result.push(WORK);
@@ -39,8 +37,6 @@ let creepConstructor = {
                     totalAvailableEnergy -= (BODYPART_COST.work * count);
                     if (totalAvailableEnergy >= 50) {
                         for (count = 0; count < Math.trunc(totalAvailableEnergy / BODYPART_COST.move); count++) {
-                            if (result.length === 50)
-                                break;
                             if (count > 3)
                                 break;
                             result.push(MOVE);
@@ -62,7 +58,7 @@ let creepConstructor = {
                 case "builder":
                 case "repairer":
                     for (count = 0; count < Math.trunc(totalAvailableEnergy / (BODYPART_COST.work + BODYPART_COST.carry + BODYPART_COST.move)); count++) {
-                        if (result.length === 50)
+                        if (result.length === 18)
                             break;
                         result.push(WORK);
                         result.push(CARRY);

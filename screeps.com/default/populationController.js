@@ -69,7 +69,8 @@ let populationController = {
         }
 
         for (let c in room.memory.creeps) {
-            let creep = Game.getObjectById(c);
+            let creepId = room.memory.creeps[c];
+            let creep = Game.getObjectById(creepId);
 
             if (!creep.spawning) {
 
@@ -314,7 +315,7 @@ let populationController = {
                 room.memory.warriors = 0;
                 for (let c in room.memory.creeps) {
                     let creepId = room.memory.creeps[c];
-                    if (Game.getObjectById(c).memory.role === "warrior") {
+                    if (Game.getObjectById(creepId).memory.role === "warrior") {
                         room.memory.warriors++;
                     }
                 }
@@ -328,7 +329,7 @@ let populationController = {
                 room.memory.claimers = 0;
                 for (let c in room.memory.creeps) {
                     let creepId = room.memory.creeps[c];
-                    if (Game.getObjectById(c).memory.role === "claimer") {
+                    if (Game.getObjectById(creepId).memory.role === "claimer") {
                         room.memory.claimers++;
                     }
                 }

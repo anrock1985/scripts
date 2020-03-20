@@ -92,7 +92,7 @@ let populationController = {
                         && !spawnHelper.isSpawnLocked(creep.room)
                         && room.memory.harvesters > 0 && room.memory.harvesters <= creep.room.memory.sourceIds.length
                         && !Game.getObjectById(mainSpawnerId).spawning) {
-                        console.log("--- WARN: Spawn lock (by TTL) requested by " + creep.name
+                        console.log("--- WARN: " + creep.room.name + " Spawn lock (by TTL) requested by " + creep.name
                             + " (" + creep.memory.role.toUpperCase()
                             + "), TTL:" + creep.ticksToLive + " ---");
                         spawnHelper.lockSpawn(creep.room);
@@ -101,7 +101,7 @@ let populationController = {
                         && room.memory.harvesters > 0
                         && room.memory.harvesters < creep.room.memory.sourceIds.length
                         && !Game.getObjectById(mainSpawnerId).spawning) {
-                        console.log("--- WARN: Spawn lock (by Limit) requested by " + creep.name
+                        console.log("--- WARN: " + creep.room.name + " Spawn lock (by Limit) requested by " + creep.name
                             + " (" + creep.memory.role.toUpperCase()
                             + "), TTL:" + creep.ticksToLive + " ---");
                         spawnHelper.lockSpawn(creep.room);

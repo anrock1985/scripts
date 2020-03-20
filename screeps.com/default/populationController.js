@@ -21,9 +21,11 @@ let populationController = {
         let initPeriod = 100;
 
         if (_.isEmpty(Game.creeps)) {
+            console.log("--- WARN: Game.creeps is empty! ---");
             initRoles(true);
         } else {
             if (Game.time % initPeriod === 0) {
+                console.log("INFO: Starting periodic init");
                 initRoles(false);
             }
         }
@@ -206,18 +208,25 @@ let populationController = {
                     }
                 }
                 if (currentHarvesters !== Memory.harvesters) {
+                    console.log("--- WARN: HARVESTER roles mismatch. Actual:" + currentHarvesters + "Memory:" + Memory.harvesters + " ---");
                     initRoles(true);
                 } else if (currentCarry !== Memory.carry) {
+                    console.log("--- WARN: CARRY roles mismatch. Actual:" + currentCarry + "Memory:" + Memory.carry + " ---");
                     initRoles(true);
                 } else if (currentUpgraders !== Memory.upgraders) {
+                    console.log("--- WARN: UPGRADER roles mismatch. Actual:" + currentUpgraders + "Memory:" + Memory.upgraders + " ---");
                     initRoles(true);
                 } else if (currentBuilders !== Memory.builders) {
+                    console.log("--- WARN: BUILDER roles mismatch. Actual:" + currentBuilders + "Memory:" + Memory.builders + " ---");
                     initRoles(true);
                 } else if (currentRepairers !== Memory.repairers) {
+                    console.log("--- WARN: REPAIRER roles mismatch. Actual:" + currentRepairers + "Memory:" + Memory.repairers + " ---");
                     initRoles(true);
                 } else if (currentScouts !== Memory.scouts) {
+                    console.log("--- WARN: SCOUT roles mismatch. Actual:" + currentScouts + "Memory:" + Memory.scouts + " ---");
                     initRoles(true);
                 } else if (currentWarriors !== Memory.warriors) {
+                    console.log("--- WARN: WARRIOR roles mismatch. Actual:" + currentWarriors + "Memory:" + Memory.warriors + " ---");
                     initRoles(true);
                 }
             }

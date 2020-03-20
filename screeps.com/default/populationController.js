@@ -117,12 +117,18 @@ let populationController = {
                         && !spawnHelper.isSpawnLocked(creep.room)
                         && Memory.harvesters > 0 && Memory.harvesters <= creep.room.memory.sourceIds.length
                         && !Game.getObjectById(mainSpawnerId).spawning) {
+                        console.log("--- WARN: Spawn lock (by TTL) requested by " + creep.name
+                            + "(" + creep.memory.role
+                            + "), TTL:" + creep.ticksToLive + " ---");
                         spawnHelper.lockSpawn(creep.room);
                     }
                     if (!spawnHelper.isSpawnLocked(creep.room)
                         && Memory.harvesters > 0
                         && Memory.harvesters < creep.room.memory.sourceIds.length
                         && !Game.getObjectById(mainSpawnerId).spawning) {
+                        console.log("--- WARN: Spawn lock (by Limit) requested by " + creep.name
+                            + "(" + creep.memory.role
+                            + "), TTL:" + creep.ticksToLive + " ---");
                         spawnHelper.lockSpawn(creep.room);
                     }
                     roleHarvester.run(creep);

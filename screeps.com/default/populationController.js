@@ -63,29 +63,29 @@ let populationController = {
                     Memory.lostEnergy = 0;
                 }
 
-                switch (Memory.creeps[c].lastRole) {
-                    case "harvester":
-                        Memory.harvesters--;
-                        break;
-                    case "upgrader":
-                        Memory.upgraders--;
-                        break;
-                    case "builder":
-                        Memory.builders--;
-                        break;
-                    case "carry":
-                        Memory.carry--;
-                        break;
-                    case "repairer":
-                        Memory.repairers--;
-                        break;
-                    case "scout":
-                        Memory.scouts--;
-                        break;
-                    case "warrior":
-                        Memory.warriors--;
-                        break;
-                }
+                // switch (Memory.creeps[c].lastRole) {
+                //     case "harvester":
+                //         Memory.harvesters--;
+                //         break;
+                //     case "upgrader":
+                //         Memory.upgraders--;
+                //         break;
+                //     case "builder":
+                //         Memory.builders--;
+                //         break;
+                //     case "carry":
+                //         Memory.carry--;
+                //         break;
+                //     case "repairer":
+                //         Memory.repairers--;
+                //         break;
+                //     case "scout":
+                //         Memory.scouts--;
+                //         break;
+                //     case "warrior":
+                //         Memory.warriors--;
+                //         break;
+                // }
                 delete Memory.creeps[c];
             }
         }

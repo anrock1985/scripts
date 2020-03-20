@@ -64,30 +64,6 @@ let populationController = {
                     Memory.deadWithCarryPercent = 0;
                     Memory.lostEnergy = 0;
                 }
-
-                // switch (Memory.creeps[c].lastRole) {
-                //     case "harvester":
-                //         Memory.harvesters--;
-                //         break;
-                //     case "upgrader":
-                //         Memory.upgraders--;
-                //         break;
-                //     case "builder":
-                //         Memory.builders--;
-                //         break;
-                //     case "carry":
-                //         Memory.carry--;
-                //         break;
-                //     case "repairer":
-                //         Memory.repairers--;
-                //         break;
-                //     case "scout":
-                //         Memory.scouts--;
-                //         break;
-                //     case "warrior":
-                //         Memory.warriors--;
-                //         break;
-                // }
                 delete Memory.creeps[c];
             }
         }
@@ -118,7 +94,7 @@ let populationController = {
                         && Memory.harvesters > 0 && Memory.harvesters <= creep.room.memory.sourceIds.length
                         && !Game.getObjectById(mainSpawnerId).spawning) {
                         console.log("--- WARN: Spawn lock (by TTL) requested by " + creep.name
-                            + "(" + creep.memory.role
+                            + " (" + creep.memory.role.toUpperCase()
                             + "), TTL:" + creep.ticksToLive + " ---");
                         spawnHelper.lockSpawn(creep.room);
                     }
@@ -127,7 +103,7 @@ let populationController = {
                         && Memory.harvesters < creep.room.memory.sourceIds.length
                         && !Game.getObjectById(mainSpawnerId).spawning) {
                         console.log("--- WARN: Spawn lock (by Limit) requested by " + creep.name
-                            + "(" + creep.memory.role
+                            + " (" + creep.memory.role.toUpperCase()
                             + "), TTL:" + creep.ticksToLive + " ---");
                         spawnHelper.lockSpawn(creep.room);
                     }
@@ -168,6 +144,7 @@ let populationController = {
                     && _.filter(creep.body, (body) => body.type = MOVE)) {
                     creep.memory.role = "harvester";
                     Memory.harvesters++;
+                    //TODO: Creep body toString fix.
                     console.log("WARN: Lost creep recovered. He is " + creep.memory.role.toUpperCase() + " now. (" + creep.body.toString() + ")")
                 }
 
@@ -240,7 +217,10 @@ let populationController = {
 
         function initRoles(forceInit) {
             //Harvester
-            if (Memory.harvesters === undefined || forceInit) {
+            if (!Memory.harvesters || forceInit) {
+                if (!Memory.harvesters) {
+                    console.log("--- WARN: Memory.harvesters was undefined! ---")
+                }
                 Memory.harvesters = 0;
                 for (let c in Game.creeps) {
                     if (Game.creeps[c].memory.role === "harvester") {
@@ -250,7 +230,10 @@ let populationController = {
             }
 
             //Upgrader
-            if (Memory.upgraders === undefined || forceInit) {
+            if (!Memory.upgraders || forceInit) {
+                if (!Memory.upgraders) {
+                    console.log("--- WARN: Memory.upgraders was undefined! ---")
+                }
                 Memory.upgraders = 0;
                 for (let c in Game.creeps) {
                     if (Game.creeps[c].memory.role === "upgrader") {
@@ -260,7 +243,10 @@ let populationController = {
             }
 
             //Builder
-            if (Memory.builders === undefined || forceInit) {
+            if (!Memory.builders || forceInit) {
+                if (!Memory.builders) {
+                    console.log("--- WARN: Memory.builders was undefined! ---")
+                }
                 Memory.builders = 0;
                 for (let c in Game.creeps) {
                     if (Game.creeps[c].memory.role === "builder") {
@@ -270,7 +256,10 @@ let populationController = {
             }
 
             //Repairer
-            if (Memory.repairers === undefined || forceInit) {
+            if (!Memory.repairers || forceInit) {
+                if (!Memory.repairers) {
+                    console.log("--- WARN: Memory.repairers was undefined! ---")
+                }
                 Memory.repairers = 0;
                 for (let c in Game.creeps) {
                     if (Game.creeps[c].memory.role === "repairer") {
@@ -280,7 +269,10 @@ let populationController = {
             }
 
             //Carry
-            if (Memory.carry === undefined || forceInit) {
+            if (!Memory.carry || forceInit) {
+                if (!Memory.carry) {
+                    console.log("--- WARN: Memory.carry was undefined! ---")
+                }
                 Memory.carry = 0;
                 for (let c in Game.creeps) {
                     if (Game.creeps[c].memory.role === "carry") {
@@ -290,7 +282,10 @@ let populationController = {
             }
 
             //Scout
-            if (Memory.scouts === undefined || forceInit) {
+            if (!Memory.scouts || forceInit) {
+                if (!Memory.scouts) {
+                    console.log("--- WARN: Memory.scouts was undefined! ---")
+                }
                 Memory.scouts = 0;
                 for (let c in Game.creeps) {
                     if (Game.creeps[c].memory.role === "scout") {
@@ -300,7 +295,10 @@ let populationController = {
             }
 
             //Warrior
-            if (Memory.warriors === undefined || forceInit) {
+            if (!Memory.warriors || forceInit) {
+                if (!Memory.warriors) {
+                    console.log("--- WARN: Memory.warriors was undefined! ---")
+                }
                 Memory.warriors = 0;
                 for (let c in Game.creeps) {
                     if (Game.creeps[c].memory.role === "warrior") {

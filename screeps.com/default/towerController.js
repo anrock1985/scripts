@@ -60,11 +60,26 @@ let towerController = {
                 for (let i in enemyCreepsIds) {
                     enemyCreeps.push(Game.getObjectById(enemyCreepsIds[i]));
                 }
+                //TODO: Расчитать силу хила, чтобы понять есть ли смысл стрелять.
+                let healPower = 0;
                 let healers = _.filter(enemyCreeps, function (c) {
                     return c.getActiveBodyparts(HEAL) > 0;
                 });
                 if (healers.length > 0) {
-                    return tower.pos.findClosestByRange(healers);
+                    for (let h in healers) {
+                        let healParts = healers[h].getActiveBodyparts(HEAL);
+                        healPower += (healParts * 12);
+                    }
+                    if (healPower < 150) {
+                        return tower.pos.findClosestByRange(healers);
+                    } else {
+                        let notHealers = _.filter(enemyCreeps, function (c) {
+                            return c.getActiveBodyparts(HEAL) === 0;
+                        });
+                        if (notHealers.length > 0) {
+                            return tower.pos.findClosestByRange(notHealers);
+                        }
+                    }
                 } else {
                     return tower.pos.findClosestByRange(enemyCreeps);
                 }

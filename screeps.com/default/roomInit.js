@@ -20,6 +20,7 @@ let roomInit = {
 
         room.memory.creeps = [];
         for (let c in Game.creeps) {
+            console.log("room.name = " + room.name + " , " + "Game.creeps[c].room.name = " + Game.creeps[c].room.name);
             if (room.name === Game.creeps[c].room.name) {
                 room.memory.creeps.push(Game.creeps[c].id);
                 switch (Game.creeps[c].memory.role) {

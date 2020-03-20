@@ -60,6 +60,18 @@ let roomInit = {
             }
         }
 
+        let tombstonesWithEnergy = room.find(FIND_TOMBSTONES, {
+            filter: (t) => {
+                return t.store.getUsedCapacity(RESOURCE_ENERGY) > 50
+            }
+        });
+        if (tombstonesWithEnergy) {
+            room.memory.tombstonesWithEnergyIds = [];
+            for (let t in tombstonesWithEnergy) {
+                room.memory.tombstonesWithEnergyIds.push(tombstonesWithEnergy[t].id)
+            }
+        }
+
         let mySpawners = room.find(FIND_MY_SPAWNS);
         if (mySpawners) {
             room.memory.mySpawnerIds = [];
@@ -149,7 +161,7 @@ let roomInit = {
         }
 
         //Вычисляем количество каждого брошенного ресурса в комнате
-        if (droppedEnergy.length > 0) {
+        if (droppedEnergy.length > 0 || tombstonesWithEnergy.length > 0) {
             let totalDroppedEnergyInRoom = 0;
             for (let e in droppedEnergy) {
                 let droppedEnergyId = droppedEnergy[e].id;
@@ -160,6 +172,18 @@ let roomInit = {
                     type: RESOURCE_ENERGY,
                     amount: droppedEnergyAmount
                 };
+            }
+            if (tombstonesWithEnergy.length > 0) {
+                for (let t in tombstonesWithEnergy) {
+                    let tombstonesWithEnergyId = tombstonesWithEnergy[t].id;
+                    let tombstonesWithEnergyAmount = tombstonesWithEnergy[t].amount;
+                    totalDroppedEnergyInRoom += tombstonesWithEnergyAmount;
+                    room.memory.resourcePool[tombstonesWithEnergyId] = {
+                        id: tombstonesWithEnergyId,
+                        type: RESOURCE_ENERGY,
+                        amount: tombstonesWithEnergyAmount
+                    };
+                }
             }
             room.memory.totalDroppedEnergyInRoom = totalDroppedEnergyInRoom;
         }

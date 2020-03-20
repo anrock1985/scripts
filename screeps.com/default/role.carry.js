@@ -69,7 +69,7 @@ let roleCarry = {
 
         if (creep.memory.reservedResource && creep.memory.reservedResource.id) {
             creep.memory.idle = undefined;
-            if (Game.getObjectById(creep.memory.reservedResource.id).ticksToDecay > 0) {
+            if (Game.getObjectById(creep.memory.reservedResource.id).structure) {
                 if (creep.withdraw(Game.getObjectById(creep.memory.reservedResource.id)) === ERR_NOT_IN_RANGE) {
                     creep.moveTo(Game.getObjectById(creep.memory.reservedResource.id))
                 }

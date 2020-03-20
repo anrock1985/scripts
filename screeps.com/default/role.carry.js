@@ -53,8 +53,7 @@ let roleCarry = {
 
         if (!creep.memory.reservedResource || !creep.memory.reservedResource.id && !creep.memory.carrying) {
             if (creep.room.memory.ruinsWithEnergyIds.length > 0) {
-                creep.memory.reservedResource = creepHelper.findClosestIdByPath(creep, creep.room.memory.ruinsWithEnergyIds);
-
+                creep.memory.closestRuin = creepHelper.findClosestIdByPath(creep, creep.room.memory.ruinsWithEnergyIds);
             } else {
                 for (let r in creep.room.memory.resourcePool) {
                     let droppedEnergy = creep.room.memory.resourcePool[r];
@@ -69,9 +68,9 @@ let roleCarry = {
 
         if (creep.memory.reservedResource && creep.memory.reservedResource.id) {
             creep.memory.idle = undefined;
-            if (Game.getObjectById(creep.memory.reservedResource.id).structure) {
-                if (creep.withdraw(Game.getObjectById(creep.memory.reservedResource.id)) === ERR_NOT_IN_RANGE) {
-                    creep.moveTo(Game.getObjectById(creep.memory.reservedResource.id))
+            if (creep.memory.closestRuin) {
+                if (creep.withdraw(Game.getObjectById(creep.memory.closestRuin.id)) === ERR_NOT_IN_RANGE) {
+                    creep.moveTo(Game.getObjectById(creep.memory.closestRuin.id))
                 }
             } else {
                 if (creep.pickup(Game.getObjectById(creep.memory.reservedResource.id)) === ERR_NOT_IN_RANGE) {

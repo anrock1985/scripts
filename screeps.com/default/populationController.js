@@ -224,7 +224,7 @@ let populationController = {
 
         function initRoles(forceInit) {
             //Harvester
-            if (!room.memory.harvesters || forceInit) {
+            if (room.memory.harvesters.length > 0 || forceInit) {
                 if (!room.memory.harvesters) {
                     console.log("--- WARN: room.memory.harvesters was undefined! ---")
                 }
@@ -238,9 +238,9 @@ let populationController = {
             }
 
             //Carry
-            if (!room.memory.carrys || forceInit) {
+            if (room.memory.carrys.length > 0 || forceInit) {
                 if (!room.memory.carrys) {
-                    console.log("--- WARN: room.memory.carry was undefined! ---")
+                    console.log("--- WARN: room.memory.carrys was undefined! ---")
                 }
                 room.memory.carrys = 0;
                 for (let c in room.memory.creeps) {
@@ -252,7 +252,7 @@ let populationController = {
             }
 
             //Upgrader
-            if (!room.memory.upgraders || forceInit) {
+            if (room.memory.upgraders.length > 0 || forceInit) {
                 if (!room.memory.upgraders) {
                     console.log("--- WARN: room.memory.upgraders was undefined! ---")
                 }
@@ -266,7 +266,7 @@ let populationController = {
             }
 
             //Builder
-            if (!room.memory.builders || forceInit) {
+            if (room.memory.builders.length > 0 || forceInit) {
                 if (!room.memory.builders) {
                     console.log("--- WARN: room.memory.builders was undefined! ---")
                 }
@@ -280,7 +280,7 @@ let populationController = {
             }
 
             //Repairer
-            if (!room.memory.repairers || forceInit) {
+            if (room.memory.repairers.length > 0 || forceInit) {
                 if (!room.memory.repairers) {
                     console.log("--- WARN: room.memory.repairers was undefined! ---")
                 }
@@ -294,7 +294,7 @@ let populationController = {
             }
 
             //Scout
-            if (!room.memory.scouts || forceInit) {
+            if (room.memory.scouts.length > 0 || forceInit) {
                 if (!room.memory.scouts) {
                     console.log("--- WARN: room.memory.scouts was undefined! ---")
                 }
@@ -308,7 +308,7 @@ let populationController = {
             }
 
             //Warrior
-            if (!room.memory.warriors || forceInit) {
+            if (room.memory.warriors.length > 0 || forceInit) {
                 if (!room.memory.warriors) {
                     console.log("--- WARN: room.memory.warriors was undefined! ---")
                 }
@@ -322,7 +322,7 @@ let populationController = {
             }
 
             //Claimer
-            if (!room.memory.claimers || forceInit) {
+            if (room.memory.claimers.length > 0 || forceInit) {
                 if (!room.memory.claimers) {
                     console.log("--- WARN: room.memory.warriors was undefined! ---")
                 }
@@ -336,7 +336,7 @@ let populationController = {
             }
             console.log("[T:" + Game.time
                 + "] INFO: " + room.name + " Initialization complete. Founded [H:"
-                + room.memory.harvesters + " U:" + room.memory.upgraders + " C:" + room.memory.carry +
+                + room.memory.harvesters + " U:" + room.memory.upgraders + " C:" + room.memory.carrys +
                 " B:" + room.memory.builders + " R:" + room.memory.repairers + " S:" + room.memory.scouts + " W:" + room.memory.warriors + " CL:" + room.memory.claimers + "]")
         }
     }

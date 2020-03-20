@@ -40,9 +40,9 @@ let towerController = {
                 if (!damagedStructure && tower.room.memory.myDamagedFortificationsIds && tower.room.memory.myDamagedFortificationsIds.length > 0) {
                     damagedStructure = creepHelper.findClosestIdByRange(tower, creepHelper.damageStepCalculator(tower.room.memory.myDamagedFortificationsIds));
                 }
-                if (!damagedStructure && tower.room.memory.myDamagedStructuresIds.length > 0) {
-                    damagedStructure = creepHelper.findClosestIdByRange(tower, tower.room.memory.myDamagedStructuresIds);
-                }
+                // if (!damagedStructure && tower.room.memory.myDamagedStructuresIds.length > 0) {
+                //     damagedStructure = creepHelper.findClosestIdByRange(tower, tower.room.memory.myDamagedStructuresIds);
+                // }
 
                 if (damagedStructure && damagedStructure.id) {
                     target = damagedStructure.id;

@@ -25,7 +25,7 @@ let populationController = {
             initRoles(true);
         } else {
             if (Game.time % initPeriod === 0) {
-                console.log("INFO: Starting periodic init");
+                console.log("[T:" + Game.time + "] INFO: Starting periodic init");
                 initRoles(false);
             }
         }

@@ -164,7 +164,7 @@ let creepConstructor = {
         if (spawner.isActive()
                 && !spawner.spawning
                 && spawner.room.energyAvailable >= 300
-                && Memory.harvesters < 2) {
+                && Memory.harvesters < spawner.room.memory.sourceIds.length) {
                 name += "_H";
                 let resultCode = spawner.spawnCreep(prepareBody("harvester"), name, {memory: {role: "harvester"}});
                 if (resultCode === 0) {

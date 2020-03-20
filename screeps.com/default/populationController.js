@@ -113,13 +113,13 @@ let populationController = {
                 if (creep.memory.role === "harvester") {
                     if (creep.ticksToLive === 50
                         && !spawnHelper.isSpawnLocked(creep.room)
-                        && Memory.harvesters > 0 && Memory.harvesters <= 2
+                        && Memory.harvesters > 0 && Memory.harvesters <= creep.room.memory.sourceIds.length
                         && !Game.getObjectById(mainSpawnerId).spawning) {
                         spawnHelper.lockSpawn(creep.room);
                     }
                     if (!spawnHelper.isSpawnLocked(creep.room)
                         && Memory.harvesters > 0
-                        && Memory.harvesters < 2
+                        && Memory.harvesters < creep.room.memory.sourceIds.length
                         && !Game.getObjectById(mainSpawnerId).spawning) {
                         spawnHelper.lockSpawn(creep.room);
                     }

@@ -21,11 +21,11 @@ let populationController = {
         let initPeriod = 100;
 
         if (_.isEmpty(Game.creeps)) {
-            console.log("--- WARN: Game.creeps is empty! ---");
+            console.log("--- CRIT: Game.creeps is empty! ---");
             initRoles(true);
         } else {
             if (Game.time % initPeriod === 0) {
-                console.log("[T:" + Game.time + "] INFO: Starting periodic init");
+                console.log("[T:" + Game.time + "] INFO: " + room.name + " Starting periodic init");
                 initRoles(false);
             }
         }

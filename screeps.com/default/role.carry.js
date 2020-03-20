@@ -52,12 +52,16 @@ let roleCarry = {
         }
 
         if (!creep.memory.reservedResource || !creep.memory.reservedResource.id && !creep.memory.carrying) {
-            for (let r in creep.room.memory.resourcePool) {
-                let droppedEnergy = creep.room.memory.resourcePool[r];
-                if (droppedEnergy.amount >= creep.store.getFreeCapacity(RESOURCE_ENERGY)) {
-                    resourcePoolController.reserve(creep, droppedEnergy.id,
-                        droppedEnergy.resourceType,
-                        creep.store.getFreeCapacity(RESOURCE_ENERGY));
+            if (creep.room.memory.ruinsWithEnergyIds.length > 0) {
+                creep.memory.reservedResource = creepHelper.findClosestIdByPath(creep, creep.room.memory.ruinsWithEnergyIds);
+            } else {
+                for (let r in creep.room.memory.resourcePool) {
+                    let droppedEnergy = creep.room.memory.resourcePool[r];
+                    if (droppedEnergy.amount >= creep.store.getFreeCapacity(RESOURCE_ENERGY)) {
+                        resourcePoolController.reserve(creep, droppedEnergy.id,
+                            droppedEnergy.resourceType,
+                            creep.store.getFreeCapacity(RESOURCE_ENERGY));
+                    }
                 }
             }
         }

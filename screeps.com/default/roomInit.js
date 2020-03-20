@@ -213,15 +213,15 @@ let roomInit = {
         actualizeRoomResourcePool(room);
         actualizeRoomStoragePool(room);
 
+        if (!room.memory.totalAvailableResourcePool) {
+            room.memory.totalAvailableResourcePool = 0;
+        }
         if (room.memory.resourcePool) {
             let totalAvailableResourcePool = 0;
             for (let e in room.memory.resourcePool) {
                 if (room.memory.resourcePool[e].amount > 0) {
                     totalAvailableResourcePool += room.memory.resourcePool[e].amount;
                 }
-            }
-            if (!room.memory.totalAvailableResourcePool) {
-                room.memory.totalAvailableResourcePool = 0;
             }
             room.memory.totalAvailableResourcePool = totalAvailableResourcePool;
         }

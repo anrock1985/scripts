@@ -72,14 +72,14 @@ let towerController = {
                     }
                     if (healPower < 150) {
                         return tower.pos.findClosestByRange(healers);
-                    } else {
+                    } /*else {
                         let notHealers = _.filter(enemyCreeps, function (c) {
                             return c.getActiveBodyparts(HEAL) === 0;
                         });
                         if (notHealers.length > 0) {
                             return tower.pos.findClosestByRange(notHealers);
                         }
-                    }
+                }*/
                 } else {
                     return tower.pos.findClosestByRange(enemyCreeps);
                 }

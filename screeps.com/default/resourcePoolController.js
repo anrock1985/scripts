@@ -18,13 +18,13 @@ let resourcePoolController = {
             creep.memory.reservedResource.amount = amount;
             creep.room.memory.resourcePool[id].amount -= amount;
             if (logLevel === "debug") {
-                console.log("Creep " + creep.name
+                console.log(creep.room.name + " Creep " + creep.name
                     + " reserved " + creep.memory.reservedResource.amount
                     + " energy from " + creep.memory.reservedResource.id
                     + ". Remaining amount: " + creep.room.memory.resourcePool[id].amount);
             }
         } else {
-            console.log("ERROR: Reserving resource fail!");
+            console.log("ERROR: " + creep.room.name + " Reserving resource fail!");
             return -1;
         }
     },
@@ -33,7 +33,7 @@ let resourcePoolController = {
         let logLevel = "info";
         creep.memory.reservedResource = {};
         if (logLevel === "debug") {
-            console.log("Creep " + creep.name + " released reserve")
+            console.log(creep.room.name + " Creep " + creep.name + " released reserve")
         }
     }
 

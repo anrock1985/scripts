@@ -31,13 +31,13 @@ let storagePoolController = {
             creep.memory.reservedStorageResource.amount = amount;
             creep.room.memory.storageResourcePool[id].amount -= amount;
             if (logLevel === "debug") {
-                console.log("Creep " + creep.name
+                console.log(creep.room.name + " Creep " + creep.name
                     + " reserved " + creep.memory.reservedStorageResource.amount
                     + " energy from " + creep.memory.reservedStorageResource.id
                     + ". Remaining amount: " + creep.room.memory.storageResourcePool[id].amount);
             }
         } else {
-            console.log("ERROR: Reserving storage resource fail! (" + creep.memory.role + " " + creep.name + ")");
+            console.log("ERROR: " + creep.room.name + " Reserving storage resource fail! (" + creep.memory.role + " " + creep.name + ")");
             return -1;
         }
     },
@@ -53,13 +53,13 @@ let storagePoolController = {
             creep.memory.reservedStorageSpace.amount = amount;
             creep.room.memory.storageSpacePool[id].amount -= amount;
             if (logLevel === "debug") {
-                console.log("Creep " + creep.name
+                console.log(creep.room.name + " Creep " + creep.name
                     + " reserved " + creep.memory.reservedStorageSpace.amount
                     + " space in " + creep.memory.reservedStorageSpace.id
                     + ". Remaining space: " + creep.room.memory.storageSpacePool[id].amount);
             }
         } else {
-            console.log("ERROR: Reserving storage space fail! (" + creep.memory.role + " " + creep.name + ")");
+            console.log("ERROR: " + creep.room.name + " Reserving storage space fail! (" + creep.memory.role + " " + creep.name + ")");
             return -1;
         }
     },
@@ -69,7 +69,7 @@ let storagePoolController = {
         let logLevel = "info";
         creep.memory.reservedStorageResource = {};
         if (logLevel === "debug") {
-            console.log("Creep " + creep.name + " released storage resource reserve")
+            console.log(creep.room.name + " Creep " + creep.name + " released storage resource reserve")
         }
     },
 
@@ -78,7 +78,7 @@ let storagePoolController = {
         let logLevel = "info";
         creep.memory.reservedStorageSpace = {};
         if (logLevel === "debug") {
-            console.log("Creep " + creep.name + " released storage space reserve")
+            console.log(creep.room.name + " Creep " + creep.name + " released storage space reserve")
         }
     }
 };

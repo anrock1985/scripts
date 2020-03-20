@@ -46,7 +46,7 @@ let roleCarry = {
                 return a.id === creep.memory.reservedResource.id
             });
             if (!some) {
-                console.log("WARN: Reserved resource " + creep.memory.reservedResource.id + " disappears");
+                console.log("WARN: " + creep.room.name + " Reserved resource " + creep.memory.reservedResource.id + " disappears");
                 creep.memory.reservedResource = {};
             }
         }

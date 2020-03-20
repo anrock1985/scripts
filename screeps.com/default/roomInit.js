@@ -9,10 +9,45 @@ let roomInit = {
         room.memory.storageResourcePool = {};
         room.memory.storageSpacePool = {};
 
+        room.memory.harvesters = 0;
+        room.memory.carrys = 0;
+        room.memory.upgraders = 0;
+        room.memory.builders = 0;
+        room.memory.repairers = 0;
+        room.memory.scouts = 0;
+        room.memory.warriors = 0;
+        room.memory.claimers = 0;
+
         room.memory.creeps = [];
         for (let c in Game.creeps) {
-            if (room.name === Game.creeps[c].memory.currentRoomName) {
-                room.memory.creeps.push(Game.creeps[c].id)
+            if (room.name === Game.creeps[c].room.name) {
+                room.memory.creeps.push(Game.creeps[c].id);
+                switch (Game.creeps[c].memory.role) {
+                    case "harvester":
+                        room.memory.harvesters++;
+                        break;
+                    case "carry":
+                        room.memory.carrys++;
+                        break;
+                    case "upgrader":
+                        room.memory.upgraders++;
+                        break;
+                    case "builder":
+                        room.memory.builders++;
+                        break;
+                    case "repairer":
+                        room.memory.repairers++;
+                        break;
+                    case "scout":
+                        room.memory.scouts++;
+                        break;
+                    case "warrior":
+                        room.memory.warriors++;
+                        break;
+                    case "claimer":
+                        room.memory.claimers++;
+                        break;
+                }
             }
         }
 

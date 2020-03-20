@@ -50,7 +50,7 @@ let roleRepairer = {
                 if (creep.withdraw(Game.getObjectById(creep.memory.reservedStorageResource.id), RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
                     creep.moveTo(Game.getObjectById(creep.memory.reservedStorageResource.id));
                 }
-            } else if (creep.room.energyAvailable >= 300 && Memory.harvesters > 1) {
+            } else if (creep.room.energyAvailable >= 300 && creep.room.memory.harvesters > 1) {
                 if (creep.withdraw(Game.getObjectById(creep.memory.reservedStorageResource.id), RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
                     creep.moveTo(Game.getObjectById(creep.memory.reservedStorageResource.id));
                 }

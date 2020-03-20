@@ -12,7 +12,7 @@ let towerController = {
                 if (target !== -1) {
                     let resultCode = tower.attack(target);
                     if (resultCode !== 0) {
-                        console.log("ERROR: Tower attack result code: " + resultCode);
+                        console.log("ERROR: " + Game.getObjectById(towerId).room.name + " Tower attack result code: " + resultCode);
                     }
                 }
             }
@@ -22,7 +22,7 @@ let towerController = {
                 if (target !== -1) {
                     let resultCode = tower.heal(target);
                     if (resultCode !== 0) {
-                        console.log("ERROR: Tower heal result code: " + resultCode);
+                        console.log("ERROR: " + Game.getObjectById(towerId).room.name + " Tower heal result code: " + resultCode);
                     }
                 }
             }
@@ -48,7 +48,7 @@ let towerController = {
                     target = damagedStructure.id;
                     let resultCode = tower.repair(Game.getObjectById(target));
                     if (resultCode !== 0) {
-                        console.log("ERROR: Tower repair result code: " + resultCode);
+                        console.log("ERROR: " + Game.getObjectById(towerId).room.name + " Tower repair result code: " + resultCode);
                     }
                 }
             }

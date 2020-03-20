@@ -13,29 +13,29 @@ let roleDeadman = {
                 creep.memory.reservedStorageSpace = {};
             switch (creep.memory.lastRole) {
                 case "harvester":
-                    Memory.harvesters--;
+                    creep.room.memory.harvesters--;
                     break;
                 case "carry":
-                    Memory.carry--;
+                    creep.room.memory.carrys--;
                     break;
                 case "upgrader":
-                    Memory.upgraders--;
+                    creep.room.memory.upgraders--;
                     break;
                 case "builder":
-                    Memory.builders--;
+                    creep.room.memory.builders--;
                     break;
                 case "repairer":
-                    Memory.repairers--;
+                    creep.room.memory.repairers--;
                     break;
                 case "scout":
-                    Memory.scouts--;
+                    creep.room.memory.scouts--;
                     break;
                 case "claimer":
-                    Memory.claimers--;
+                    creep.room.memory.claimers--;
                     break;
             }
             if (debug) {
-                console.log("INFO: Creep " + creep.name + " marked as deadman now.");
+                console.log("INFO: " + creep.room.name + " Creep " + creep.name + " marked as deadman now.");
             }
         }
 
@@ -46,7 +46,7 @@ let roleDeadman = {
         if (creep.store[RESOURCE_ENERGY] > 0) {
             let resultCode = creep.drop(RESOURCE_ENERGY);
             if (resultCode !== 0) {
-                console.log("ERROR: Deadman dropping result code = " + resultCode);
+                console.log("ERROR: " + creep.room.name + " Deadman " + creep.name + " dropping result code = " + resultCode);
             }
         }
     }

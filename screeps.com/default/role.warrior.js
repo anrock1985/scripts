@@ -33,7 +33,7 @@ let roleWarrior = {
                 creep.moveTo(target);
             } else {
                 if (resultCode !== 0) {
-                    console.log("ERROR: Warrior attack result: " + resultCode);
+                    console.log("ERROR: " + creep.room.name + " Warrior attack result: " + resultCode);
                 }
             }
         }

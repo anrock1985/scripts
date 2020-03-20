@@ -25,10 +25,8 @@ let creepConstructor = {
                     break;
 
                 case "harvester":
-
                     result.push(MOVE);
                     totalAvailableEnergy -= (BODYPART_COST.move);
-
                     for (count = 0; count < Math.trunc(totalAvailableEnergy / BODYPART_COST.work); count++) {
                         if (count > 4)
                             break;
@@ -68,9 +66,6 @@ let creepConstructor = {
                 case "scout":
                     result.push(MOVE);
                     break;
-                case "claimer":
-                    //TODO: Claimer body.
-                    break;
                 case "warrior":
                     for (count = 0; count < Math.trunc(totalAvailableEnergy / (BODYPART_COST.move + BODYPART_COST.attack + (BODYPART_COST.tough * 2))); count++) {
                         if (result.length === 50)
@@ -81,62 +76,62 @@ let creepConstructor = {
                         result.push(ATTACK);
                     }
                     break;
+                case "claimer":
+                    //TODO: Claimer body.
+                    break;
             }
             return result;
         }
 
-        if (Memory.harvesters < 1) {
+        if (spawner.room.memory.harvesters < 1) {
             console.log("WARN: No harvesters found in room " + spawner.room.name + "!");
-            if (spawner.room.memory.droppedEnergyIds.length > 0 && Memory.carry < 2) {
-                console.log("DEBUG: We have dropped energy");
-                for (let e in spawner.room.memory.droppedEnergyIds) {
-                    if (Game.getObjectById(spawner.room.memory.droppedEnergyIds[e]).amount >= 500) {
+            if (spawner.room.memory.droppedEnergyIds.length > 0 && spawner.room.memory.carrys < 2) {
+                console.log("DEBUG: We have dropped energy in room " + spawner.room.name);
+                    if (spawner.room.memory.totalAvailableResourcePool >= 500) {
                         if (logLevel === "debug")
-                            console.log("DEBUG: We have dropped energy of 500");
+                            console.log("DEBUG: We have dropped energy of 500 in room " + spawner.room.name);
                         //Default Carry
                         if (spawner.isActive()
                             && !spawner.spawning
-                            && spawner.room.energyAvailable >= 300 && Memory.carry < 2) {
+                            && spawner.room.energyAvailable >= 300 && spawner.room.memory.carrys < 2) {
                             name += "_C";
                             let resultCode = spawner.spawnCreep(prepareBody("carry"), name, {memory: {role: "carry"}});
                             if (resultCode === 0) {
-                                Memory.carry++;
+                                spawner.room.memory.carrys++;
                                 let bodyParts = [];
                                 _.forEach(Game.creeps[name].body, function (item) {
                                     bodyParts.push(item.type.toString().toUpperCase());
                                 });
                                 if (debug) {
-                                    console.log("INFO: new CARRY [total:" + Memory.carry + "] (" + bodyParts + ")");
+                                    console.log("INFO: " + spawner.room.name + " new CARRY [total:" + spawner.room.memory.carrys + "] (" + bodyParts + ")");
                                 }
                             } else {
-                                console.log("ERROR: Spawning CARRY result code: " + resultCode);
+                                console.log("ERROR: " + spawner.room.name + " Spawning CARRY result code: " + resultCode);
                             }
                         }
-                        break;
                     }
-                }
             } else {
                 if (logLevel === "debug")
-                    console.log("DEBUG: We don't have dropped energy");
+                    console.log("DEBUG: We don't have dropped energy in room " + spawner.room.name);
                 // Default Harvester
                 if (spawner.isActive()
                     && !spawner.spawning
                     && spawner.room.energyAvailable >= 300) {
                     if (logLevel === "debug")
-                        console.log("DEBUG: Constructing default harvester");
+                        console.log("DEBUG: Constructing default harvester in room " + spawner.room.name);
                     name += "_H";
                     let resultCode = spawner.spawnCreep(prepareBody("defaultHarvester"), name, {memory: {role: "harvester"}});
                     if (resultCode === 0) {
-                        Memory.harvesters++;
+                        spawner.room.memory.harvesters++;
                         let bodyParts = [];
                         _.forEach(Game.creeps[name].body, function (item) {
                             bodyParts.push(item.type.toString().toUpperCase());
                         });
                         if (debug) {
-                            console.log("INFO: new HARVESTER [total:" + Memory.harvesters + "] (" + bodyParts + ")");
+                            console.log("INFO: " + spawner.room.name + " new HARVESTER [total:" + spawner.room.memory.harvesters + "] (" + bodyParts + ")");
                         }
                     } else {
-                        console.log("ERROR: Spawning HARVESTER result code: " + resultCode);
+                        console.log("ERROR: " + spawner.room.name + " Spawning HARVESTER result code: " + resultCode);
                     }
                 }
             }
@@ -146,38 +141,38 @@ let creepConstructor = {
                 name += "_H";
                 let resultCode = spawner.spawnCreep(prepareBody("harvester"), name, {memory: {role: "harvester"}});
                 if (resultCode === 0) {
-                    Memory.harvesters++;
+                    spawner.room.memory.harvesters++;
                     let bodyParts = [];
                     _.forEach(Game.creeps[name].body, function (item) {
                         bodyParts.push(item.type.toString().toUpperCase());
                     });
                     if (debug) {
-                        console.log("INFO: new HARVESTER [total:" + Memory.harvesters + "] (" + bodyParts + ")");
+                        console.log("INFO: " + spawner.room.name + " new HARVESTER [total:" + spawner.room.memory.harvesters + "] (" + bodyParts + ")");
                     }
                     spawnHelper.unlockSpawn(spawner.room);
                 } else {
-                    console.log("ERROR: Spawning HARVESTER result code: " + resultCode);
+                    console.log("ERROR: " + spawner.room.name + " Spawning HARVESTER result code: " + resultCode);
                 }
             }
         } else {
             // Harvester
-        if (spawner.isActive()
+            if (spawner.isActive()
                 && !spawner.spawning
                 && spawner.room.energyAvailable >= 300
-                && Memory.harvesters < spawner.room.memory.sourceIds.length) {
+                && spawner.room.memory.harvesters < spawner.room.memory.sourceIds.length) {
                 name += "_H";
                 let resultCode = spawner.spawnCreep(prepareBody("harvester"), name, {memory: {role: "harvester"}});
                 if (resultCode === 0) {
-                    Memory.harvesters++;
+                    spawner.room.memory.harvesters++;
                     let bodyParts = [];
                     _.forEach(Game.creeps[name].body, function (item) {
                         bodyParts.push(item.type.toString().toUpperCase());
                     });
                     if (debug) {
-                        console.log("INFO: new HARVESTER [total:" + Memory.harvesters + "] (" + bodyParts + ")");
+                        console.log("INFO: " + spawner.room.name + " new HARVESTER [total:" + spawner.room.memory.harvesters + "] (" + bodyParts + ")");
                     }
                 } else {
-                    console.log("ERROR: Spawning HARVESTER result code: " + resultCode);
+                    console.log("ERROR: " + spawner.room.name + " Spawning HARVESTER result code: " + resultCode);
                 }
             }
 
@@ -185,20 +180,20 @@ let creepConstructor = {
             else if (spawner.isActive()
                 && !spawner.spawning
                 && spawner.room.energyAvailable >= 100
-                && Memory.carry < 1) {
+                && spawner.room.memory.carrys < 1) {
                 name += "_C";
                 let resultCode = spawner.spawnCreep(prepareBody("carry"), name, {memory: {role: "carry"}});
                 if (resultCode === 0) {
-                    Memory.carry++;
+                    spawner.room.memory.carrys++;
                     let bodyParts = [];
                     _.forEach(Game.creeps[name].body, function (item) {
                         bodyParts.push(item.type.toString().toUpperCase());
                     });
                     if (debug) {
-                        console.log("INFO: new CARRY [total:" + Memory.carry + "] (" + bodyParts + ")");
+                        console.log("INFO: " + spawner.room.name + " new CARRY [total:" + spawner.room.memory.carrys + "] (" + bodyParts + ")");
                     }
                 } else {
-                    console.log("ERROR: Spawning CARRY result code: " + resultCode);
+                    console.log("ERROR: " + spawner.room.name + " Spawning CARRY result code: " + resultCode);
                 }
             }
 
@@ -207,20 +202,20 @@ let creepConstructor = {
                 && spawner.isActive()
                 && !spawner.spawning
                 && spawner.room.energyAvailable >= 300
-                && Memory.carry < 8) {
+                && spawner.room.memory.carrys < 8) {
                 name += "_C";
                 let resultCode = spawner.spawnCreep(prepareBody("carry"), name, {memory: {role: "carry"}});
                 if (resultCode === 0) {
-                    Memory.carry++;
+                    spawner.room.memory.carrys++;
                     let bodyParts = [];
                     _.forEach(Game.creeps[name].body, function (item) {
                         bodyParts.push(item.type.toString().toUpperCase());
                     });
                     if (debug) {
-                        console.log("INFO: new CARRY [total:" + Memory.carry + "] (" + bodyParts + ")");
+                        console.log("INFO: " + spawner.room.name + " new CARRY [total:" + spawner.room.memory.carrys + "] (" + bodyParts + ")");
                     }
                 } else {
-                    console.log("ERROR: Spawning CARRY result code: " + resultCode);
+                    console.log("ERROR: " + spawner.room.name + " Spawning CARRY result code: " + resultCode);
                 }
             }
 
@@ -229,20 +224,20 @@ let creepConstructor = {
                 && !spawner.spawning
                 && spawner.room.memory.myConstructionSiteIds.length > 0
                 && spawner.room.energyAvailable >= 300
-                && Memory.builders < ((spawner.room.memory.myConstructionSiteIds.length > 2) ? 2 : 1)) {
+                && spawner.room.memory.builders < ((spawner.room.memory.myConstructionSiteIds.length > 2) ? 2 : 1)) {
                 name += "_B";
                 let resultCode = spawner.spawnCreep(prepareBody("builder"), name, {memory: {role: "builder"}});
                 if (resultCode === 0) {
-                    Memory.builders++;
+                    spawner.room.memory.builders++;
                     let bodyParts = [];
                     _.forEach(Game.creeps[name].body, function (item) {
                         bodyParts.push(item.type.toString().toUpperCase());
                     });
                     if (debug) {
-                        console.log("INFO: new BUILDER [total:" + Memory.builders + "] (" + bodyParts + ")");
+                        console.log("INFO: " + spawner.room.name + " new BUILDER [total:" + spawner.room.memory.builders + "] (" + bodyParts + ")");
                     }
                 } else {
-                    console.log("ERROR: Spawning BUILDER result code: " + resultCode);
+                    console.log("ERROR: " + spawner.room.name + " Spawning BUILDER result code: " + resultCode);
                 }
             }
 
@@ -250,20 +245,20 @@ let creepConstructor = {
             else if (spawner.isActive()
                 && !spawner.spawning
                 && spawner.room.energyAvailable >= 300
-                && Memory.repairers < 2) {
+                && spawner.room.memory.repairers < 2) {
                 name += "_R";
                 let resultCode = spawner.spawnCreep(prepareBody("repairer"), name, {memory: {role: "repairer"}});
                 if (resultCode === 0) {
-                    Memory.repairers++;
+                    spawner.room.memory.repairers++;
                     let bodyParts = [];
                     _.forEach(Game.creeps[name].body, function (item) {
                         bodyParts.push(item.type.toString().toUpperCase());
                     });
                     if (debug) {
-                        console.log("INFO: new REPAIRER [total:" + Memory.repairers + "] (" + bodyParts + ")");
+                        console.log("INFO: " + spawner.room.name + " new REPAIRER [total:" + spawner.room.memory.repairers + "] (" + bodyParts + ")");
                     }
                 } else {
-                    console.log("ERROR: Spawning REPAIRER result code: " + resultCode);
+                    console.log("ERROR: " + spawner.room.name + " Spawning REPAIRER result code: " + resultCode);
                 }
             }
 
@@ -271,20 +266,20 @@ let creepConstructor = {
             else if (spawner.isActive()
                 && !spawner.spawning
                 && spawner.room.energyAvailable >= 300
-                && Memory.upgraders < ((spawner.room.memory.myConstructionSiteIds.length === 0) ? 4 : 2)) {
+                && spawner.room.memory.upgraders < ((spawner.room.memory.myConstructionSiteIds.length === 0) ? 4 : 2)) {
                 name += "_U";
                 let resultCode = spawner.spawnCreep(prepareBody("upgrader"), name, {memory: {role: "upgrader"}});
                 if (resultCode === 0) {
-                    Memory.upgraders++;
+                    spawner.room.memory.upgraders++;
                     let bodyParts = [];
                     _.forEach(Game.creeps[name].body, function (item) {
                         bodyParts.push(item.type.toString().toUpperCase());
                     });
                     if (debug) {
-                        console.log("INFO: new UPGRADER [total:" + Memory.upgraders + "] (" + bodyParts + ")");
+                        console.log("INFO: " + spawner.room.name + " new UPGRADER [total:" + spawner.room.memory.upgraders + "] (" + bodyParts + ")");
                     }
                 } else {
-                    console.log("ERROR: Spawning UPGRADER result code: " + resultCode);
+                    console.log("ERROR: " + spawner.room.name + " Spawning UPGRADER result code: " + resultCode);
                 }
             }
 
@@ -292,20 +287,20 @@ let creepConstructor = {
             // else if (spawner.isActive()
             //     && !spawner.spawning
             //     && spawner.room.energyAvailable >= 300
-            //     && Memory.scouts < 1) {
+            //     && spawner.room.memory.scouts < 1) {
             //     let name = Game.time + "_S";
             //     let resultCode = spawner.spawnCreep(prepareBody("scout"), name, {memory: {role: "scout"}});
             //     if (resultCode === 0) {
-            //         Memory.scouts++;
+            //         spawner.room.memory.scouts++;
             //         let bodyParts = [];
             //         _.forEach(Game.creeps[name].body, function (item) {
             //             bodyParts.push(item.type.toString().toUpperCase());
             //         });
             //         if (debug) {
-            //             console.log("INFO: new SCOUT [total:" + Memory.scouts + "] (" + bodyParts + ")");
+            //             console.log("INFO: " + spawner.room.name + " new SCOUT [total:" + spawner.room.memory.scouts + "] (" + bodyParts + ")");
             //         }
             //     } else {
-            //         console.log("ERROR: Spawning SCOUT result code: " + resultCode);
+            //         console.log("ERROR: " + spawner.room.name + " Spawning SCOUT result code: " + resultCode);
             //     }
             // }
 
@@ -313,20 +308,41 @@ let creepConstructor = {
             // else if (spawner.isActive()
             //     && !spawner.spawning
             //     && spawner.room.energyAvailable >= 300
-            //     && Memory.warriors < 1) {
+            //     && spawner.room.memory.warriors < 1) {
             //     name += "_W";
             //     let resultCode = spawner.spawnCreep(prepareBody("warrior"), name, {memory: {role: "warrior"}});
             //     if (resultCode === 0) {
-            //         Memory.warriors++;
+            //         spawner.room.memory.warriors++;
             //         let bodyParts = [];
             //         _.forEach(Game.creeps[name].body, function (item) {
             //             bodyParts.push(item.type.toString().toUpperCase());
             //         });
             //         if (debug) {
-            //             console.log("INFO: new WARRIOR [total:" + Memory.warriors + "] (" + bodyParts + ")");
+            //             console.log("INFO: " + spawner.room.name + " new WARRIOR [total:" + spawner.room.memory.warriors + "] (" + bodyParts + ")");
             //         }
             //     } else {
-            //         console.log("ERROR: Spawning WARRIOR result code: " + resultCode);
+            //         console.log("ERROR: " + spawner.room.name + " Spawning WARRIOR result code: " + resultCode);
+            //     }
+            // }
+
+            // //Claimer
+            // else if (spawner.isActive()
+            //     && !spawner.spawning
+            //     && spawner.room.energyAvailable >= 300
+            //     && spawner.room.memory.claimers < 1) {
+            //     name += "_W";
+            //     let resultCode = spawner.spawnCreep(prepareBody("claimer"), name, {memory: {role: "claimer"}});
+            //     if (resultCode === 0) {
+            //         spawner.room.memory.claimers++;
+            //         let bodyParts = [];
+            //         _.forEach(Game.creeps[name].body, function (item) {
+            //             bodyParts.push(item.type.toString().toUpperCase());
+            //         });
+            //         if (debug) {
+            //             console.log("INFO: " + spawner.room.name + " new CLAIMER [total:" + spawner.room.memory.claimers + "] (" + bodyParts + ")");
+            //         }
+            //     } else {
+            //         console.log("ERROR: " + spawner.room.name + " Spawning CLAIMER result code: " + resultCode);
             //     }
             // }
         }
@@ -338,6 +354,3 @@ module.exports = creepConstructor;
 //TODO: Если достигнут предел по крипам, а крипы слабее чем позволяет конструктор, надо их обновить.
 
 //TODO: Спавнить carry в зависимости от лежащих ресурсов.
-
-//TODO: Если хранилища пусты и остался только один харвестер, копим по максимуму чтобы заспавнить большого.
-//TODO: На время накопления блокируем спавн других крипов.

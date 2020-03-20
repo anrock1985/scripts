@@ -68,8 +68,8 @@ let populationController = {
             }
         }
 
-        for (let c in Game.creeps) {
-            let creep = Game.creeps[c];
+        for (let c in room.memory.creeps) {
+            let creep = Game.getObjectById(c);
 
             if (!creep.spawning) {
 
@@ -81,8 +81,6 @@ let populationController = {
                     creep.memory.carriedEnergy = creep.store[RESOURCE_ENERGY];
                 }
 
-                creep.memory.currentRoomName = creep.room.name;
-
                 if (creep.memory.newRole) {
                     creep.memory.role = creep.memory.newRole;
                     creep.memory.newRole = undefined;
@@ -91,7 +89,7 @@ let populationController = {
                 if (creep.memory.role === "harvester") {
                     if (creep.ticksToLive === 50
                         && !spawnHelper.isSpawnLocked(creep.room)
-                        && Memory.harvesters > 0 && Memory.harvesters <= creep.room.memory.sourceIds.length
+                        && room.memory.harvesters > 0 && room.memory.harvesters <= creep.room.memory.sourceIds.length
                         && !Game.getObjectById(mainSpawnerId).spawning) {
                         console.log("--- WARN: Spawn lock (by TTL) requested by " + creep.name
                             + " (" + creep.memory.role.toUpperCase()
@@ -99,8 +97,8 @@ let populationController = {
                         spawnHelper.lockSpawn(creep.room);
                     }
                     if (!spawnHelper.isSpawnLocked(creep.room)
-                        && Memory.harvesters > 0
-                        && Memory.harvesters < creep.room.memory.sourceIds.length
+                        && room.memory.harvesters > 0
+                        && room.memory.harvesters < creep.room.memory.sourceIds.length
                         && !Game.getObjectById(mainSpawnerId).spawning) {
                         console.log("--- WARN: Spawn lock (by Limit) requested by " + creep.name
                             + " (" + creep.memory.role.toUpperCase()
@@ -143,7 +141,7 @@ let populationController = {
                     && _.filter(creep.body, (body) => body.type = CARRY)
                     && _.filter(creep.body, (body) => body.type = MOVE)) {
                     creep.memory.role = "harvester";
-                    Memory.harvesters++;
+                    room.memory.harvesters++;
                     //TODO: Creep body toString fix.
                     console.log("WARN: Lost creep recovered. He is " + creep.memory.role.toUpperCase() + " now. (" + creep.body.toString() + ")")
                 }
@@ -165,51 +163,58 @@ let populationController = {
             let currentRepairers = 0;
             let currentScouts = 0;
             let currentWarriors = 0;
+            let currentClaimers = 0;
 
-            if (!_.isEmpty(Game.creeps)) {
-                for (let c in Game.creeps) {
-                    if (Game.creeps[c].memory.role === "harvester") {
+            if (room.memory.creeps.length !== 0) {
+                for (let c in room.memory.creeps) {
+                    if (Game.getObjectById(c).memory.role === "harvester") {
                         currentHarvesters++;
                     }
-                    if (Game.creeps[c].memory.role === "carry") {
+                    if (Game.getObjectById(c).memory.role === "carry") {
                         currentCarry++;
                     }
-                    if (Game.creeps[c].memory.role === "upgrader") {
+                    if (Game.getObjectById(c).memory.role === "upgrader") {
                         currentUpgraders++;
                     }
-                    if (Game.creeps[c].memory.role === "builder") {
+                    if (Game.getObjectById(c).memory.role === "builder") {
                         currentBuilders++;
                     }
-                    if (Game.creeps[c].memory.role === "repairer") {
+                    if (Game.getObjectById(c).memory.role === "repairer") {
                         currentRepairers++;
                     }
-                    if (Game.creeps[c].memory.role === "scout") {
+                    if (Game.getObjectById(c).memory.role === "scout") {
                         currentScouts++;
                     }
-                    if (Game.creeps[c].memory.role === "warrior") {
+                    if (Game.getObjectById(c).memory.role === "warrior") {
                         currentWarriors++;
                     }
+                    if (Game.getObjectById(c).memory.role === "claimer") {
+                        currentClaimers++;
+                    }
                 }
-                if (currentHarvesters !== Memory.harvesters) {
-                    console.log("--- WARN: HARVESTER roles mismatch. Actual:" + currentHarvesters + "Memory:" + Memory.harvesters + " ---");
+                if (currentHarvesters !== room.memory.harvesters) {
+                    console.log("--- WARN: HARVESTER roles mismatch. Actual:" + currentHarvesters + "Memory:" + room.memory.harvesters + " ---");
                     initRoles(true);
-                } else if (currentCarry !== Memory.carry) {
-                    console.log("--- WARN: CARRY roles mismatch. Actual:" + currentCarry + "Memory:" + Memory.carry + " ---");
+                } else if (currentCarry !== room.memory.carrys) {
+                    console.log("--- WARN: CARRY roles mismatch. Actual:" + currentCarry + "Memory:" + room.memory.carrys + " ---");
                     initRoles(true);
-                } else if (currentUpgraders !== Memory.upgraders) {
-                    console.log("--- WARN: UPGRADER roles mismatch. Actual:" + currentUpgraders + "Memory:" + Memory.upgraders + " ---");
+                } else if (currentUpgraders !== room.memory.upgraders) {
+                    console.log("--- WARN: UPGRADER roles mismatch. Actual:" + currentUpgraders + "Memory:" + room.memory.upgraders + " ---");
                     initRoles(true);
-                } else if (currentBuilders !== Memory.builders) {
-                    console.log("--- WARN: BUILDER roles mismatch. Actual:" + currentBuilders + "Memory:" + Memory.builders + " ---");
+                } else if (currentBuilders !== room.memory.builders) {
+                    console.log("--- WARN: BUILDER roles mismatch. Actual:" + currentBuilders + "Memory:" + room.memory.builders + " ---");
                     initRoles(true);
-                } else if (currentRepairers !== Memory.repairers) {
-                    console.log("--- WARN: REPAIRER roles mismatch. Actual:" + currentRepairers + "Memory:" + Memory.repairers + " ---");
+                } else if (currentRepairers !== room.memory.repairers) {
+                    console.log("--- WARN: REPAIRER roles mismatch. Actual:" + currentRepairers + "Memory:" + room.memory.repairers + " ---");
                     initRoles(true);
-                } else if (currentScouts !== Memory.scouts) {
-                    console.log("--- WARN: SCOUT roles mismatch. Actual:" + currentScouts + "Memory:" + Memory.scouts + " ---");
+                } else if (currentScouts !== room.memory.scouts) {
+                    console.log("--- WARN: SCOUT roles mismatch. Actual:" + currentScouts + "Memory:" + room.memory.scouts + " ---");
                     initRoles(true);
-                } else if (currentWarriors !== Memory.warriors) {
-                    console.log("--- WARN: WARRIOR roles mismatch. Actual:" + currentWarriors + "Memory:" + Memory.warriors + " ---");
+                } else if (currentWarriors !== room.memory.warriors) {
+                    console.log("--- WARN: WARRIOR roles mismatch. Actual:" + currentWarriors + "Memory:" + room.memory.warriors + " ---");
+                    initRoles(true);
+                } else if (currentClaimers !== room.memory.claimers) {
+                    console.log("--- WARN: CLAIMER roles mismatch. Actual:" + currentClaimers + "Memory:" + room.memory.claimers + " ---");
                     initRoles(true);
                 }
             }
@@ -217,99 +222,112 @@ let populationController = {
 
         function initRoles(forceInit) {
             //Harvester
-            if (!Memory.harvesters || forceInit) {
-                if (!Memory.harvesters) {
-                    console.log("--- WARN: Memory.harvesters was undefined! ---")
+            if (!room.memory.harvesters || forceInit) {
+                if (!room.memory.harvesters) {
+                    console.log("--- WARN: room.memory.harvesters was undefined! ---")
                 }
-                Memory.harvesters = 0;
-                for (let c in Game.creeps) {
-                    if (Game.creeps[c].memory.role === "harvester") {
-                        Memory.harvesters++;
-                    }
-                }
-            }
-
-            //Upgrader
-            if (!Memory.upgraders || forceInit) {
-                if (!Memory.upgraders) {
-                    console.log("--- WARN: Memory.upgraders was undefined! ---")
-                }
-                Memory.upgraders = 0;
-                for (let c in Game.creeps) {
-                    if (Game.creeps[c].memory.role === "upgrader") {
-                        Memory.upgraders++;
-                    }
-                }
-            }
-
-            //Builder
-            if (!Memory.builders || forceInit) {
-                if (!Memory.builders) {
-                    console.log("--- WARN: Memory.builders was undefined! ---")
-                }
-                Memory.builders = 0;
-                for (let c in Game.creeps) {
-                    if (Game.creeps[c].memory.role === "builder") {
-                        Memory.builders++;
-                    }
-                }
-            }
-
-            //Repairer
-            if (!Memory.repairers || forceInit) {
-                if (!Memory.repairers) {
-                    console.log("--- WARN: Memory.repairers was undefined! ---")
-                }
-                Memory.repairers = 0;
-                for (let c in Game.creeps) {
-                    if (Game.creeps[c].memory.role === "repairer") {
-                        Memory.repairers++;
+                room.memory.harvesters = 0;
+                for (let c in room.memory.creeps) {
+                    if (Game.getObjectById(c).memory.role === "harvester") {
+                        room.memory.harvesters++;
                     }
                 }
             }
 
             //Carry
-            if (!Memory.carry || forceInit) {
-                if (!Memory.carry) {
-                    console.log("--- WARN: Memory.carry was undefined! ---")
+            if (!room.memory.carrys || forceInit) {
+                if (!room.memory.carrys) {
+                    console.log("--- WARN: room.memory.carry was undefined! ---")
                 }
-                Memory.carry = 0;
-                for (let c in Game.creeps) {
-                    if (Game.creeps[c].memory.role === "carry") {
-                        Memory.carry++;
+                room.memory.carrys = 0;
+                for (let c in room.memory.creeps) {
+                    if (Game.getObjectById(c).memory.role === "carry") {
+                        room.memory.carrys++;
+                    }
+                }
+            }
+
+            //Upgrader
+            if (!room.memory.upgraders || forceInit) {
+                if (!room.memory.upgraders) {
+                    console.log("--- WARN: room.memory.upgraders was undefined! ---")
+                }
+                room.memory.upgraders = 0;
+                for (let c in room.memory.creeps) {
+                    if (Game.getObjectById(c).memory.role === "upgrader") {
+                        room.memory.upgraders++;
+                    }
+                }
+            }
+
+            //Builder
+            if (!room.memory.builders || forceInit) {
+                if (!room.memory.builders) {
+                    console.log("--- WARN: room.memory.builders was undefined! ---")
+                }
+                room.memory.builders = 0;
+                for (let c in room.memory.creeps) {
+                    if (Game.getObjectById(c).memory.role === "builder") {
+                        room.memory.builders++;
+                    }
+                }
+            }
+
+            //Repairer
+            if (!room.memory.repairers || forceInit) {
+                if (!room.memory.repairers) {
+                    console.log("--- WARN: room.memory.repairers was undefined! ---")
+                }
+                room.memory.repairers = 0;
+                for (let c in room.memory.creeps) {
+                    if (Game.getObjectById(c).memory.role === "repairer") {
+                        room.memory.repairers++;
                     }
                 }
             }
 
             //Scout
-            if (!Memory.scouts || forceInit) {
-                if (!Memory.scouts) {
-                    console.log("--- WARN: Memory.scouts was undefined! ---")
+            if (!room.memory.scouts || forceInit) {
+                if (!room.memory.scouts) {
+                    console.log("--- WARN: room.memory.scouts was undefined! ---")
                 }
-                Memory.scouts = 0;
-                for (let c in Game.creeps) {
-                    if (Game.creeps[c].memory.role === "scout") {
-                        Memory.scouts++;
+                room.memory.scouts = 0;
+                for (let c in room.memory.creeps) {
+                    if (Game.getObjectById(c).memory.role === "scout") {
+                        room.memory.scouts++;
                     }
                 }
             }
 
             //Warrior
-            if (!Memory.warriors || forceInit) {
-                if (!Memory.warriors) {
-                    console.log("--- WARN: Memory.warriors was undefined! ---")
+            if (!room.memory.warriors || forceInit) {
+                if (!room.memory.warriors) {
+                    console.log("--- WARN: room.memory.warriors was undefined! ---")
                 }
-                Memory.warriors = 0;
-                for (let c in Game.creeps) {
-                    if (Game.creeps[c].memory.role === "warrior") {
-                        Memory.warriors++;
+                room.memory.warriors = 0;
+                for (let c in room.memory.creeps) {
+                    if (Game.getObjectById(c).memory.role === "warrior") {
+                        room.memory.warriors++;
+                    }
+                }
+            }
+
+            //Claimer
+            if (!room.memory.claimers || forceInit) {
+                if (!room.memory.claimers) {
+                    console.log("--- WARN: room.memory.warriors was undefined! ---")
+                }
+                room.memory.claimers = 0;
+                for (let c in room.memory.creeps) {
+                    if (Game.getObjectById(c).memory.role === "claimer") {
+                        room.memory.claimers++;
                     }
                 }
             }
             console.log("[T:" + Game.time
-                + "] INFO: Initialization complete. Founded [H:"
-                + Memory.harvesters + " U:" + Memory.upgraders + " C:" + Memory.carry +
-                " B:" + Memory.builders + " R:" + Memory.repairers + " S:" + Memory.scouts + " W:" + Memory.warriors + "]")
+                + "] INFO: " + room.name + " Initialization complete. Founded [H:"
+                + room.memory.harvesters + " U:" + room.memory.upgraders + " C:" + room.memory.carry +
+                " B:" + room.memory.builders + " R:" + room.memory.repairers + " S:" + room.memory.scouts + " W:" + room.memory.warriors + " CL:" + room.memory.claimers + "]")
         }
     }
 };

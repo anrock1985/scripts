@@ -33,7 +33,7 @@ let roleHarvester = {
             }
         }
 
-        if (creep.memory.reservedStorageSpace || !creep.memory.reservedStorageSpace.id && !creep.memory.harvesting && Memory.carry === 0) {
+        if (creep.memory.reservedStorageSpace || !creep.memory.reservedStorageSpace.id && !creep.memory.harvesting && creep.room.memory.carrys === 0) {
             creepHelper.assignClosestStorageToTransfer(creep);
         }
 
@@ -46,10 +46,10 @@ let roleHarvester = {
 
         if (!creep.memory.harvesting && creep.store[RESOURCE_ENERGY] !== 0) {
             creep.memory.idle = undefined;
-            if (Memory.carry > 0) {
+            if (creep.room.memory.carrys > 0) {
                 let result = creep.drop(RESOURCE_ENERGY);
                 if (result !== 0) {
-                    console.log("ERROR: Harvester dropping result: " + result);
+                    console.log("ERROR: " + creep.room.name +" Harvester dropping result: " + result);
                 }
             } else {
                 if (creep.memory.reservedStorageSpace.id) {

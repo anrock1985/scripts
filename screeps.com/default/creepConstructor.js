@@ -198,10 +198,10 @@ let creepConstructor = {
             }
 
             //Carry
-            else if (spawner.room.memory.availableDroppedEnergyInRoom > (spawner.room.energyCapacityAvailable / 3)
+            else if (spawner.room.memory.availableDroppedEnergyInRoom >= 300
                 && spawner.isActive()
                 && !spawner.spawning
-                && spawner.room.energyAvailable >= 300
+                && spawner.room.energyAvailable >= 600
                 && spawner.room.memory.carrys < 8) {
                 name += "_C";
                 let resultCode = spawner.spawnCreep(prepareBody("carry"), name, {memory: {role: "carry"}});

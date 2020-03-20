@@ -167,28 +167,29 @@ let populationController = {
 
             if (room.memory.creeps.length !== 0) {
                 for (let c in room.memory.creeps) {
-                    if (Game.getObjectById(c).memory.role === "harvester") {
+                    let creepId = room.memory.creeps[c];
+                    if (Game.getObjectById(creepId).memory.role === "harvester") {
                         currentHarvesters++;
                     }
-                    if (Game.getObjectById(c).memory.role === "carry") {
+                    if (Game.getObjectById(creepId).memory.role === "carry") {
                         currentCarry++;
                     }
-                    if (Game.getObjectById(c).memory.role === "upgrader") {
+                    if (Game.getObjectById(creepId).memory.role === "upgrader") {
                         currentUpgraders++;
                     }
-                    if (Game.getObjectById(c).memory.role === "builder") {
+                    if (Game.getObjectById(creepId).memory.role === "builder") {
                         currentBuilders++;
                     }
-                    if (Game.getObjectById(c).memory.role === "repairer") {
+                    if (Game.getObjectById(creepId).memory.role === "repairer") {
                         currentRepairers++;
                     }
-                    if (Game.getObjectById(c).memory.role === "scout") {
+                    if (Game.getObjectById(creepId).memory.role === "scout") {
                         currentScouts++;
                     }
-                    if (Game.getObjectById(c).memory.role === "warrior") {
+                    if (Game.getObjectById(creepId).memory.role === "warrior") {
                         currentWarriors++;
                     }
-                    if (Game.getObjectById(c).memory.role === "claimer") {
+                    if (Game.getObjectById(creepId).memory.role === "claimer") {
                         currentClaimers++;
                     }
                 }
@@ -228,7 +229,8 @@ let populationController = {
                 }
                 room.memory.harvesters = 0;
                 for (let c in room.memory.creeps) {
-                    if (Game.getObjectById(c).memory.role === "harvester") {
+                    let creepId = room.memory.creeps[c];
+                    if (Game.getObjectById(creepId).memory.role === "harvester") {
                         room.memory.harvesters++;
                     }
                 }
@@ -241,7 +243,8 @@ let populationController = {
                 }
                 room.memory.carrys = 0;
                 for (let c in room.memory.creeps) {
-                    if (Game.getObjectById(c).memory.role === "carry") {
+                    let creepId = room.memory.creeps[c];
+                    if (Game.getObjectById(creepId).memory.role === "carry") {
                         room.memory.carrys++;
                     }
                 }
@@ -254,7 +257,8 @@ let populationController = {
                 }
                 room.memory.upgraders = 0;
                 for (let c in room.memory.creeps) {
-                    if (Game.getObjectById(c).memory.role === "upgrader") {
+                    let creepId = room.memory.creeps[c];
+                    if (Game.getObjectById(creepId).memory.role === "upgrader") {
                         room.memory.upgraders++;
                     }
                 }
@@ -267,7 +271,8 @@ let populationController = {
                 }
                 room.memory.builders = 0;
                 for (let c in room.memory.creeps) {
-                    if (Game.getObjectById(c).memory.role === "builder") {
+                    let creepId = room.memory.creeps[c];
+                    if (Game.getObjectById(creepId).memory.role === "builder") {
                         room.memory.builders++;
                     }
                 }
@@ -280,7 +285,8 @@ let populationController = {
                 }
                 room.memory.repairers = 0;
                 for (let c in room.memory.creeps) {
-                    if (Game.getObjectById(c).memory.role === "repairer") {
+                    let creepId = room.memory.creeps[c];
+                    if (Game.getObjectById(creepId).memory.role === "repairer") {
                         room.memory.repairers++;
                     }
                 }
@@ -293,7 +299,8 @@ let populationController = {
                 }
                 room.memory.scouts = 0;
                 for (let c in room.memory.creeps) {
-                    if (Game.getObjectById(c).memory.role === "scout") {
+                    let creepId = room.memory.creeps[c];
+                    if (Game.getObjectById(creepId).memory.role === "scout") {
                         room.memory.scouts++;
                     }
                 }
@@ -306,6 +313,7 @@ let populationController = {
                 }
                 room.memory.warriors = 0;
                 for (let c in room.memory.creeps) {
+                    let creepId = room.memory.creeps[c];
                     if (Game.getObjectById(c).memory.role === "warrior") {
                         room.memory.warriors++;
                     }
@@ -319,6 +327,7 @@ let populationController = {
                 }
                 room.memory.claimers = 0;
                 for (let c in room.memory.creeps) {
+                    let creepId = room.memory.creeps[c];
                     if (Game.getObjectById(c).memory.role === "claimer") {
                         room.memory.claimers++;
                     }

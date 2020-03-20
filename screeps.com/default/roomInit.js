@@ -95,6 +95,7 @@ let roomInit = {
             }
         }
 
+        //TODO: Проверка на безопасность около томба.
         let tombstonesWithEnergy = room.find(FIND_TOMBSTONES, {
             filter: (t) => {
                 return t.store.getUsedCapacity(RESOURCE_ENERGY) > 50

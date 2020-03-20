@@ -60,7 +60,14 @@ let towerController = {
                 for (let i in enemyCreepsIds) {
                     enemyCreeps.push(Game.getObjectById(enemyCreepsIds[i]));
                 }
-                return tower.pos.findClosestByRange(enemyCreeps);
+                let healers = _.filter(enemyCreeps, function (c) {
+                    return c.getActiveBodyparts(HEAL) > 0;
+                });
+                if (healers.length > 0) {
+                    return tower.pos.findClosestByRange(healers);
+                } else {
+                    return tower.pos.findClosestByRange(enemyCreeps);
+                }
             } else {
                 return -1;
             }

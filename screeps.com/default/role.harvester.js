@@ -12,11 +12,11 @@ let roleHarvester = {
         if (creep.memory.harvesting === undefined) {
             creep.memory.harvesting = true;
         }
-        if (creep.store.getFreeCapacity(RESOURCE_ENERGY) === 0 && creep.memory.harvesting) {
+        if (creep.getActiveBodyparts(CARRY) > 0 && creep.store.getFreeCapacity(RESOURCE_ENERGY) === 0 && creep.memory.harvesting) {
             creep.memory.harvesting = false;
             sourcePoolController.release(creep);
         }
-        if (creep.store[RESOURCE_ENERGY] === 0 && !creep.memory.harvesting) {
+        if (creep.getActiveBodyparts(CARRY) > 0 && creep.store[RESOURCE_ENERGY] === 0 && !creep.memory.harvesting) {
             creep.memory.harvesting = true;
             storagePoolController.releaseTransfer(creep);
         }
@@ -40,7 +40,10 @@ let roleHarvester = {
         // }
         //
 
-        if (creep.memory.reservedStorageSpace || !creep.memory.reservedStorageSpace.id && !creep.memory.harvesting && creep.room.memory.carrys === 0) {
+        if (creep.getActiveBodyparts(CARRY) > 0
+            && creep.memory.reservedStorageSpace
+            || !creep.memory.reservedStorageSpace.id
+            && !creep.memory.harvesting && creep.room.memory.carrys === 0) {
             creepHelper.assignClosestStorageToTransfer(creep);
         }
 

@@ -184,7 +184,6 @@ function assignClosestSourceToHarvest(creep) {
         sourceIds.push(creep.room.memory.sourcePool[s].id)
     }
     let sourceId = findClosestIdByPath(creep, sourceIds);
-    console.log("SourceId: " + sourceId);
     sourcePoolController.reserve(creep, sourceId.id);
 }
 

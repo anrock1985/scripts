@@ -5,8 +5,6 @@ let sourcePoolController = {
                 creep.memory.reservedSource = {};
             }
         }
-
-
     },
 
     reserve: function (creep, sourceId) {

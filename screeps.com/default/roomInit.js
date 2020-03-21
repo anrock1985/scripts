@@ -265,6 +265,10 @@ let roomInit = {
         if (!room.memory.totalAvailableResourcePool) {
             room.memory.totalAvailableResourcePool = 0;
         }
+        if (!room.memory.totalReservedResourcePool) {
+            room.memory.totalReservedResourcePool = 0;
+        }
+
         if (room.memory.resourcePool) {
             let totalAvailableResourcePool = 0;
             for (let e in room.memory.resourcePool) {
@@ -286,6 +290,7 @@ let roomInit = {
                         resourcePoolController.check(creep);
                         let creepReservedResourceId = creep.memory.reservedResource.id;
                         if (room.memory.resourcePool[creepReservedResourceId]) {
+                            room.memory.totalReservedResourcePool += Game.getObjectById(room.memory.creeps[i]).memory.reservedResource.amount;
                             room.memory.resourcePool[creepReservedResourceId].amount -= Game.getObjectById(room.memory.creeps[i]).memory.reservedResource.amount;
                         }
                     }

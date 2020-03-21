@@ -56,7 +56,7 @@ let towerController = {
 
         function findClosestEnemyCreep(enemyCreepsIds) {
             let enemyCreeps = [];
-            if (enemyCreepsIds) {
+            if (enemyCreepsIds.length > 0) {
                 for (let i in enemyCreepsIds) {
                     enemyCreeps.push(Game.getObjectById(enemyCreepsIds[i]));
                 }
@@ -97,4 +97,6 @@ let towerController = {
 
 module.exports = towerController;
 
-//TODO: Если в комнате враг - сливаем всю энергию в tower
+//TODO: Если в комнате враг - сливаем всю энергию в tower.
+
+//TODO: Расчитать силу выстрела каждой турели.

@@ -23,6 +23,8 @@ module.exports.loop = function () {
         if (Game.rooms[room].memory.mySpawnerIds.length > 0 && Game.time % 10 === 0)
             console.log(Game.rooms[room].name
                 + " Energy available: " + Game.rooms[room].energyAvailable
-                + "\\" + Game.rooms[room].energyCapacityAvailable + ". Available dropped energy: " + Game.rooms[room].memory.totalAvailableResourcePool);
+                + "\\" + Game.rooms[room].energyCapacityAvailable
+                + ".\t Dropped free: " + Game.rooms[room].memory.totalAvailableResourcePool
+                + ", Dropped reserved: " + room.memory.totalReservedResourcePool);
     }
 };

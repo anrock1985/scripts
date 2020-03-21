@@ -8,7 +8,7 @@ let sourcePoolController = {
     },
 
     reserve: function (creep, sourceId) {
-        let logLevel = "debug";
+        let logLevel = "info";
 
         if (!creep.memory.reservedSource) {
             creep.memory.reservedSource = {};
@@ -21,7 +21,7 @@ let sourcePoolController = {
     },
 
     release: function (creep) {
-        let logLevel = "debug";
+        let logLevel = "info";
         creep.memory.reservedSource = {};
         if (logLevel === "debug") {
             console.log(creep.room.name + " Creep " + creep.name + " released source reserve")

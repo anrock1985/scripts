@@ -25,6 +25,6 @@ module.exports.loop = function () {
                 + " Energy available: " + Game.rooms[room].energyAvailable
                 + "\\" + Game.rooms[room].energyCapacityAvailable
                 + ".\t Dropped free: " + Game.rooms[room].memory.totalAvailableResourcePool
-                + ", Dropped reserved: " + room.memory.totalReservedResourcePool);
+                + ", Dropped reserved: " + Game.rooms[room].memory.totalReservedResourcePool);
     }
 };

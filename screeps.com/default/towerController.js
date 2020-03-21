@@ -60,7 +60,7 @@ let towerController = {
                 for (let i in enemyCreepsIds) {
                     enemyCreeps.push(Game.getObjectById(enemyCreepsIds[i]));
                 }
-                //TODO: Расчитать силу хила, чтобы понять есть ли смысл стрелять.
+                //TODO: Учитывать что хилеров может быть несколько рядом.
                 let healPower = 0;
                 let healers = _.filter(enemyCreeps, function (c) {
                     return c.getActiveBodyparts(HEAL) > 0;
@@ -70,7 +70,11 @@ let towerController = {
                         let healParts = healers[h].getActiveBodyparts(HEAL);
                         healPower += (healParts * 12);
                     }
-                    if (healPower < (150 * Game.getObjectById(towerId).memory.myTowerIds.length)) {
+                    let totalDamagePotential = 0;
+                    for (let t in tower.room.memory.towerAims) {
+                        totalDamagePotential += tower.room.memory.towerAims[t].damageByTarget;
+                    }
+                    if (healPower < totalDamagePotential) {
                         return tower.pos.findClosestByRange(healers);
                     }
                 } else {
@@ -91,6 +95,35 @@ let towerController = {
             } else {
                 return -1;
             }
+        }
+
+        function aim(enemyId) {
+            let target = Game.getObjectById(enemyId);
+
+            if (!tower.memory.targetRange) {
+                tower.memory.targetRange = tower.pos.getRangeTo(target);
+            }
+
+            if (!tower.memory.targetPosition) {
+                tower.memory.targetPosition = target.pos;
+            }
+
+            if (!tower.memory.damageByTarget || !tower.memory.targetPosition.isEqualTo(target.pos)) {
+                tower.memory.targetPosition = target.pos;
+                tower.memory.targetRange = tower.pos.getRangeTo(target);
+                if (tower.memory.targetRange <= 5) {
+                    tower.memory.damageByTarget = 600;
+                } else if (tower.memory.targetRange >= 20) {
+                    tower.memory.damageByTarget = 150;
+                } else {
+                    tower.memory.damageByTarget = 600 - ((tower.memory.targetRange - 5) * 30);
+                }
+            }
+            if (!tower.room.memory.towerAims) {
+                tower.room.memory.towerAims = {};
+            }
+            tower.room.memory.towerAims[towerId].damageByTarget = tower.memory.damageByTarget;
+
         }
     }
 };

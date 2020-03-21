@@ -4,6 +4,7 @@ let roleHarvester = {
 
         let creepHelper = require('creepHelper');
         let storagePoolController = require('storagePoolController');
+        let sourcePoolController = require('sourcePoolController');
 
         if (!creep.memory.idle)
             creep.memory.idle = Game.time;
@@ -13,6 +14,7 @@ let roleHarvester = {
         }
         if (creep.store.getFreeCapacity(RESOURCE_ENERGY) === 0 && creep.memory.harvesting) {
             creep.memory.harvesting = false;
+            sourcePoolController.release(creep);
         }
         if (creep.store[RESOURCE_ENERGY] === 0 && !creep.memory.harvesting) {
             creep.memory.harvesting = true;
@@ -23,24 +25,37 @@ let roleHarvester = {
             creep.memory.closestSourceId = {};
         }
 
-        let source = {};
-        if (!creep.memory.closestSourceId.id && creep.memory.harvesting) {
-            if (creep.room.memory.sourceIds.length > 0) {
-                source = creepHelper.findClosestIdByPath(creep, creep.room.memory.sourceIds);
-            }
-            if (source && source.id) {
-                creep.memory.closestSourceId.id = source.id;
-            }
+        if (creep.memory.reservedSource && !creep.memory.reservedSource.id && creep.memory.harvesting) {
+            creepHelper.assignClosestSourceToHarvest(creep);
         }
 
+        // let source = {};
+        // if (!creep.memory.closestSourceId.id && creep.memory.harvesting) {
+        //     if (creep.room.memory.sourceIds.length > 0) {
+        //         source = creepHelper.findClosestIdByPath(creep, creep.room.memory.sourceIds);
+        //     }
+        //     if (source && source.id) {
+        //         creep.memory.closestSourceId.id = source.id;
+        //     }
+        // }
+        //
+        
         if (creep.memory.reservedStorageSpace || !creep.memory.reservedStorageSpace.id && !creep.memory.harvesting && creep.room.memory.carrys === 0) {
             creepHelper.assignClosestStorageToTransfer(creep);
         }
 
-        if (creep.memory.harvesting && creep.memory.closestSourceId.id && creep.store[RESOURCE_ENERGY] !== creep.store.getCapacity(RESOURCE_ENERGY)) {
+        //
+        // if (creep.memory.harvesting && creep.memory.closestSourceId.id && creep.store[RESOURCE_ENERGY] !== creep.store.getCapacity(RESOURCE_ENERGY)) {
+        //     creep.memory.idle = undefined;
+        //     if (creep.harvest(Game.getObjectById(creep.memory.closestSourceId.id)) === ERR_NOT_IN_RANGE) {
+        //         creep.moveTo(Game.getObjectById(creep.memory.closestSourceId.id));
+        //     }
+        // }
+
+        if (creep.memory.harvesting && creep.memory.reservedSource.id && creep.store[RESOURCE_ENERGY] !== creep.store.getCapacity(RESOURCE_ENERGY)) {
             creep.memory.idle = undefined;
-            if (creep.harvest(Game.getObjectById(creep.memory.closestSourceId.id)) === ERR_NOT_IN_RANGE) {
-                creep.moveTo(Game.getObjectById(creep.memory.closestSourceId.id));
+            if (creep.harvest(Game.getObjectById(creep.memory.reservedSource.id)) === ERR_NOT_IN_RANGE) {
+                creep.moveTo(Game.getObjectById(creep.memory.reservedSource.id));
             }
         }
 
@@ -49,7 +64,7 @@ let roleHarvester = {
             if (creep.room.memory.carrys > 0) {
                 let result = creep.drop(RESOURCE_ENERGY);
                 if (result !== 0) {
-                    console.log("ERROR: " + creep.room.name +" Harvester dropping result: " + result);
+                    console.log("ERROR: " + creep.room.name + " Harvester dropping result: " + result);
                 }
             } else {
                 if (creep.memory.reservedStorageSpace.id) {

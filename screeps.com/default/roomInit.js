@@ -4,10 +4,12 @@ let roomInit = {
 
         let resourcePoolController = require('resourcePoolController');
         let storagePoolController = require('storagePoolController');
+        let sourcePoolController = require('sourcePoolController');
 
         room.memory.resourcePool = {};
         room.memory.storageResourcePool = {};
         room.memory.storageSpacePool = {};
+        room.memory.sourcePool = {};
 
         room.memory.harvesters = 0;
         room.memory.carrys = 0;
@@ -259,6 +261,16 @@ let roomInit = {
             }
         }
 
+        //Наполняем пул источников энергии
+        if (sources.length > 0) {
+            for (let s in sources) {
+                room.memory.sourcePool[sources[s].id] = {
+                    id: sources[s].id,
+                };
+            }
+        }
+
+        actualizeRoomSourcePool(room);
         actualizeRoomResourcePool(room);
         actualizeRoomStoragePool(room);
 
@@ -275,7 +287,23 @@ let roomInit = {
             }
             room.memory.totalAvailableResourcePool = totalAvailableResourcePool;
         }
+
         Memory.debugRoom = room.memory;
+
+        function actualizeRoomSourcePool(room) {
+            if (room.memory.creeps.length > 0) {
+                for (let i = 0; i < room.memory.creeps.length; i++) {
+                    let creep = Game.getObjectById(room.memory.creeps[i]);
+                    if (creep.memory.role === "harvester") {
+                        sourcePoolController.check(creep);
+                        let creepReservedSourceId = creep.memory.reservedSource.id;
+                        if (room.memory.sourcePool[creepReservedSourceId]) {
+                            delete room.memory.sourcePool[creepReservedSourceId];
+                        }
+                    }
+                }
+            }
+        }
 
         //TODO: Optimize
         function actualizeRoomResourcePool(room) {

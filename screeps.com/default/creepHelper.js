@@ -1,6 +1,7 @@
 let _ = require('lodash');
 
 let storagePoolController = require('storagePoolController');
+let sourcePoolController = require('sourcePoolController');
 
 function getClosestStorageForWorker(creep) {
     let bigStorages = {};
@@ -175,6 +176,11 @@ function assignClosestStorageToTransfer(creep) {
     }
 }
 
+function assignClosestSourceToHarvest(creep) {
+    let sourceId = findClosestIdByRange(creep, creep.room.memory.sourcePool);
+    sourcePoolController.reserve(creep, sourceId);
+}
+
 function findClosestStorageSpaceByPath(creep, storagesIds) {
     let closest;
     let tmp;
@@ -210,5 +216,6 @@ module.exports = {
     findClosestIdByRange,
     checkWorkerState,
     assignClosestStorageToTransfer,
+    assignClosestSourceToHarvest,
     damageStepCalculator
 };

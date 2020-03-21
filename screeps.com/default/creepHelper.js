@@ -177,7 +177,11 @@ function assignClosestStorageToTransfer(creep) {
 }
 
 function assignClosestSourceToHarvest(creep) {
-    let sourceId = findClosestIdByRange(creep, creep.room.memory.sourcePool);
+    let soureIds = [];
+    for (let s in creep.room.memory.sourcePool) {
+        soureIds.push(creep.room.memory.sourcePool[s].id)
+    }
+    let sourceId = findClosestIdByPath(creep, soureIds);
     console.log(sourceId);
     sourcePoolController.reserve(creep, sourceId);
 }

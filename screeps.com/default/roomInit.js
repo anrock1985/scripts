@@ -227,7 +227,7 @@ let roomInit = {
             if (tombstonesWithEnergy.length > 0) {
                 for (let t in tombstonesWithEnergy) {
                     let tombstonesWithEnergyId = tombstonesWithEnergy[t].id;
-                    let tombstonesWithEnergyAmount = tombstonesWithEnergy[t].amount;
+                    let tombstonesWithEnergyAmount = tombstonesWithEnergy[t].store[RESOURCE_ENERGY];
                     totalDroppedEnergyInRoom += tombstonesWithEnergyAmount;
                     room.memory.resourcePool[tombstonesWithEnergyId] = {
                         id: tombstonesWithEnergyId,

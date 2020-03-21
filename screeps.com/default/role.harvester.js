@@ -39,7 +39,7 @@ let roleHarvester = {
         //     }
         // }
         //
-        
+
         if (creep.memory.reservedStorageSpace || !creep.memory.reservedStorageSpace.id && !creep.memory.harvesting && creep.room.memory.carrys === 0) {
             creepHelper.assignClosestStorageToTransfer(creep);
         }

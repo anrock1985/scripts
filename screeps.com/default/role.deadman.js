@@ -11,6 +11,8 @@ let roleDeadman = {
                 creep.memory.reservedStorageResource = {};
             if (creep.memory.reservedStorageSpace && creep.memory.reservedStorageSpace.id)
                 creep.memory.reservedStorageSpace = {};
+            if (creep.memory.reservedSource && creep.memory.reservedSource.id)
+                creep.memory.reservedSource = {};
             switch (creep.memory.lastRole) {
                 case "harvester":
                     creep.room.memory.harvesters--;

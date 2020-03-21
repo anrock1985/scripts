@@ -29,31 +29,12 @@ let roleHarvester = {
             creepHelper.assignClosestSourceToHarvest(creep);
         }
 
-        // let source = {};
-        // if (!creep.memory.closestSourceId.id && creep.memory.harvesting) {
-        //     if (creep.room.memory.sourceIds.length > 0) {
-        //         source = creepHelper.findClosestIdByPath(creep, creep.room.memory.sourceIds);
-        //     }
-        //     if (source && source.id) {
-        //         creep.memory.closestSourceId.id = source.id;
-        //     }
-        // }
-        //
-
         if (creep.getActiveBodyparts(CARRY) > 0
             && creep.memory.reservedStorageSpace
             || !creep.memory.reservedStorageSpace.id
             && !creep.memory.harvesting && creep.room.memory.carrys === 0) {
             creepHelper.assignClosestStorageToTransfer(creep);
         }
-
-        //
-        // if (creep.memory.harvesting && creep.memory.closestSourceId.id && creep.store[RESOURCE_ENERGY] !== creep.store.getCapacity(RESOURCE_ENERGY)) {
-        //     creep.memory.idle = undefined;
-        //     if (creep.harvest(Game.getObjectById(creep.memory.closestSourceId.id)) === ERR_NOT_IN_RANGE) {
-        //         creep.moveTo(Game.getObjectById(creep.memory.closestSourceId.id));
-        //     }
-        // }
 
         if (creep.memory.harvesting && creep.memory.reservedSource.id && creep.store[RESOURCE_ENERGY] !== creep.store.getCapacity(RESOURCE_ENERGY)) {
             creep.memory.idle = undefined;

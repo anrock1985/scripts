@@ -265,9 +265,6 @@ let roomInit = {
         if (!room.memory.totalAvailableResourcePool) {
             room.memory.totalAvailableResourcePool = 0;
         }
-        if (!room.memory.totalReservedResourcePool) {
-            room.memory.totalReservedResourcePool = 0;
-        }
 
         if (room.memory.resourcePool) {
             let totalAvailableResourcePool = 0;
@@ -284,6 +281,7 @@ let roomInit = {
         function actualizeRoomResourcePool(room) {
             if (room.memory.creeps.length > 0) {
                 room.memory.availableDroppedEnergyInRoom = 0;
+                room.memory.totalReservedResourcePool = 0;
                 for (let i = 0; i < room.memory.creeps.length; i++) {
                     let creep = Game.getObjectById(room.memory.creeps[i]);
                     if (creep.memory.role === "carry") {

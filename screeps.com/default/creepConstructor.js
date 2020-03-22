@@ -88,29 +88,29 @@ let creepConstructor = {
             console.log("WARN: No harvesters found in room " + spawner.room.name + "!");
             if (spawner.room.memory.droppedEnergyIds.length > 0 && spawner.room.memory.carrys < 2) {
                 console.log("DEBUG: We have dropped energy in room " + spawner.room.name);
-                    if (spawner.room.memory.totalAvailableResourcePool >= 500) {
-                        if (logLevel === "debug")
-                            console.log("DEBUG: We have dropped energy of 500 in room " + spawner.room.name);
-                        //Default Carry
-                        if (spawner.isActive()
-                            && !spawner.spawning
-                            && spawner.room.energyAvailable >= 300 && spawner.room.memory.carrys < 2) {
-                            name += "_C";
-                            let resultCode = spawner.spawnCreep(prepareBody("carry"), name, {memory: {role: "carry"}});
-                            if (resultCode === 0) {
-                                spawner.room.memory.carrys++;
-                                let bodyParts = [];
-                                _.forEach(Game.creeps[name].body, function (item) {
-                                    bodyParts.push(item.type.toString().toUpperCase());
-                                });
-                                if (debug) {
-                                    console.log("INFO: " + spawner.room.name + " new CARRY [total:" + spawner.room.memory.carrys + "] (" + bodyParts + ")");
-                                }
-                            } else {
-                                console.log("ERROR: " + spawner.room.name + " Spawning CARRY result code: " + resultCode);
+                if (spawner.room.memory.totalAvailableResourcePool >= 500) {
+                    if (logLevel === "debug")
+                        console.log("DEBUG: We have dropped energy of 500 in room " + spawner.room.name);
+                    //Default Carry
+                    if (spawner.isActive()
+                        && !spawner.spawning
+                        && spawner.room.energyAvailable >= 300 && spawner.room.memory.carrys < 2) {
+                        name += "_C";
+                        let resultCode = spawner.spawnCreep(prepareBody("carry"), name, {memory: {role: "carry"}});
+                        if (resultCode === 0) {
+                            spawner.room.memory.carrys++;
+                            let bodyParts = [];
+                            _.forEach(Game.creeps[name].body, function (item) {
+                                bodyParts.push(item.type.toString().toUpperCase());
+                            });
+                            if (debug) {
+                                console.log("INFO: " + spawner.room.name + " new CARRY [total:" + spawner.room.memory.carrys + "] (" + bodyParts + ")");
                             }
+                        } else {
+                            console.log("ERROR: " + spawner.room.name + " Spawning CARRY result code: " + resultCode);
                         }
                     }
+                }
             } else {
                 if (logLevel === "debug")
                     console.log("DEBUG: We don't have dropped energy in room " + spawner.room.name);
@@ -158,9 +158,9 @@ let creepConstructor = {
         } else {
             // Harvester
             if (spawner.isActive()
+                && spawner.room.memory.harvesters < spawner.room.memory.sourceIds.length
                 && !spawner.spawning
-                && spawner.room.energyAvailable >= 300
-                && spawner.room.memory.harvesters < spawner.room.memory.sourceIds.length) {
+                && spawner.room.energyAvailable >= 300) {
                 name += "_H";
                 let resultCode = spawner.spawnCreep(prepareBody("harvester"), name, {memory: {role: "harvester"}});
                 if (resultCode === 0) {
@@ -179,9 +179,9 @@ let creepConstructor = {
 
             //Carry
             else if (spawner.isActive()
+                && spawner.room.memory.carrys < 1
                 && !spawner.spawning
-                && spawner.room.energyAvailable >= 100
-                && spawner.room.memory.carrys < 1) {
+                && spawner.room.energyAvailable >= 100) {
                 name += "_C";
                 let resultCode = spawner.spawnCreep(prepareBody("carry"), name, {memory: {role: "carry"}});
                 if (resultCode === 0) {
@@ -200,11 +200,11 @@ let creepConstructor = {
 
             //Carry
             else if (spawner.room.memory.availableDroppedEnergyInRoom >= 300
+                && spawner.room.memory.carrys < 8
                 && spawner.isActive()
                 && !roomHelper.hasIdleCreeps(spawner.room, "carry")
                 && !spawner.spawning
-                && spawner.room.energyAvailable >= 600
-                && spawner.room.memory.carrys < 8) {
+                && spawner.room.energyAvailable >= 600) {
                 name += "_C";
                 let resultCode = spawner.spawnCreep(prepareBody("carry"), name, {memory: {role: "carry"}});
                 if (resultCode === 0) {
@@ -223,11 +223,11 @@ let creepConstructor = {
 
             //Builder
             else if (spawner.isActive()
+                && spawner.room.memory.builders < ((spawner.room.memory.myConstructionSiteIds.length > 2) ? 2 : 1)
                 && !roomHelper.hasIdleCreeps(spawner.room, "builder")
                 && !spawner.spawning
                 && spawner.room.memory.myConstructionSiteIds.length > 0
-                && spawner.room.energyAvailable >= 300
-                && spawner.room.memory.builders < ((spawner.room.memory.myConstructionSiteIds.length > 2) ? 2 : 1)) {
+                && spawner.room.energyAvailable >= 300) {
                 name += "_B";
                 let resultCode = spawner.spawnCreep(prepareBody("builder"), name, {memory: {role: "builder"}});
                 if (resultCode === 0) {
@@ -246,10 +246,10 @@ let creepConstructor = {
 
             //Repairer
             else if (spawner.isActive()
+                && spawner.room.memory.repairers < 2
                 && !roomHelper.hasIdleCreeps(spawner.room, "repairer")
                 && !spawner.spawning
-                && spawner.room.energyAvailable >= 300
-                && spawner.room.memory.repairers < 2) {
+                && spawner.room.energyAvailable >= 300) {
                 name += "_R";
                 let resultCode = spawner.spawnCreep(prepareBody("repairer"), name, {memory: {role: "repairer"}});
                 if (resultCode === 0) {
@@ -268,10 +268,10 @@ let creepConstructor = {
 
             //Upgrader
             else if (spawner.isActive()
+                && spawner.room.memory.upgraders < ((spawner.room.memory.myConstructionSiteIds.length === 0) ? 4 : 2)
                 && !roomHelper.hasIdleCreeps(spawner.room, "upgrader")
                 && !spawner.spawning
-                && spawner.room.energyAvailable >= 300
-                && spawner.room.memory.upgraders < ((spawner.room.memory.myConstructionSiteIds.length === 0) ? 4 : 2)) {
+                && spawner.room.energyAvailable >= 300) {
                 name += "_U";
                 let resultCode = spawner.spawnCreep(prepareBody("upgrader"), name, {memory: {role: "upgrader"}});
                 if (resultCode === 0) {

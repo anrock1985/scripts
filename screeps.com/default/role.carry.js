@@ -68,7 +68,8 @@ let roleCarry = {
 
         if (creep.memory.reservedResource && creep.memory.reservedResource.id) {
             creep.memory.idle = undefined;
-            if (Game.getObjectById(creep.memory.reservedResource.id).deathTime) {
+            if (Game.getObjectById(creep.memory.reservedResource.id)
+                && Game.getObjectById(creep.memory.reservedResource.id).deathTime) {
                 creep.memory.closestTombstone = {};
                 creep.memory.closestTombstone.id = creep.memory.reservedResource.id;
             }

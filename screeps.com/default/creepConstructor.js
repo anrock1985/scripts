@@ -5,6 +5,7 @@ let creepConstructor = {
         let _ = require('lodash');
 
         let spawnHelper = require('spawnHelper');
+        let roomHelper = require('roomHelper');
 
         let logLevel = "debug";
 
@@ -200,6 +201,7 @@ let creepConstructor = {
             //Carry
             else if (spawner.room.memory.availableDroppedEnergyInRoom >= 300
                 && spawner.isActive()
+                && !roomHelper.hasIdleCreeps(spawner.room, "carry")
                 && !spawner.spawning
                 && spawner.room.energyAvailable >= 600
                 && spawner.room.memory.carrys < 8) {
@@ -221,6 +223,7 @@ let creepConstructor = {
 
             //Builder
             else if (spawner.isActive()
+                && !roomHelper.hasIdleCreeps(spawner.room, "builder")
                 && !spawner.spawning
                 && spawner.room.memory.myConstructionSiteIds.length > 0
                 && spawner.room.energyAvailable >= 300
@@ -243,6 +246,7 @@ let creepConstructor = {
 
             //Repairer
             else if (spawner.isActive()
+                && !roomHelper.hasIdleCreeps(spawner.room, "repairer")
                 && !spawner.spawning
                 && spawner.room.energyAvailable >= 300
                 && spawner.room.memory.repairers < 2) {
@@ -264,6 +268,7 @@ let creepConstructor = {
 
             //Upgrader
             else if (spawner.isActive()
+                && !roomHelper.hasIdleCreeps(spawner.room, "upgrader")
                 && !spawner.spawning
                 && spawner.room.energyAvailable >= 300
                 && spawner.room.memory.upgraders < ((spawner.room.memory.myConstructionSiteIds.length === 0) ? 4 : 2)) {

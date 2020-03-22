@@ -72,6 +72,14 @@ let populationController = {
             let creepId = room.memory.creeps[c];
             let creep = Game.getObjectById(creepId);
 
+            if (!room.memory.idlers) {
+                room.memory.idlers = {};
+            }
+
+            if (creep.memory.idle) {
+                room.memory.idlers[creep.memory.role] = true;
+            }
+
             if (!creep.spawning) {
 
                 if (creep.ticksToLive === 3) {

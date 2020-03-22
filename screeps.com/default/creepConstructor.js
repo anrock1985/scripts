@@ -199,12 +199,12 @@ let creepConstructor = {
             }
 
             //Carry
-            else if (spawner.room.memory.availableDroppedEnergyInRoom >= 300
+            else if (spawner.isActive()
                 && spawner.room.memory.carrys < 8
-                && spawner.isActive()
-                && !roomHelper.hasIdleCreeps(spawner.room, "carry")
                 && !spawner.spawning
-                && spawner.room.energyAvailable >= 600) {
+                && spawner.room.memory.availableDroppedEnergyInRoom >= 300
+                && spawner.room.energyAvailable >= 600
+                && !roomHelper.hasIdleCreeps(spawner.room, "carry")) {
                 name += "_C";
                 let resultCode = spawner.spawnCreep(prepareBody("carry"), name, {memory: {role: "carry"}});
                 if (resultCode === 0) {
@@ -225,9 +225,9 @@ let creepConstructor = {
             else if (spawner.isActive()
                 && spawner.room.memory.myConstructionSiteIds.length > 0
                 && spawner.room.memory.builders < ((spawner.room.memory.myConstructionSiteIds.length > 2) ? 2 : 1)
-                && !roomHelper.hasIdleCreeps(spawner.room, "builder")
                 && !spawner.spawning
-                && spawner.room.energyAvailable >= 300) {
+                && spawner.room.energyAvailable >= 300
+                && !roomHelper.hasIdleCreeps(spawner.room, "builder")) {
                 name += "_B";
                 let resultCode = spawner.spawnCreep(prepareBody("builder"), name, {memory: {role: "builder"}});
                 if (resultCode === 0) {
@@ -247,9 +247,9 @@ let creepConstructor = {
             //Repairer
             else if (spawner.isActive()
                 && spawner.room.memory.repairers < 2
-                && !roomHelper.hasIdleCreeps(spawner.room, "repairer")
                 && !spawner.spawning
-                && spawner.room.energyAvailable >= 300) {
+                && spawner.room.energyAvailable >= 300
+                && !roomHelper.hasIdleCreeps(spawner.room, "repairer")) {
                 name += "_R";
                 let resultCode = spawner.spawnCreep(prepareBody("repairer"), name, {memory: {role: "repairer"}});
                 if (resultCode === 0) {

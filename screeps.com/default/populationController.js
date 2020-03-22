@@ -17,6 +17,8 @@ let populationController = {
         let creepConstructor = require('creepConstructor');
         let spawnHelper = require('spawnHelper');
 
+        room.memory.idlers = {};
+
         let mainSpawnerId = Game.spawns["Spawn1"].id;
         let initPeriod = 100;
 
@@ -77,7 +79,9 @@ let populationController = {
             }
 
             if (creep.memory.idle) {
-                room.memory.idlers[creep.memory.role] = true;
+                if (!room.memory.idlers[creep.memory.role]) {
+                    room.memory.idlers[creep.memory.role] = true;
+                }
             }
 
             if (!creep.spawning) {

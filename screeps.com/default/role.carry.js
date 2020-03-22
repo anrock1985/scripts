@@ -68,9 +68,19 @@ let roleCarry = {
 
         if (creep.memory.reservedResource && creep.memory.reservedResource.id) {
             creep.memory.idle = undefined;
-            if (creep.memory.closestRuin) {
-                if (creep.withdraw(Game.getObjectById(creep.memory.closestRuin.id)) === ERR_NOT_IN_RANGE) {
-                    creep.moveTo(Game.getObjectById(creep.memory.closestRuin.id))
+            if (Game.getObjectById(creep.memory.reservedResource.id).creep) {
+                creep.memory.closestTombstone = {};
+                creep.memory.closestTombstone.id = creep.memory.reservedResource.id;
+            }
+            if (creep.memory.closestRuin || creep.memory.closestTombstone) {
+                let id;
+                if (creep.memory.closestRuin.id) {
+                    id = creep.memory.closestRuin.id;
+                } else if (creep.memory.closestTombstone.id) {
+                    id = creep.memory.closestTombstone.id;
+                }
+                if (creep.withdraw(Game.getObjectById(id)) === ERR_NOT_IN_RANGE) {
+                    creep.moveTo(Game.getObjectById(id))
                 }
             } else {
                 if (creep.pickup(Game.getObjectById(creep.memory.reservedResource.id)) === ERR_NOT_IN_RANGE) {

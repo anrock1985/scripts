@@ -223,10 +223,10 @@ let creepConstructor = {
 
             //Builder
             else if (spawner.isActive()
+                && spawner.room.memory.myConstructionSiteIds.length > 0
                 && spawner.room.memory.builders < ((spawner.room.memory.myConstructionSiteIds.length > 2) ? 2 : 1)
                 && !roomHelper.hasIdleCreeps(spawner.room, "builder")
                 && !spawner.spawning
-                && spawner.room.memory.myConstructionSiteIds.length > 0
                 && spawner.room.energyAvailable >= 300) {
                 name += "_B";
                 let resultCode = spawner.spawnCreep(prepareBody("builder"), name, {memory: {role: "builder"}});

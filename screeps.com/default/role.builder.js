@@ -7,7 +7,7 @@ let roleBuilder = {
 
         creepHelper.checkWorkerState(creep);
 
-        if (creep.room.memory.myConstructionSiteIds.length === 0) {
+        if (creep.room.memory.myConstructionSiteIds.length === 0 && Game.time > (creep.memory.idle + 50)) {
             creep.memory.newRole = "repairer";
         }
 

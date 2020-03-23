@@ -75,7 +75,7 @@ let roleCarry = {
             }
             if (creep.memory.closestRuin || creep.memory.closestTombstone) {
                 let id;
-                if (creep.memory.closestRuin.id) {
+                if (creep.memory.closestRuin && creep.memory.closestRuin.id) {
                     id = creep.memory.closestRuin.id;
                 } else if (creep.memory.closestTombstone.id) {
                     id = creep.memory.closestTombstone.id;

@@ -184,9 +184,13 @@ function assignClosestSourceToHarvest(creep) {
             console.log("sourceIds: " + sourceIds);
         }
         let closestSourceId = findClosestIdByPath(creep, sourceIds);
-        console.log("closestSourceId: " + closestSourceId);
-        console.log("closestSourceId.id: " + closestSourceId.id);
-        sourcePoolController.reserve(creep, closestSourceId.id);
+        if (closestSourceId) {
+            console.log("closestSourceId: " + closestSourceId);
+            console.log("closestSourceId.id: " + closestSourceId.id);
+            sourcePoolController.reserve(creep, closestSourceId.id);
+        } else {
+            return -1;
+        }
     } else {
         return -1;
     }

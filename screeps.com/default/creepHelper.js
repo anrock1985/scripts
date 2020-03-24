@@ -180,10 +180,13 @@ function assignClosestSourceToHarvest(creep) {
     let sourceIds = [];
     if (creep.room.memory.sourcePool && !_.isEmpty(creep.room.memory.sourcePool)) {
         for (let s in creep.room.memory.sourcePool) {
-            sourceIds.push(creep.room.memory.sourcePool[s].id)
+            sourceIds.push(creep.room.memory.sourcePool[s].id);
+            console.log("sourceIds: " + sourceIds);
         }
-        let sourceId = findClosestIdByPath(creep, sourceIds);
-        sourcePoolController.reserve(creep, sourceId.id);
+        let closestSourceId = findClosestIdByPath(creep, sourceIds);
+        console.log("closestSourceId: " + closestSourceId);
+        console.log("closestSourceId.id: " + closestSourceId.id);
+        sourcePoolController.reserve(creep, closestSourceId.id);
     } else {
         return -1;
     }

@@ -70,6 +70,7 @@ let towerController = {
                         let healParts = healers[h].getActiveBodyparts(HEAL);
                         healPower += (healParts * 12);
                     }
+                    //TODO: Implement Aim
                     let totalDamagePotential = 0;
                     for (let t in tower.room.memory.towerAims) {
                         totalDamagePotential += tower.room.memory.towerAims[t].damageByTarget;

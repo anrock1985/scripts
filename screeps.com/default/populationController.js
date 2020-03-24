@@ -79,90 +79,105 @@ let populationController = {
             }
 
             if (creep.memory.idle) {
+                let roleIdleBeginTick;
+                let creepIdleBeginTick = creep.memory.idle;
                 if (!room.memory.idlers[creep.memory.role]) {
-                    room.memory.idlers[creep.memory.role] = true;
+                    roleIdleBeginTick = creepIdleBeginTick;
+                    room.memory.idlers[creep.memory.role] = {
+                        state: true,
+                        beginTick: roleIdleBeginTick
+                    };
                 }
+
+                if (room.memory.idlers[creep.memory.role]
+                    && creepIdleBeginTick < room.memory.idlers[creep.memory.role].beginTick) {
+                    roleIdleBeginTick = creep.memory.idle;
+                    room.memory.idlers[creep.memory.role].beginTick = roleIdleBeginTick;
+                }
+            } else if (room.memory.idlers[creep.memory.role]
+                && (room.memory.idlers[creep.memory.role].beginTick + 100) < Game.time) {
+                room.memory.idlers[creep.memory.role] = undefined;
+            }
+        }
+
+        if (!creep.spawning) {
+
+            if (creep.ticksToLive === 3) {
+                roleDeadman.assign(creep);
             }
 
-            if (!creep.spawning) {
+            if ((creep.ticksToLive === 1) && (creep.store[RESOURCE_ENERGY] > 0)) {
+                creep.memory.carriedEnergy = creep.store[RESOURCE_ENERGY];
+            }
 
-                if (creep.ticksToLive === 3) {
-                    roleDeadman.assign(creep);
-                }
+            if (creep.memory.newRole) {
+                creep.memory.role = creep.memory.newRole;
+                creep.memory.newRole = undefined;
+            }
 
-                if ((creep.ticksToLive === 1) && (creep.store[RESOURCE_ENERGY] > 0)) {
-                    creep.memory.carriedEnergy = creep.store[RESOURCE_ENERGY];
+            if (creep.memory.role === "harvester") {
+                if (creep.ticksToLive === 50
+                    && !spawnHelper.isSpawnLocked(creep.room)
+                    && creep.room.memory.harvesters > 0 && creep.room.memory.harvesters <= creep.room.memory.sourceIds.length
+                    && !Game.getObjectById(mainSpawnerId).spawning) {
+                    console.log("--- WARN: " + creep.room.name + " Spawn lock (by TTL) requested by " + creep.name
+                        + " (" + creep.memory.role.toUpperCase()
+                        + "), TTL:" + creep.ticksToLive + " ---");
+                    spawnHelper.lockSpawn(creep.room);
                 }
+                if (!spawnHelper.isSpawnLocked(creep.room)
+                    && creep.room.memory.harvesters > 0
+                    && creep.room.memory.harvesters < creep.room.memory.sourceIds.length
+                    && !Game.getObjectById(mainSpawnerId).spawning) {
+                    console.log("--- WARN: " + creep.room.name + " Spawn lock (by Limit) requested by " + creep.name
+                        + " (" + creep.memory.role.toUpperCase()
+                        + "), TTL:" + creep.ticksToLive + " ---");
+                    spawnHelper.lockSpawn(creep.room);
+                }
+                roleHarvester.run(creep);
+            }
 
-                if (creep.memory.newRole) {
-                    creep.memory.role = creep.memory.newRole;
-                    creep.memory.newRole = undefined;
-                }
+            if (creep.memory.role === "upgrader") {
+                roleUpgrader.run(creep);
+            }
 
-                if (creep.memory.role === "harvester") {
-                    if (creep.ticksToLive === 50
-                        && !spawnHelper.isSpawnLocked(creep.room)
-                        && creep.room.memory.harvesters > 0 && creep.room.memory.harvesters <= creep.room.memory.sourceIds.length
-                        && !Game.getObjectById(mainSpawnerId).spawning) {
-                        console.log("--- WARN: " + creep.room.name + " Spawn lock (by TTL) requested by " + creep.name
-                            + " (" + creep.memory.role.toUpperCase()
-                            + "), TTL:" + creep.ticksToLive + " ---");
-                        spawnHelper.lockSpawn(creep.room);
-                    }
-                    if (!spawnHelper.isSpawnLocked(creep.room)
-                        && creep.room.memory.harvesters > 0
-                        && creep.room.memory.harvesters < creep.room.memory.sourceIds.length
-                        && !Game.getObjectById(mainSpawnerId).spawning) {
-                        console.log("--- WARN: " + creep.room.name + " Spawn lock (by Limit) requested by " + creep.name
-                            + " (" + creep.memory.role.toUpperCase()
-                            + "), TTL:" + creep.ticksToLive + " ---");
-                        spawnHelper.lockSpawn(creep.room);
-                    }
-                    roleHarvester.run(creep);
-                }
+            if (creep.memory.role === "carry") {
+                roleCarry.run(creep);
+            }
 
-                if (creep.memory.role === "upgrader") {
-                    roleUpgrader.run(creep);
-                }
+            if (creep.memory.role === "builder") {
+                roleBuilder.run(creep);
+            }
 
-                if (creep.memory.role === "carry") {
-                    roleCarry.run(creep);
-                }
+            if (creep.memory.role === "repairer") {
+                roleRepairer.assign(creep);
+            }
 
-                if (creep.memory.role === "builder") {
-                    roleBuilder.run(creep);
-                }
+            if (creep.memory.role === "scout") {
+                roleScout.assign(creep);
+            }
 
-                if (creep.memory.role === "repairer") {
-                    roleRepairer.assign(creep);
-                }
+            if (creep.memory.role === "warrior") {
+                roleWarrior.assign(creep);
+            }
 
-                if (creep.memory.role === "scout") {
-                    roleScout.assign(creep);
-                }
+            if (creep.memory.role === "deadman") {
+                roleDeadman.assign(creep);
+            }
 
-                if (creep.memory.role === "warrior") {
-                    roleWarrior.assign(creep);
-                }
+            if (!creep.memory.role
+                && _.filter(creep.body, (body) => body.type = WORK)
+                && _.filter(creep.body, (body) => body.type = CARRY)
+                && _.filter(creep.body, (body) => body.type = MOVE)) {
+                creep.memory.role = "harvester";
+                room.memory.harvesters++;
+                //TODO: Creep body toString fix.
+                console.log("WARN: Lost creep recovered. He is " + creep.memory.role.toUpperCase() + " now. (" + creep.body.toString() + ")")
+            }
 
-                if (creep.memory.role === "deadman") {
-                    roleDeadman.assign(creep);
-                }
-
-                if (!creep.memory.role
-                    && _.filter(creep.body, (body) => body.type = WORK)
-                    && _.filter(creep.body, (body) => body.type = CARRY)
-                    && _.filter(creep.body, (body) => body.type = MOVE)) {
-                    creep.memory.role = "harvester";
-                    room.memory.harvesters++;
-                    //TODO: Creep body toString fix.
-                    console.log("WARN: Lost creep recovered. He is " + creep.memory.role.toUpperCase() + " now. (" + creep.body.toString() + ")")
-                }
-
-                if (creep.memory.idle) {
-                    Memory.flags = Game.flags;
-                    creep.moveTo(Game.flags["Idle"]);
-                }
+            if (creep.memory.idle) {
+                Memory.flags = Game.flags;
+                creep.moveTo(Game.flags["Idle"]);
             }
         }
 

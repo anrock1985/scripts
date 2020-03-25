@@ -38,7 +38,8 @@ let roleRepairer = {
             let resultCode = creep.repair(Game.getObjectById(creep.memory.closestDamagedStructureId));
             if (resultCode === ERR_NOT_IN_RANGE) {
                 creep.moveTo(Game.getObjectById(creep.memory.closestDamagedStructureId))
-            } else {
+            } else if (Game.getObjectById(creep.memory.closestDamagedStructureId).hits === Game.getObjectById(creep.memory.closestDamagedStructureId).hitsMax
+                && !creep.memory.working) {
                 creep.memory.closestDamagedStructureId = [];
             }
         }

@@ -83,7 +83,8 @@ let populationController = {
                 let creepIdleBeginTick = creep.memory.idle;
                 console.log(Game.time + " " + creep.room.name
                     + " " + creep.memory.role.toUpperCase()
-                    + ": Idle time diff " + (Game.time - creep.memory.idle));
+                    + ": Idle time diff " + (Game.time - creep.memory.idle)
+                    + ". Role idle diff " + (Game.time - room.memory.idlers[creep.memory.role].beginTick));
                 if (!room.memory.idlers[creep.memory.role]) {
                     roleIdleBeginTick = creepIdleBeginTick;
                     room.memory.idlers[creep.memory.role] = {

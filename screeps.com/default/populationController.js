@@ -81,16 +81,17 @@ let populationController = {
             if (creep.memory.idle) {
                 let roleIdleBeginTick;
                 let creepIdleBeginTick = creep.memory.idle;
-                console.log(Game.time + " " + creep.room.name
-                    + " " + creep.memory.role.toUpperCase()
-                    + ": Idle time diff " + (Game.time - creep.memory.idle)
-                    + ". Role idle diff " + (Game.time - room.memory.idlers[creep.memory.role].beginTick));
+
                 if (!room.memory.idlers[creep.memory.role]) {
                     roleIdleBeginTick = creepIdleBeginTick;
                     room.memory.idlers[creep.memory.role] = {
                         state: true,
                         beginTick: roleIdleBeginTick
                     };
+                    console.log(Game.time + " " + creep.room.name
+                        + " " + creep.memory.role.toUpperCase()
+                        + ": Idle time diff " + (Game.time - creep.memory.idle)
+                        + ". Role idle diff " + (Game.time - room.memory.idlers[creep.memory.role].beginTick));
                 } else if (room.memory.idlers[creep.memory.role]
                     && creepIdleBeginTick < room.memory.idlers[creep.memory.role].beginTick) {
                     roleIdleBeginTick = creepIdleBeginTick;

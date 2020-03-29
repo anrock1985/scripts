@@ -102,7 +102,7 @@ let populationController = {
                 && (room.memory.idlers[creep.memory.role].beginTick + 100) < Game.time) {
                 console.log(Game.time + " " + creep.room.name
                     + " " + creep.memory.role.toUpperCase()
-                    + ": Idle time diff " + (Game.time - creep.memory.idle)
+                    + ": Creep idle diff " + (Game.time - creep.memory.idle)
                     + ". Role idle diff " + (Game.time - room.memory.idlers[creep.memory.role].beginTick)
                     + ". RESETTING IDLE TIMER");
                 room.memory.idlers[creep.memory.role] = undefined;

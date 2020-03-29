@@ -91,9 +91,7 @@ let populationController = {
                         state: true,
                         beginTick: roleIdleBeginTick
                     };
-                }
-
-                if (room.memory.idlers[creep.memory.role]
+                } else if (room.memory.idlers[creep.memory.role]
                     && creepIdleBeginTick < room.memory.idlers[creep.memory.role].beginTick) {
                     roleIdleBeginTick = creepIdleBeginTick;
                     room.memory.idlers[creep.memory.role].beginTick = roleIdleBeginTick;
